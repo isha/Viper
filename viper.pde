@@ -38,6 +38,13 @@ void draw() {
     image(img, Integer.parseInt(instr.get("PositionX")), Integer.parseInt(instr.get("PositionY")), img.width, img.height);
   }
   else if (instr.get("Method") == "update") {
+    PImage img = images.get(instr.get("Image"));
+
+    if (instr.get("Action") == "position") {
+      image(img, Integer.parseInt(instr.get("PositionX")), Integer.parseInt(instr.get("PositionY")), img.width, img.height);
+    } else if (instr.get("Action") == "resize") {
+      img.resize(Integer.parseInt(instr.get("Width")), Integer.parseInt(instr.get("Height")));
+    }
 
   }
   else if (instr.get("Method") == "delete") {

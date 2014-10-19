@@ -13,6 +13,7 @@
     "Method": "update",
     "Image": "",
     "Action": "Position",
-    "Params": "45, 200"
+    "PositionX": "100",
+    "PositionY": "130"
   }
 ]
