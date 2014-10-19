@@ -24,28 +24,32 @@ void setup() {
 }
 
 void draw() {
-  // Get instruction
-  if (instructionCounter < instructions.size()) {
-    instr = instructions.getJSONObject(instructionCounter++);
-  }
+  if (frameCount % 8 == 0) {
+    background(255, 204, 0);
 
-  // Run instructions
-  if (instr.getString("Method").equals("create")) {
-    PImage img = loadImage(instr.getString("Image"));
+    // Get instruction
+    if (instructionCounter < instructions.size()) {
+      instr = instructions.getJSONObject(instructionCounter++);
+    }
 
-    images.put(imagesCount, img);
-    imagesCount++;
+    // Run instruction
+    if (instr.getString("Method").equals("create")) {
+      PImage img = loadImage(instr.getString("Image"));
 
-    image(img, instr.getInt("PositionX"), instr.getInt("PositionY"), img.width, img.height);
-  }
-  else if (instr.getString("Method").equals("update")) {
-    PImage img = images.get(instr.getInt("Image"));
+      images.put(imagesCount, img);
+      imagesCount++;
 
-    if (instr.getString("Action").equals("position")) {
       image(img, instr.getInt("PositionX"), instr.getInt("PositionY"), img.width, img.height);
     }
-  }
-  else if (instr.getString("Method").equals("delete")) {
+    else if (instr.getString("Method").equals("update")) {
+      PImage img = images.get(instr.getInt("Image"));
 
+      if (instr.getString("Action").equals("position")) {
+        image(img, instr.getInt("PositionX"), instr.getInt("PositionY"), img.width, img.height);
+      }
+    }
+    else if (instr.getString("Method").equals("delete")) {
+
+    }
   }
 }
