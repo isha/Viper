@@ -1,25 +1,22 @@
 import java.util.Map;
 import java.util.Hashtable;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.*;
 import java.util.*;
 
-// Sample instructions
+// Channel list
+Channel ch1;
+
+// Instruction placeholder
 JSONObject instr;
-JSONArray instructions;
-Integer instructionCounter = 0;
 
 // Image list
 Hashtable<Integer, PImage> images = new Hashtable<Integer, PImage>();
 Integer imagesCount = 0;
 
-BufferedReader reader;
-
 void setup() {
   size(1000, 600);
 
-  instructions = loadJSONArray("sampleInstructions1.json");
+  ch1.instructions = loadJSONArray("sampleInstructions1.json");
 }
 
 void draw() {
@@ -27,8 +24,8 @@ void draw() {
     background(255, 204, 0);
 
     // Get instruction
-    if (instructionCounter < instructions.size()) {
-      instr = instructions.getJSONObject(instructionCounter++);
+    if (ch1.nextInstructionExists()) {
+      instr = ch1.nextInstruction();
     }
 
     // Run instruction
