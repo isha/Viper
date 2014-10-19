@@ -12,15 +12,14 @@ Integer instructionCounter = 0;
 
 // Image list
 Hashtable<Integer, PImage> images = new Hashtable<Integer, PImage>();
-Integer imagesCount;
+Integer imagesCount = 0;
 
 BufferedReader reader;
 
 void setup() {
   size(1000, 600);
-  imagesCount = 0;
 
-  instructions = loadJSONArray("sampleInstructions.json");
+  instructions = loadJSONArray("sampleInstructions1.json");
 }
 
 void draw() {
