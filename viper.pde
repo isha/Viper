@@ -3,6 +3,8 @@ import java.util.Hashtable;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.*;
+import java.util.*;
+import org.json.*;
 
 // Note the HashMap's "key" is a String and "value" is an Integer
 HashMap<String,String> instr = new HashMap<String,String>();
@@ -11,16 +13,13 @@ HashMap<String,String> instr = new HashMap<String,String>();
 Hashtable<Integer, PImage> images = new Hashtable<Integer, PImage>();
 Integer imagesCount;
 
+BufferedReader reader;
+
 void setup() {
   size(1000, 600);
   imagesCount = 0;
-
-  BufferedReader br = new BufferedReader(new FileReader("sampleInstructions.txt"));
-  String line;
-  while ((line = br.readLine()) != null) {
-     // process the line.
-  }
-  br.close();
+  
+  JSON obj = JSON.createObject();
 
   // Putting key-value pairs in the HashMap
   instr.put("Method", "create");
