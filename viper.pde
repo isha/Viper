@@ -19,7 +19,7 @@ BufferedReader reader;
 void setup() {
   size(1000, 600);
 
-  instructions = loadJSONArray("sampleInstructions1.json");
+  instructions = loadJSONArray("sampleResizingInstructions.json");
 }
 
 void draw() {
@@ -44,6 +44,10 @@ void draw() {
       PImage img = images.get(instr.getInt("Image"));
 
       if (instr.getString("Action").equals("position")) {
+        image(img, instr.getInt("PositionX"), instr.getInt("PositionY"), img.width, img.height);
+      }
+      else if (instr.getString("Action").equals("resize")) {
+        img.resize(instr.getInt("Width"), instr.getInt("Height"));
         image(img, instr.getInt("PositionX"), instr.getInt("PositionY"), img.width, img.height);
       }
     }
