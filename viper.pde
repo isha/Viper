@@ -1,20 +1,37 @@
-PImage dog;
+import java.util.Map;
+import java.util.Hashtable;
+
+// Note the HashMap's "key" is a String and "value" is an Integer
+HashMap<String,String> instr = new HashMap<String,String>();
+
+// Image list
+Hashtable<Integer, PImage> images = new Hashtable<Integer, PImage>();
+Integer imagesCount;
 
 void setup() {
-  dog = loadImage("snowball.jpg")
+  size(1000, 600);
+  imagesCount = 0;
+
+  // Putting key-value pairs in the HashMap
+  instr.put("Method", "create");
+  instr.put("Image", "snowball.jpg");
+  instr.put("PositionX", "35");
+  instr.put("PositionY", "36");
 }
 
+void draw() {
+  if (instr.get("Method") == "create") {
+    PImage img = loadImage(instr.get("Image"));
 
-class MediaUnit {
-  float ypos, speed;
-  HLine (float y, float s) {
-    ypos = y;
-    speed = s;
+    images.put(imagesCount, img);
+    imagesCount++;
+
+    image(img, Integer.parseInt(instr.get("PositionX")), Integer.parseInt(instr.get("PositionY")), img.width, img.height);
   }
-  void update() {
-    ypos += speed;
-    if (ypos > height) {
-      ypos = 0;
-    }
-    line(0, ypos, width, ypos);
+  else if (instr.get("Method") == "update") {
+
   }
+  else if (instr.get("Method") == "delete") {
+
+  }
+}
