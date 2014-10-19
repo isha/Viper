@@ -1,22 +1,20 @@
-int y = 100;
+PImage dog;
 
-// The statements in the setup() function 
-// execute once when the program begins
 void setup() {
-  size(640, 360);  // Size must be the first statement
-  stroke(255);     // Set line drawing color to white
-  frameRate(30);
+  dog = loadImage("snowball.jpg")
 }
-// The statements in draw() are executed until the 
-// program is stopped. Each statement is executed in 
-// sequence and after the last line is read, the first 
-// line is executed again.
-void draw() { 
-  background(0);   // Clear the screen with a black background
-  y = y - 1; 
-  if (y < 0) { 
-    y = height; 
-  } 
-  line(0, y, width, y);  
-} 
 
+
+class MediaUnit {
+  float ypos, speed;
+  HLine (float y, float s) {
+    ypos = y;
+    speed = s;
+  }
+  void update() {
+    ypos += speed;
+    if (ypos > height) {
+      ypos = 0;
+    }
+    line(0, ypos, width, ypos);
+  }
