@@ -4,10 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.*;
 import java.util.*;
-import org.json.*;
 
-// Note the HashMap's "key" is a String and "value" is an Integer
-HashMap<String,String> instr = new HashMap<String,String>();
+// Sample instructions
+JSONObject instr;
+JSONArray instructions;
+Integer instructionCounter = 0;
 
 // Image list
 Hashtable<Integer, PImage> images = new Hashtable<Integer, PImage>();
@@ -18,36 +19,33 @@ BufferedReader reader;
 void setup() {
   size(1000, 600);
   imagesCount = 0;
-  
-  JSON obj = JSON.createObject();
 
-  // Putting key-value pairs in the HashMap
-  instr.put("Method", "create");
-  instr.put("Image", "snowball.jpg");
-  instr.put("PositionX", "35");
-  instr.put("PositionY", "36");
+  instructions = loadJSONArray("sampleInstructions.json");
 }
 
 void draw() {
-  if (instr.get("Method") == "create") {
-    PImage img = loadImage(instr.get("Image"));
+  // Get instruction
+  if (instructionCounter < instructions.size()) {
+    instr = instructions.getJSONObject(instructionCounter++);
+  }
+
+  // Run instructions
+  if (instr.getString("Method").equals("create")) {
+    PImage img = loadImage(instr.getString("Image"));
 
     images.put(imagesCount, img);
     imagesCount++;
 
-    image(img, Integer.parseInt(instr.get("PositionX")), Integer.parseInt(instr.get("PositionY")), img.width, img.height);
+    image(img, instr.getInt("PositionX"), instr.getInt("PositionY"), img.width, img.height);
   }
-  else if (instr.get("Method") == "update") {
-    PImage img = images.get(instr.get("Image"));
+  else if (instr.getString("Method").equals("update")) {
+    PImage img = images.get(instr.getInt("Image"));
 
-    if (instr.get("Action") == "position") {
-      image(img, Integer.parseInt(instr.get("PositionX")), Integer.parseInt(instr.get("PositionY")), img.width, img.height);
-    } else if (instr.get("Action") == "resize") {
-      img.resize(Integer.parseInt(instr.get("Width")), Integer.parseInt(instr.get("Height")));
+    if (instr.getString("Action").equals("position")) {
+      image(img, instr.getInt("PositionX"), instr.getInt("PositionY"), img.width, img.height);
     }
-
   }
-  else if (instr.get("Method") == "delete") {
+  else if (instr.getString("Method").equals("delete")) {
 
   }
 }

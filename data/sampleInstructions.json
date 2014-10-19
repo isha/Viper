@@ -1,0 +1,21 @@
+[
+  {
+    "Method": "create",
+    "PositionX": 35,
+    "PositionY": 120,
+    "Image": "snowball.jpg"
+  },
+  {
+    "Method": "create",
+    "PositionX": 300,
+    "PositionY": 300,
+    "Image": "snowball.jpg"
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 500,
+    "PositionY": 500
+  }
+]
