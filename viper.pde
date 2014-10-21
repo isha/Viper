@@ -21,7 +21,7 @@ BufferedReader reader;
 void setup() {
   size(1000, 600);
 
-  instructions = loadJSONArray("sampleDeleteInstructions.json");
+  instructions = loadJSONArray("sampleComplexInstructions.json");
 }
 
 void draw() {
