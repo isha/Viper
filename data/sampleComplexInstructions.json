@@ -3,7 +3,7 @@
     "Method": "create",
     "PositionX": 35,
     "PositionY": 120,
-    "Image": "snowball.jpg"
+    "Image": "fish2.gif"
   },
   {
     "Method": "update",
@@ -16,7 +16,7 @@
     "Method": "create",
     "PositionX": 800,
     "PositionY": 550,
-    "Image": "rick.jpg"
+    "Image": "fish3.png"
   },
   {
     "Method": "update",
