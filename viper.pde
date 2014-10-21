@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.*;
 import java.util.*;
 
+static final int FRAMERATE = 8;
+
 // Sample instructions
 JSONObject instr;
 JSONArray instructions;
@@ -19,11 +21,11 @@ BufferedReader reader;
 void setup() {
   size(1000, 600);
 
-  instructions = loadJSONArray("sampleResizingInstructions.json");
+  instructions = loadJSONArray("sampleDeleteInstructions.json");
 }
 
 void draw() {
-  if (frameCount % 8 == 0) {
+  if (frameCount % FRAMERATE == 0) {
     background(255, 204, 0);
 
     // Get instruction

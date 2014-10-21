@@ -1,0 +1,103 @@
+[
+  {
+    "Method": "create",
+    "PositionX": 35,
+    "PositionY": 120,
+    "Image": "snowball.jpg"
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 85,
+    "PositionY": 120
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 135,
+    "PositionY": 120
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 185,
+    "PositionY": 120
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 235,
+    "PositionY": 120
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 285,
+    "PositionY": 120
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 335,
+    "PositionY": 120
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 385,
+    "PositionY": 120
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 435,
+    "PositionY": 120
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 485,
+    "PositionY": 120
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 535,
+    "PositionY": 120
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 585,
+    "PositionY": 120
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 635,
+    "PositionY": 120
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 685,
+    "PositionY": 120
+  },
+  {
+    "Method": "delete",
+    "Image": 0
+  }
+]
