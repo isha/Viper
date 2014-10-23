@@ -9,29 +9,35 @@ class OSCServer {
     oscP5 = new OscP5(this, 5001);
     myRemoteLocation = new NetAddress("127.0.0.1", 5001);
   }
+  
+  void testEasing(OscMessage message) {
+    // creates a sample easing message
+    message.add("method");
+    message.add("create");
+    message.add("posX");
+    message.add(35);
+    message.add("posY");
+    message.add(120);
+    message.add("image");
+    message.add("fish2.gif");
+
+    message.add("id");
+    message.add(0);
+    message.add("method");
+    message.add("update");
+    message.add("easing");
+    message.add(0.008);
+    message.add("endX");
+    message.add(1000);
+    message.add("endY");
+    message.add(500);
+  }
 
   void mousePressed() {
     // create an osc message
     OscMessage myMessage = new OscMessage("/rime");
 
-    myMessage.add("command");
-    myMessage.add(123); // add an int to the osc message
-    myMessage.add("posX");
-    myMessage.add(12.34); // add a float to the osc message
-    myMessage.add("posY");
-    myMessage.add("some text!"); // add a string to the osc message
-    myMessage.add("posZ");
-    myMessage.add(5123);
-
-    myMessage.add("command");
-    myMessage.add("coajs"); // add an int to the osc message
-    myMessage.add("arg1");
-    myMessage.add(13.1624); // add a float to the osc message
-    myMessage.add("arg2");
-    myMessage.add("textxxxxxxx!"); // add a string to the osc message
-    myMessage.add("arg3");
-    myMessage.add(135910275);
-
+    testEasing(myMessage);
 
     // send the message
     oscP5.send(myMessage, myRemoteLocation);
@@ -60,7 +66,7 @@ class OSCServer {
     command = new JSONObject();
     for(i=0;i<recvMessageLength;i++) {
        messagePair = recvMessageType.substring(i*2, i*2 + 2);
-       if(theOscMessage.get(i*2).stringValue().equals("command")) {
+       if(theOscMessage.get(i*2).stringValue().equals("method")) {
          if(commandCount!=0) {
            commands.setJSONObject(commandCount-1, command);
            command = new JSONObject();
