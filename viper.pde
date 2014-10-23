@@ -17,11 +17,17 @@ Integer imagesCount = 0;
 // Background image
 PImage backImage;
 
+// Blur variable
+float v = 1.0 / 9.0;
+float[][] kernel = {{ v, v, v }, 
+                    { v, v, v }, 
+                    { v, v, v }};
+
 void setup() {
   backImage = loadImage("ocean.jpg");
   size(backImage.width, backImage.height);
 
-  instructions = loadJSONArray("sampleComplexInstructions.json");
+  instructions = loadJSONArray("sampleBlurInstructions.json");
 }
 
 void draw() {
@@ -48,6 +54,9 @@ void draw() {
       }
       else if (instr.getString("Action").equals("resize")) {
         img.updateSize(instr.getInt("Width"), instr.getInt("Height"));
+      }
+      else if (instr.getString("Action").equals("blur")) {
+        img.blur(instr.getInt("Magnitude"));
       }
     }
     else if (instr.getString("Method").equals("delete")) {
@@ -82,5 +91,51 @@ class Image {
 
   void draw() {
     image(picture, x, y);
+  }
+
+  void blur(int magnitude) {
+
+    int blur_count = 0;
+    
+    while (blur_count < magnitude) {
+
+      // Loop through every pixel in the image
+      for (int y2 = 1; y2 < picture.height-1; y2++) {   // Skip top and bottom edges
+        for (int x2 = 1; x2 < picture.width-1; x2++) {  // Skip left and right edges
+
+          float sum_red = 0; // Kernel sum for this pixel
+          float sum_green = 0;
+          float sum_blue = 0;
+
+          for (int ky = -1; ky <= 1; ky++) {
+            for (int kx = -1; kx <= 1; kx++) {
+
+              // Calculate the adjacent pixel for this kernel point
+              int pos = (y2 + ky)*picture.width + (x2 + kx);
+
+              // Compute RGB values
+              float val_red = red(picture.pixels[pos]);
+              float val_green = green(picture.pixels[pos]);
+              float val_blue = blue(picture.pixels[pos]);
+
+              // Multiply adjacent pixels based on the kernel values
+              sum_red += kernel[ky+1][kx+1] * val_red;
+              sum_green += kernel[ky+1][kx+1] * val_green;
+              sum_blue += kernel[ky+1][kx+1] * val_blue;
+
+            }
+          }
+          // For this pixel in the new image, set the RGB value
+          // based on the sum from the kernel
+          picture.pixels[y2*picture.width + x2] = color(sum_red, sum_green, sum_blue);
+        }
+      }
+
+    blur_count++;
+    }
+
+    // State that there are changes to edgeImg.pixels[]
+    picture.updatePixels();
+    
   }
 };

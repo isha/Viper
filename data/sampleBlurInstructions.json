@@ -1,0 +1,21 @@
+[
+  {
+    "Method": "create",
+    "PositionX": 35,
+    "PositionY": 120,
+    "Image": "snowball.jpg"
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "blur",
+    "Magnitude": 3
+  },
+  {
+    "Method": "update",
+    "Image": 0,
+    "Action": "position",
+    "PositionX": 800,
+    "PositionY": 520
+  }
+]
