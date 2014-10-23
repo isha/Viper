@@ -21,24 +21,23 @@ class TestChannel extends Channel {
     }
 
     // Run instruction
-    if (instr.getString("Method").equals("create")) {
-      Image img = new Image(instr.getString("Image"), instr.getInt("PositionX"), instr.getInt("PositionY"));
+    if (instr.getString("method").equals("create")) {
+      Image img = new Image(instr.getString("image"), instr.getInt("posX"), instr.getInt("posY"));
 
       images.put(imagesCount, img);
       imagesCount++;
     }
-    else if (instr.getString("Method").equals("update")) {
-      Image img = images.get(instr.getInt("Image"));
+    else if (instr.getString("method").equals("update")) {
+      Image img = images.get(instr.getInt("id"));
 
-      if (instr.getString("Action").equals("position")) {
-        img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
+      if (instr.hasKey("easing")) {
+        img.setEasing(instr.getFloat("easing"));
       }
-      else if (instr.getString("Action").equals("resize")) {
-        img.updateSize(instr.getInt("Width"), instr.getInt("Height"));
-      }
+
+      img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
     }
-    else if (instr.getString("Method").equals("delete")) {
-      images.remove(instr.getInt("Image"));
+    else if (instr.getString("method").equals("delete")) {
+      images.remove(instr.getInt("id"));
     }
 
     // Draw all images

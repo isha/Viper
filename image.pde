@@ -11,6 +11,10 @@ class Image {
     y = posY;
   }
 
+  void setEasing(float e) {
+    easing = e;
+  }
+
   void updateTargetPostion(int posX, int posY) {
     targetX = posX;
     targetY = posY;

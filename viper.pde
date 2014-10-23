@@ -25,3 +25,6 @@ void draw() {
 
 }
 
+void mousePressed() {
+  oscServer.mousePressed();
+}
