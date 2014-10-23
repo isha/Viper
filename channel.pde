@@ -1,10 +1,8 @@
 class TestChannel extends Channel {
-  // Instructions from sample file
   JSONObject instr;
   JSONArray instructions;
   Integer instructionCounter = 0;
 
-  // Background image
   PImage backImage;
 
   TestChannel(String sampleInstructionFile, String backImageFile) {
