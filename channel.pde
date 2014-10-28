@@ -32,9 +32,13 @@ class TestChannel extends Channel {
 
       if (instr.hasKey("easing")) {
         img.setEasing(instr.getFloat("easing"));
+        img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
       }
 
-      img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
+      if (instr.hasKey("brightness")) {
+        img.setBrightness(instr.getInt("brightness"));
+      }
+      
     }
     else if (instr.getString("method").equals("delete")) {
       images.remove(instr.getInt("id"));
