@@ -18,30 +18,32 @@ class TestChannel extends Channel {
     // Get instruction
     if (instructionCounter < instructions.size()) {
       instr = instructions.getJSONObject(instructionCounter++);
-    }
 
-    // Run instruction
-    if (instr.getString("method").equals("create")) {
-      Image img = new Image(instr.getString("image"), instr.getInt("posX"), instr.getInt("posY"));
+      // Run instruction
+      if (instr.getString("method").equals("create")) {
+        Image img = new Image(instr.getString("image"), instr.getInt("posX"), instr.getInt("posY"));
 
-      images.put(imagesCount, img);
-      imagesCount++;
-    }
-    else if (instr.getString("method").equals("update")) {
-      Image img = images.get(instr.getInt("id"));
-
-      if (instr.hasKey("easing")) {
-        img.setEasing(instr.getFloat("easing"));
-        img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
+        images.put(imagesCount, img);
+        imagesCount++;
       }
 
-      if (instr.hasKey("brightness")) {
-        img.setBrightness(instr.getInt("brightness"));
+      else if (instr.getString("method").equals("update")) {
+        Image img = images.get(instr.getInt("id"));
+
+        if (instr.hasKey("easing")) {
+          img.setEasing(instr.getFloat("easing"));
+          img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
+        }
+
+        if (instr.hasKey("brightness")) {
+          img.setBrightness(instr.getInt("brightness"));
+        }
+        
       }
-      
-    }
-    else if (instr.getString("method").equals("delete")) {
-      images.remove(instr.getInt("id"));
+
+      else if (instr.getString("method").equals("delete")) {
+        images.remove(instr.getInt("id"));
+      }
     }
 
     // Draw all images
