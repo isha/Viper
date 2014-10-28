@@ -28,29 +28,33 @@ class Image {
         // Calculate the 1D location from a 2D grid
         int loc = px + py*picture.width;
 
-        // Get the R,G,B values from image
-        float r,g,b;
-        r = red (picture.pixels[loc]);
-        g = green (picture.pixels[loc]);
-        b = blue (picture.pixels[loc]);
+        // check transparency
+        if (alpha(picture.pixels[loc]) != 0.0) {
+          // Get the R,G,B values from image
+          float r,g,b;
+          r = red (picture.pixels[loc]);
+          g = green (picture.pixels[loc]);
+          b = blue (picture.pixels[loc]);
 
-        // Adjust the brightness by adding or subtracting RGB values
-        float adjustbrightness = magnitude;
-        r += adjustbrightness;
-        g += adjustbrightness;
-        b += adjustbrightness;
+          // Adjust the brightness by adding or subtracting RGB values
+          float adjustbrightness = magnitude;
+          r += adjustbrightness;
+          g += adjustbrightness;
+          b += adjustbrightness;
 
-        // Constrain RGB to make sure they are within 0-255 color range
-        r = constrain(r, 0, 255);
-        g = constrain(g, 0, 255);
-        b = constrain(b, 0, 255);
-        
-        // Make a new color and set pixel in the window
-        color c = color(r, g, b);
+          // Constrain RGB to make sure they are within 0-255 color range
+          r = constrain(r, 0, 255);
+          g = constrain(g, 0, 255);
+          b = constrain(b, 0, 255);
+          
+          // Make a new color and set pixel in the window
+          color c = color(r, g, b);
 
-        //pixels[py*width + px] = c;
-        picture.pixels[loc] = c;
-        picture.updatePixels();
+          //pixels[py*width + px] = c;
+          picture.pixels[loc] = c;
+          picture.updatePixels();
+
+        }
 
       }
     }
