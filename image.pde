@@ -20,6 +20,34 @@ class Image {
     targetY = posY;
   }
 
+  void blur(int magnitude) {
+    picture.filter(BLUR, magnitude);
+  }
+
+  void gray() {
+    picture.filter(GRAY);
+  }
+
+  void invert() {
+    picture.filter(INVERT);
+  }
+
+  void posterize(int numColours) {
+    picture.filter(POSTERIZE, numColours);
+  }
+
+  void erode() {
+    picture.filter(ERODE);
+  }
+
+  void dilate() {
+    picture.filter(DILATE);
+  }
+
+  void threshold(float thresholdValue) {
+    picture.filter(THRESHOLD, thresholdValue);
+  }
+
   void updateSize(int w, int h) {
     picture.resize(w, h);
   }

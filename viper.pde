@@ -12,7 +12,7 @@ void setup() {
 
   if (TESTMODE) {
     oscServer = new OSCServer();
-    testChannel = new TestChannel("sampleEasingInstructions.json", "ocean.jpg");
+    testChannel = new TestChannel("sampleFilterInstructions.json", "ocean.jpg");
   }
 
 }
