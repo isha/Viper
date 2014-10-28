@@ -1,37 +1,30 @@
 import java.util.Map;
 import java.util.Hashtable;
+import java.io.*;
+import java.util.*;
 
-// Note the HashMap's "key" is a String and "value" is an Integer
-HashMap<String,String> instr = new HashMap<String,String>();
+static final boolean TESTMODE = true;
 
-// Image list
-Hashtable<Integer, PImage> images = new Hashtable<Integer, PImage>();
-Integer imagesCount;
+TestChannel testChannel;
+OSCServer oscServer;
 
 void setup() {
-  size(1000, 600);
-  imagesCount = 0;
 
-  // Putting key-value pairs in the HashMap
-  instr.put("Method", "create");
-  instr.put("Image", "snowball.jpg");
-  instr.put("PositionX", "35");
-  instr.put("PositionY", "36");
+  if (TESTMODE) {
+    oscServer = new OSCServer();
+    testChannel = new TestChannel("sampleEasingInstructions.json", "ocean.jpg");
+  }
+
 }
 
 void draw() {
-  if (instr.get("Method") == "create") {
-    PImage img = loadImage(instr.get("Image"));
 
-    images.put(imagesCount, img);
-    imagesCount++;
-
-    image(img, Integer.parseInt(instr.get("PositionX")), Integer.parseInt(instr.get("PositionY")), img.width, img.height);
+  if (TESTMODE) {
+    testChannel.draw();
   }
-  else if (instr.get("Method") == "update") {
 
-  }
-  else if (instr.get("Method") == "delete") {
+}
 
-  }
+void mousePressed() {
+  oscServer.mousePressed();
 }

@@ -1,0 +1,15 @@
+[
+  {
+    "method": "create",
+    "posX": 35,
+    "posY": 120,
+    "image": "fish2.gif"
+  },
+  {
+    "id": 0,
+    "method": "update",
+    "easing": 0.08,
+    "endX": 1000,
+    "endY": 500
+  }
+]
