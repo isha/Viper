@@ -4,10 +4,31 @@ import netP5.*;
 class OSCServer {
   OscP5 oscP5;
   NetAddress myRemoteLocation;
+  NetAddress hostLocation;
 
   OSCServer() {
-    oscP5 = new OscP5(this, 5001);
+    loadConfig();
     myRemoteLocation = new NetAddress("127.0.0.1", 5001);
+    hostLocation = new NetAddress("127.0.0.1", 5001);
+  }
+  
+  protected void loadConfig() {
+    JSONObject serverConfig;
+    int port;
+    try {
+      // Try loading the server config file and retrieving the configuration
+      serverConfig = loadJSONObject("serverConfig.json");
+      port = serverConfig.getInt("port");
+    } catch (Exception e) {
+      // If loading the config file fails, set to default values
+      port = 5001;
+    }
+    
+    oscP5 = new OscP5(this, port);
+  }
+  
+  void sendTestMessage(OscMessage testMessage, NetAddress sendLoc) {
+    oscP5.send(testMessage, sendLoc);
   }
   
   void testEasing(OscMessage message) {
@@ -39,8 +60,7 @@ class OSCServer {
 
     testEasing(myMessage);
 
-    // send the message
-    oscP5.send(myMessage, myRemoteLocation);
+    sendTestMessage(myMessage, hostLocation);
   }
 
   void oscEvent(OscMessage theOscMessage) {
