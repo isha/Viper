@@ -6,7 +6,13 @@ class Image {
   PImage picture;
 
   Image(String filename, int posX, int posY) {
-    picture = loadImage(filename);
+    if (filename.endsWith(".gif")) {
+      Gif myAnimation = new Gif(app, filename);
+      myAnimation.play();
+      picture = myAnimation;
+    } else {
+      picture = loadImage(filename);
+    }
     targetX = x = posX;
     targetY = y = posY;
   }
