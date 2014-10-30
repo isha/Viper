@@ -82,6 +82,10 @@ class Channel {
           if (instr.hasKey("transparency")) {
             img.setTransparency(instr.getInt("transparency"));
           }
+
+          if (instr.hasKey("adjustHue")) {
+            img.adjustHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"));
+          }
         }
       }
       else if (instr.getString("method").equals("delete")) {
