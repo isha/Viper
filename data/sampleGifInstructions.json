@@ -3,22 +3,27 @@
     "method": "create",
     "posX": 35,
     "posY": 120,
-    "video": "single-goldfish.mp4",
+    "image": "fish1.gif",
     "id": 7
   },
   {
     "method": "create",
     "posX": 800,
     "posY": 320,
-    "video": "goldfish.mp4",
+    "image": "shark.gif",
     "id": 11
   },
   {
     "method": "create",
     "posX": 1200,
     "posY": 60,
-    "image": "fish2.gif",
+    "image": "magical-starfish.gif",
     "id": 2
+  },
+  {
+    "id": 2,
+    "method": "update",
+    "blur": 6
   },
   {
     "id": 11,

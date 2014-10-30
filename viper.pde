@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
 import processing.video.*;
+import gifAnimation.*;
 
 
 static final boolean TESTMODE = true;
@@ -19,7 +20,7 @@ void setup() {
   ConcurrentLinkedQueue<JSONObject> queue = new ConcurrentLinkedQueue<JSONObject>();
 
   if (TESTMODE) {
-    Thread instructionReader = new Thread(new InstructionReader(queue, "sampleVideoInstructions.json"));
+    Thread instructionReader = new Thread(new InstructionReader(queue, "sampleGifInstructions.json"));
     instructionReader.start();
   } else {
     oscServer = new OSCServer();
