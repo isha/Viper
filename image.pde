@@ -7,8 +7,8 @@ class Image {
 
   Image(String filename, int posX, int posY) {
     picture = loadImage(filename);
-    x = posX;
-    y = posY;
+    targetX = x = posX;
+    targetY = y = posY;
   }
 
   void setEasing(float e) {

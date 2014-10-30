@@ -2,26 +2,32 @@ import java.util.Map;
 import java.util.Hashtable;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.*;
 
 static final boolean TESTMODE = true;
 
-TestChannel testChannel;
+Channel channel;
 OSCServer oscServer;
 
 void setup() {
+  ConcurrentLinkedQueue<JSONObject> queue = new ConcurrentLinkedQueue<JSONObject>();
+
   if (TESTMODE) {
-    testChannel = new TestChannel("sampleEasingInstructions.json", "ocean.jpg");
+    Thread instructionReader = new Thread(new InstructionReader(queue, "sampleEasingInstructions.json"));
+    instructionReader.start();
   } else {
     oscServer = new OSCServer();
   }
+
+  channel = new Channel(queue, "ocean.jpg");
 }
 
 void draw() {
-  if (TESTMODE) {
-    testChannel.draw();
-  }
+  channel.draw();
 }
 
 void mousePressed() {
-  oscServer.mousePressed();
+  if (!TESTMODE) {
+    oscServer.mousePressed();
+  }
 }
