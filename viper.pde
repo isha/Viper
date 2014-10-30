@@ -12,25 +12,59 @@ static final boolean TESTMODE = true;
 
 PApplet app;
 
-Channel channel;
+Hashtable<Integer, Channel> channels;
+Hashtable<Integer, ConcurrentLinkedQueue<JSONObject>> queues;
+
 OSCServer oscServer;
 
 void setup() {
   app = this;
-  ConcurrentLinkedQueue<JSONObject> queue = new ConcurrentLinkedQueue<JSONObject>();
+  channels = new Hashtable<Integer, Channel>();
+  queues = new Hashtable<Integer, ConcurrentLinkedQueue<JSONObject>>();
 
   if (TESTMODE) {
-    Thread instructionReader = new Thread(new InstructionReader(queue, "sampleGifInstructions.json"));
-    instructionReader.start();
+    ConcurrentLinkedQueue<JSONObject> queue1 = addChannel(1);
+    Thread instructionReader1 = new Thread(new InstructionReader(queue1, "sampleGifInstructions.json"));
+
+    ConcurrentLinkedQueue<JSONObject> queue2 = addChannel(2);
+    Thread instructionReader2 = new Thread(new InstructionReader(queue2, "sampleFilterInstructions.json"));
+
+    instructionReader1.start();
+    instructionReader2.start();
   } else {
     oscServer = new OSCServer();
   }
 
-  channel = new Channel(queue, "ocean.jpg");
 }
 
+ConcurrentLinkedQueue<JSONObject> addChannel(int deviceID) {
+  ConcurrentLinkedQueue<JSONObject> queue = new ConcurrentLinkedQueue<JSONObject>();
+  queues.put(deviceID, queue);
+
+  Channel channel = new Channel(queue, "ocean.jpg");
+  channels.put(deviceID, channel);
+
+  return queue;
+}
+
+void removeChannel(int deviceID) {
+  queues.remove(deviceID);
+  channels.remove(deviceID);
+}
+
+
 void draw() {
-  channel.draw();
+  // Draw all channels background
+  Enumeration<Channel> channel = channels.elements();
+  while (channel.hasMoreElements()) {
+    channel.nextElement().drawBackground();
+  }
+
+  // Draw all channels
+  channel = channels.elements();
+  while (channel.hasMoreElements()) {
+    channel.nextElement().draw();
+  }
 }
 
 void mousePressed() {
