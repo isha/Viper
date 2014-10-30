@@ -48,7 +48,7 @@ class Image {
           b = constrain(b, 0, 255);
           
           // Make a new color and set pixel in the window
-          color c = color(r, g, b);
+          color c = color(r, g, b, alpha(picture.pixels[loc]));
 
           //pixels[py*width + px] = c;
           picture.pixels[loc] = c;
@@ -139,7 +139,7 @@ class Image {
           b = constrain(b, 0, 255);
 
           // Make a new color and set pixel in the window
-          color c = color(r, g, b);
+          color c = color(r, g, b, alpha(picture.pixels[loc]));
 
           picture.pixels[loc] = c;
           picture.updatePixels();

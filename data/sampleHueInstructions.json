@@ -18,5 +18,15 @@
     "green": 50,
     "blue": 10,
     "id": 0
-  }  
+  },
+  {
+    "method": "update",
+    "brightness": 50,
+    "id": 0
+  },
+  {
+    "method": "update",
+    "blur": 6,
+    "id": 0
+  } 
 ]
