@@ -6,10 +6,36 @@
     "image": "fish2.gif"
   },
   {
+    "method": "create",
+    "posX": 600,
+    "posY": 320,
+    "image": "fish3.png"
+  },
+  {
+    "method": "create",
+    "posX": 1200,
+    "posY": 60,
+    "image": "fish5.png"
+  },
+  {
+    "id": 1,
+    "method": "update",
+    "easing": 0.02,
+    "endX": 20,
+    "endY": 280
+  },
+  {
+    "id": 2,
+    "method": "update",
+    "easing": 0.01,
+    "endX": 20,
+    "endY": 100
+  },
+  {
     "id": 0,
     "method": "update",
-    "easing": 0.08,
+    "easing": 0.01,
     "endX": 1000,
     "endY": 500
-  }
+  },
 ]

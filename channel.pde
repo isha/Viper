@@ -34,6 +34,10 @@ class TestChannel extends Channel {
         img.setEasing(instr.getFloat("easing"));
       }
 
+      if (instr.hasKey("width") && instr.hasKey("height")) {
+        img.updateSize(instr.getInt("width"), instr.getInt("height"));
+      }
+
       img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
     }
     else if (instr.getString("method").equals("delete")) {

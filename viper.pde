@@ -9,20 +9,17 @@ TestChannel testChannel;
 OSCServer oscServer;
 
 void setup() {
-
   if (TESTMODE) {
-    oscServer = new OSCServer();
     testChannel = new TestChannel("sampleEasingInstructions.json", "ocean.jpg");
+  } else {
+    oscServer = new OSCServer();
   }
-
 }
 
 void draw() {
-
   if (TESTMODE) {
     testChannel.draw();
   }
-
 }
 
 void mousePressed() {
