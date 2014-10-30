@@ -3,13 +3,42 @@
     "method": "create",
     "posX": 35,
     "posY": 120,
-    "image": "fish2.gif"
+    "image": "fish2.gif",
+    "id": 0
+  },
+  {
+    "method": "create",
+    "posX": 800,
+    "posY": 320,
+    "image": "fish3.png",
+    "id": 1
+  },
+  {
+    "method": "create",
+    "posX": 1200,
+    "posY": 60,
+    "image": "fish5.png",
+    "id": 2
+  },
+  {
+    "id": 1,
+    "method": "update",
+    "easing": 0.01,
+    "endX": 20,
+    "endY": 280
+  },
+  {
+    "id": 2,
+    "method": "update",
+    "easing": 0.005,
+    "endX": 20,
+    "endY": 100
   },
   {
     "id": 0,
     "method": "update",
-    "easing": 0.08,
+    "easing": 0.009,
     "endX": 1000,
     "endY": 500
-  }
+  },
 ]
