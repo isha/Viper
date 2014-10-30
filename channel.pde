@@ -1,11 +1,13 @@
 class Channel {
   Hashtable<Integer, Image> images;
+  Hashtable<Integer, Video> videos;
   PImage backImage;
 
   ConcurrentLinkedQueue<JSONObject> queue;
   
   Channel(ConcurrentLinkedQueue<JSONObject> queue, String backImageFile) {
     images = new Hashtable<Integer, Image>();
+    videos = new Hashtable<Integer, Video>();
 
     backImage = loadImage(backImageFile);
     size(backImage.width, backImage.height);
@@ -21,80 +23,129 @@ class Channel {
 
     // Run instruction if pending in queue
     if (instr != null) {
-      if (instr.getString("method").equals("create")) {
-        Image img = new Image(instr.getString("image"), instr.getInt("posX"), instr.getInt("posY"));
-
-        if (instr.hasKey("id")) {
-          images.put(instr.getInt("id"), img);
-        } else {
-          println("[error] Cannot create image "+instr.getString("image")+" since id is not provided");
-        }
-      }
-      else if (instr.getString("method").equals("update")) {
-        if (!instr.hasKey("id")) {
-          println("[error] Cannot update without id");
-        } else if (!images.containsKey(instr.getInt("id"))) {
-          println("[error] Invalid id: "+instr.getInt("id"));
-        } else {
-          Image img = images.get(instr.getInt("id"));
-
-          if (instr.hasKey("width") && instr.hasKey("height")) {
-            img.updateSize(instr.getInt("width"), instr.getInt("height"));
-          }
-          
-          if (instr.hasKey("brightness")) {
-            img.setBrightness(instr.getInt("brightness"));
-          }
-
-          if (instr.hasKey("easing")) {
-            img.setEasing(instr.getFloat("easing"));
-            img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
-          }
-
-          if (instr.hasKey("blur")) {
-            img.blur(instr.getInt("blur"));
-          }
-
-          if (instr.hasKey("gray")) {
-            img.gray();
-          }
-
-          if (instr.hasKey("invert")) {
-            img.invert();
-          }
-
-          if (instr.hasKey("posterize")) {
-            img.posterize(instr.getInt("posterize"));
-          }
-
-          if (instr.hasKey("erode")) {
-            img.erode();
-          }
-
-          if (instr.hasKey("dilate")) {
-            img.dilate();
-          }
-
-          if (instr.hasKey("threshold")) {
-            img.threshold(instr.getFloat("threshold"));
+      if (!instr.hasKey("id")) {
+        println("[error] ID is required");
+      } else {
+        if (instr.getString("method").equals("create")) {
+          if (instr.hasKey("image")) {
+            createImage(instr);
+          } else if (instr.hasKey("video")) {
+            createVideo(instr);
           }
         }
-      }
-      else if (instr.getString("method").equals("delete")) {
-        if (!instr.hasKey("id")) {
-          println("[error] Cannot delete without id");
-        } else if (!images.containsKey(instr.getInt("id"))) {
-          println("[error] Invalid id: "+instr.getInt("id"));
-        } else {
-          images.remove(instr.getInt("id"));
+        else if (instr.getString("method").equals("update")) {
+          if (images.containsKey(instr.getInt("id"))) {
+            updateImage(instr);
+          } else if (videos.containsKey(instr.getInt("id"))) {
+            updateVideo(instr);
+          } else {
+            println("[error] Invalid ID: "+instr.getInt("id"));
+          }
+        }
+        else if (instr.getString("method").equals("delete")) {
+          if (images.containsKey(instr.getInt("id"))) {
+            deleteImage(instr);
+          } else if (videos.containsKey(instr.getInt("id"))) {
+            deleteVideo(instr);
+          } else {
+            println("[error] Invalid ID: "+instr.getInt("id"));
+          }
         }
       }
     }
 
+    drawAll();
+  }
+
+  void drawAll() {
+    // Draw all videos
+    Enumeration<Video> v = videos.elements();
+    while (v.hasMoreElements()) {
+      v.nextElement().draw();
+    }
+
     // Draw all images
-    Enumeration<Image> e = images.elements();
-    while (e.hasMoreElements()) {
-      e.nextElement().draw();
+    Enumeration<Image> i = images.elements();
+    while (i.hasMoreElements()) {
+      i.nextElement().draw();
+    }
+  }
+
+  void createImage(JSONObject instr) {
+    int posX = instr.hasKey("posX") ? instr.getInt("posX") : 0;
+    int posY = instr.hasKey("posY") ? instr.getInt("posY") : 0;
+
+    Image img = new Image(instr.getString("image"), posX, posY);
+    images.put(instr.getInt("id"), img);
+  }
+
+  void createVideo(JSONObject instr) {
+    int posX = instr.hasKey("posX") ? instr.getInt("posX") : 0;
+    int posY = instr.hasKey("posY") ? instr.getInt("posY") : 0;
+
+    Video vid = new Video(instr.getString("video"), posX, posY);
+    videos.put(instr.getInt("id"), vid);
+  }
+
+  void deleteImage(JSONObject instr) {
+    images.remove(instr.getInt("id"));
+  }
+  
+  void deleteVideo(JSONObject instr) {
+    videos.remove(instr.getInt("id"));
+  }
+
+  void updateImage(JSONObject instr) {
+    Image img = images.get(instr.getInt("id"));
+
+    if (instr.hasKey("width") && instr.hasKey("height")) {
+      img.updateSize(instr.getInt("width"), instr.getInt("height"));
+    }
+    
+    if (instr.hasKey("brightness")) {
+      img.setBrightness(instr.getInt("brightness"));
+    }
+
+    if (instr.hasKey("easing")) {
+      img.setEasing(instr.getFloat("easing"));
+      img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
+    }
+
+    if (instr.hasKey("blur")) {
+      img.blur(instr.getInt("blur"));
+    }
+
+    if (instr.hasKey("gray")) {
+      img.gray();
+    }
+
+    if (instr.hasKey("invert")) {
+      img.invert();
+    }
+
+    if (instr.hasKey("posterize")) {
+      img.posterize(instr.getInt("posterize"));
+    }
+
+    if (instr.hasKey("erode")) {
+      img.erode();
+    }
+
+    if (instr.hasKey("dilate")) {
+      img.dilate();
+    }
+
+    if (instr.hasKey("threshold")) {
+      img.threshold(instr.getFloat("threshold"));
+    }
+  }
+
+  void updateVideo(JSONObject instr) {
+    Video vid = videos.get(instr.getInt("id"));
+
+    if (instr.hasKey("easing")) {
+      vid.setEasing(instr.getFloat("easing"));
+      vid.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
     }
   }
 };
