@@ -78,6 +78,10 @@ class Channel {
           if (instr.hasKey("threshold")) {
             img.threshold(instr.getFloat("threshold"));
           }
+
+          if (instr.hasKey("transparency")) {
+            img.setTransparency(instr.getInt("transparency"));
+          }
         }
       }
       else if (instr.getString("method").equals("delete")) {
