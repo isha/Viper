@@ -15,9 +15,11 @@ class Channel {
     this.queue = queue;
   }
 
-  void draw() {
+  void drawBackground() {
     image(backImage, 0, 0);
-    
+  }
+
+  void draw() {
     JSONObject instr;
     instr = queue.poll();
 
