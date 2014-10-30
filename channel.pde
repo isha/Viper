@@ -24,54 +24,70 @@ class Channel {
       if (instr.getString("method").equals("create")) {
         Image img = new Image(instr.getString("image"), instr.getInt("posX"), instr.getInt("posY"));
 
-        images.put(instr.getInt("id"), img);
+        if (instr.hasKey("id")) {
+          images.put(instr.getInt("id"), img);
+        } else {
+          println("[error] Cannot create image "+instr.getString("image")+" since id is not provided");
+        }
       }
       else if (instr.getString("method").equals("update")) {
-        Image img = images.get(instr.getInt("id"));
+        if (!instr.hasKey("id")) {
+          println("[error] Cannot update without id");
+        } else if (!images.containsKey(instr.getInt("id"))) {
+          println("[error] Invalid id: "+instr.getInt("id"));
+        } else {
+          Image img = images.get(instr.getInt("id"));
 
-        if (instr.hasKey("width") && instr.hasKey("height")) {
-          img.updateSize(instr.getInt("width"), instr.getInt("height"));
-        }
-        
-        if (instr.hasKey("brightness")) {
-          img.setBrightness(instr.getInt("brightness"));
-        }
+          if (instr.hasKey("width") && instr.hasKey("height")) {
+            img.updateSize(instr.getInt("width"), instr.getInt("height"));
+          }
+          
+          if (instr.hasKey("brightness")) {
+            img.setBrightness(instr.getInt("brightness"));
+          }
 
-        if (instr.hasKey("easing")) {
-          img.setEasing(instr.getFloat("easing"));
-          img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
-        }
+          if (instr.hasKey("easing")) {
+            img.setEasing(instr.getFloat("easing"));
+            img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
+          }
 
-        if (instr.hasKey("blur")) {
-          img.blur(instr.getInt("blur"));
-        }
+          if (instr.hasKey("blur")) {
+            img.blur(instr.getInt("blur"));
+          }
 
-        if (instr.hasKey("gray")) {
-          img.gray();
-        }
+          if (instr.hasKey("gray")) {
+            img.gray();
+          }
 
-        if (instr.hasKey("invert")) {
-          img.invert();
-        }
+          if (instr.hasKey("invert")) {
+            img.invert();
+          }
 
-        if (instr.hasKey("posterize")) {
-          img.posterize(instr.getInt("posterize"));
-        }
+          if (instr.hasKey("posterize")) {
+            img.posterize(instr.getInt("posterize"));
+          }
 
-        if (instr.hasKey("erode")) {
-          img.erode();
-        }
+          if (instr.hasKey("erode")) {
+            img.erode();
+          }
 
-        if (instr.hasKey("dilate")) {
-          img.dilate();
-        }
+          if (instr.hasKey("dilate")) {
+            img.dilate();
+          }
 
-        if (instr.hasKey("threshold")) {
-          img.threshold(instr.getFloat("threshold"));
+          if (instr.hasKey("threshold")) {
+            img.threshold(instr.getFloat("threshold"));
+          }
         }
       }
       else if (instr.getString("method").equals("delete")) {
-        images.remove(instr.getInt("id"));
+        if (!instr.hasKey("id")) {
+          println("[error] Cannot delete without id");
+        } else if (!images.containsKey(instr.getInt("id"))) {
+          println("[error] Invalid id: "+instr.getInt("id"));
+        } else {
+          images.remove(instr.getInt("id"));
+        }
       }
     }
 

@@ -13,7 +13,6 @@ class InstructionReader implements Runnable {
       JSONObject instr;
 
       while (instructionCounter < instructions.size()) {
-        println("Added instruction: "+instructionCounter);
         instr = instructions.getJSONObject(instructionCounter++);
         queue.add(instr);
 
