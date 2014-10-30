@@ -4,14 +4,14 @@
     "posX": 35,
     "posY": 120,
     "image": "fish2.gif",
-    "id": 0
+    "id": 7
   },
   {
     "method": "create",
     "posX": 800,
     "posY": 320,
     "image": "fish3.png",
-    "id": 1
+    "id": 11
   },
   {
     "method": "create",
@@ -21,7 +21,7 @@
     "id": 2
   },
   {
-    "id": 1,
+    "id": 11,
     "method": "update",
     "easing": 0.01,
     "endX": 20,
@@ -35,7 +35,7 @@
     "endY": 100
   },
   {
-    "id": 0,
+    "id": 7,
     "method": "update",
     "easing": 0.009,
     "endX": 1000,

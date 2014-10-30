@@ -1,5 +1,6 @@
 import java.util.Map;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
@@ -13,7 +14,7 @@ void setup() {
   ConcurrentLinkedQueue<JSONObject> queue = new ConcurrentLinkedQueue<JSONObject>();
 
   if (TESTMODE) {
-    Thread instructionReader = new Thread(new InstructionReader(queue, "sampleFilterInstructions.json"));
+    Thread instructionReader = new Thread(new InstructionReader(queue, "sampleEasingInstructions.json"));
     instructionReader.start();
   } else {
     oscServer = new OSCServer();

@@ -76,8 +76,9 @@ class Channel {
     }
 
     // Draw all images
-    for (int i=0; i<images.size(); i++) {
-      images.get(i).draw();
+    Enumeration<Image> e = images.elements();
+    while (e.hasMoreElements()) {
+      e.nextElement().draw();
     }
   }
 };
