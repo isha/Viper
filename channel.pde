@@ -74,17 +74,29 @@ class Channel {
   void createImage(JSONObject instr) {
     int posX = instr.hasKey("posX") ? instr.getInt("posX") : 0;
     int posY = instr.hasKey("posY") ? instr.getInt("posY") : 0;
+    String filename = instr.getString("image");
 
-    Image img = new Image(instr.getString("image"), posX, posY);
-    images.put(instr.getInt("id"), img);
+    File f = new File(dataPath(filename));
+    if (f.exists()) {
+      Image img = new Image(filename, posX, posY);
+      images.put(instr.getInt("id"), img);
+    } else {
+      println("[error] File "+filename+" does not exist");
+    }
   }
 
   void createVideo(JSONObject instr) {
     int posX = instr.hasKey("posX") ? instr.getInt("posX") : 0;
     int posY = instr.hasKey("posY") ? instr.getInt("posY") : 0;
+    String filename = instr.getString("video");
 
-    Video vid = new Video(instr.getString("video"), posX, posY);
-    videos.put(instr.getInt("id"), vid);
+    File f = new File(dataPath(filename));
+    if (f.exists()) {
+      Video vid = new Video(filename, posX, posY);
+      videos.put(instr.getInt("id"), vid);
+    } else {
+      println("[error] File "+filename+" does not exist");
+    }
   }
 
   void deleteImage(JSONObject instr) {
