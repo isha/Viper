@@ -25,11 +25,10 @@ void setup() {
   if (TESTMODE) {
     ConcurrentLinkedQueue<JSONObject> queue1 = addChannel(1);
     Thread instructionReader1 = new Thread(new InstructionReader(queue1, "sampleGifInstructions.json"));
+    instructionReader1.start();
 
     ConcurrentLinkedQueue<JSONObject> queue2 = addChannel(2);
     Thread instructionReader2 = new Thread(new InstructionReader(queue2, "sampleFilterInstructions.json"));
-
-    instructionReader1.start();
     instructionReader2.start();
   } else {
     oscServer = new OSCServer();
@@ -44,6 +43,9 @@ ConcurrentLinkedQueue<JSONObject> addChannel(int deviceID) {
   Channel channel = new Channel(queue, "ocean.jpg");
   channels.put(deviceID, channel);
 
+  Thread channelThread = new Thread(channel);
+  channelThread.start();
+  
   return queue;
 }
 
@@ -63,7 +65,7 @@ void draw() {
   // Draw all channels
   channel = channels.elements();
   while (channel.hasMoreElements()) {
-    channel.nextElement().draw();
+    channel.nextElement().drawAll();
   }
 }
 
