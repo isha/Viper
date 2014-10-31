@@ -1,4 +1,4 @@
-class Channel {
+class Channel implements Runnable {
   Hashtable<Integer, Image> images;
   Hashtable<Integer, Video> videos;
   PImage backImage;
@@ -15,48 +15,49 @@ class Channel {
     this.queue = queue;
   }
 
-  void drawBackground() {
-    image(backImage, 0, 0);
-  }
+  void run() {
+    while (true) {
+      JSONObject instr;
+      instr = queue.poll();
 
-  void draw() {
-    JSONObject instr;
-    instr = queue.poll();
+      // Run instruction if pending in queue
 
-    // Run instruction if pending in queue
-    if (instr != null) {
-      if (!instr.hasKey("id")) {
-        println("[error] ID is required");
-      } else {
-        if (instr.getString("method").equals("create")) {
-          if (instr.hasKey("image")) {
-            createImage(instr);
-          } else if (instr.hasKey("video")) {
-            createVideo(instr);
+      if (instr != null) {
+        if (!instr.hasKey("id")) {
+          println("[error] ID is required");
+        } else {
+          if (instr.getString("method").equals("create")) {
+            if (instr.hasKey("image")) {
+              createImage(instr);
+            } else if (instr.hasKey("video")) {
+              createVideo(instr);
+            }
           }
-        }
-        else if (instr.getString("method").equals("update")) {
-          if (images.containsKey(instr.getInt("id"))) {
-            updateImage(instr);
-          } else if (videos.containsKey(instr.getInt("id"))) {
-            updateVideo(instr);
-          } else {
-            println("[error] Invalid ID: "+instr.getInt("id"));
+          else if (instr.getString("method").equals("update")) {
+            if (images.containsKey(instr.getInt("id"))) {
+              updateImage(instr);
+            } else if (videos.containsKey(instr.getInt("id"))) {
+              updateVideo(instr);
+            } else {
+              println("[error] Invalid ID: "+instr.getInt("id"));
+            }
           }
-        }
-        else if (instr.getString("method").equals("delete")) {
-          if (images.containsKey(instr.getInt("id"))) {
-            deleteImage(instr);
-          } else if (videos.containsKey(instr.getInt("id"))) {
-            deleteVideo(instr);
-          } else {
-            println("[error] Invalid ID: "+instr.getInt("id"));
+          else if (instr.getString("method").equals("delete")) {
+            if (images.containsKey(instr.getInt("id"))) {
+              deleteImage(instr);
+            } else if (videos.containsKey(instr.getInt("id"))) {
+              deleteVideo(instr);
+            } else {
+              println("[error] Invalid ID: "+instr.getInt("id"));
+            }
           }
         }
       }
     }
+  }
 
-    drawAll();
+  void drawBackground() {
+    image(backImage, 0, 0);
   }
 
   void drawAll() {
