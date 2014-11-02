@@ -3,21 +3,21 @@
     "method": "create",
     "posX": 35,
     "posY": 120,
-    "image": "fish2.gif",
+    "video": "single-goldfish.mp4",
     "id": 7
   },
   {
     "method": "create",
     "posX": 800,
     "posY": 320,
-    "image": "fish3.png",
+    "video": "goldfish.mp4",
     "id": 11
   },
   {
     "method": "create",
     "posX": 1200,
     "posY": 60,
-    "image": "fish5.png",
+    "image": "fish2.gif",
     "id": 2
   },
   {

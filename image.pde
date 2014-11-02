@@ -6,9 +6,15 @@ class Image {
   PImage picture;
 
   Image(String filename, int posX, int posY) {
-    picture = loadImage(filename);
-    x = posX;
-    y = posY;
+    if (filename.endsWith(".gif")) {
+      Gif myAnimation = new Gif(app, filename);
+      myAnimation.play();
+      picture = myAnimation;
+    } else {
+      picture = loadImage(filename);
+    }
+    targetX = x = posX;
+    targetY = y = posY;
   }
 
   void setEasing(float e) {
@@ -18,6 +24,74 @@ class Image {
   void updateTargetPostion(int posX, int posY) {
     targetX = posX;
     targetY = posY;
+  }
+
+  void setBrightness(int magnitude) {
+
+    for (int px = 0; px < picture.width; px++) {
+      for (int py = 0; py < picture.height; py++ ) {
+
+        // Calculate the 1D location from a 2D grid
+        int loc = px + py*picture.width;
+
+        // check transparency
+        if (alpha(picture.pixels[loc]) != 0.0) {
+          // Get the R,G,B values from image
+          float r,g,b;
+          r = red (picture.pixels[loc]);
+          g = green (picture.pixels[loc]);
+          b = blue (picture.pixels[loc]);
+
+          // Adjust the brightness by adding or subtracting RGB values
+          float adjustbrightness = magnitude;
+          r += adjustbrightness;
+          g += adjustbrightness;
+          b += adjustbrightness;
+
+          // Constrain RGB to make sure they are within 0-255 color range
+          r = constrain(r, 0, 255);
+          g = constrain(g, 0, 255);
+          b = constrain(b, 0, 255);
+          
+          // Make a new color and set pixel in the window
+          color c = color(r, g, b);
+
+          //pixels[py*width + px] = c;
+          picture.pixels[loc] = c;
+          picture.updatePixels();
+
+        }
+
+      }
+    }
+  }
+
+  void blur(int magnitude) {
+    picture.filter(BLUR, magnitude);
+  }
+
+  void gray() {
+    picture.filter(GRAY);
+  }
+
+  void invert() {
+    picture.filter(INVERT);
+  }
+
+  void posterize(int numColours) {
+    picture.filter(POSTERIZE, numColours);
+  }
+
+  void erode() {
+    picture.filter(ERODE);
+  }
+
+  void dilate() {
+    picture.filter(DILATE);
+  }
+
+  void threshold(float thresholdValue) {
+    picture.filter(THRESHOLD, thresholdValue);
   }
 
   void updateSize(int w, int h) {
