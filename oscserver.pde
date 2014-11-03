@@ -2,34 +2,31 @@ import oscP5.*;
 import netP5.*;
 
 class OSCServer {
-  OscP5 oscP5;
-  NetAddress myRemoteLocation;
+  OscP5 viperServer;
   NetAddress hostLocation;
 
   OSCServer() {
-    loadConfig();
-    myRemoteLocation = new NetAddress("127.0.0.1", 5003);
+    loadServerConfig();
     hostLocation = new NetAddress("127.0.0.1", 5003);
   }
 
-  protected void loadConfig() {
+  protected void loadServerConfig() {
     JSONObject serverConfig;
     int port;
     try {
       // Try loading the server config file and retrieving the configuration
       serverConfig = loadJSONObject("serverConfig.json");
       port = serverConfig.getInt("port");
-    } 
-    catch (Exception e) {
+    } catch (Exception e) {
       // If loading the config file fails, set to default values
       port = 5001;
     }
 
-    oscP5 = new OscP5(this, port);
+    viperServer = new OscP5(this, port);
   }
 
   void sendTestMessage(OscMessage testMessage, NetAddress sendLoc) {
-    oscP5.send(testMessage, sendLoc);
+    viperServer.send(testMessage, sendLoc);
   }
 
   void testEasing(OscMessage message) {
@@ -59,55 +56,61 @@ class OSCServer {
 
   void mousePressed() {
     // create an osc message
-    OscMessage myMessage = new OscMessage("/rime");
+    OscMessage testMessage = new OscMessage("/rime");
 
-    testEasing(myMessage);
+    testEasing(testMessage);
 
-    sendTestMessage(myMessage, hostLocation);
+    sendTestMessage(testMessage, hostLocation);
   }
 
-  void oscEvent(OscMessage theOscMessage) {
-    JSONArray commands;
+  /*
+    Event
+    Triggers when the server receives an OSC message
+   */ 
+  void oscEvent(OscMessage recvMsg) {
+    JSONArray commandArray;
     JSONObject command;
-    String recvMessageType;
+    String recvMsgType;
     String messagePair;
     String argType;
-    int recvMessageLength;
+    int recvMsgLength;
     int commandCount;
     int i;
 
-    if ( theOscMessage.checkAddrPattern("/rime") == false ) {
+    if(recvMsg.checkAddrPattern("/rime") == false) {
+      //if the OSC message is received without address tag '/rime',
+      //consider it a rogue message and discard
       return;
     }
 
-    commands = new JSONArray();
+    commandArray = new JSONArray();
 
-    recvMessageType = theOscMessage.typetag();
-    recvMessageLength = (recvMessageType.length()) / 2;
+    recvMsgType = recvMsg.typetag();
+    recvMsgLength = (recvMsgType.length()) / 2;
 
     commandCount = 0;
     command = new JSONObject();
-    for (i=0; i<recvMessageLength; i++) {
-      messagePair = recvMessageType.substring(i*2, i*2 + 2);
-      if (theOscMessage.get(i*2).stringValue().equals("deviceId")) {
+    for(i=0; i<recvMsgLength; i++) {
+      messagePair = recvMsgType.substring(i*2, i*2 + 2);
+      if (recvMsg.get(i*2).stringValue().equals("method")) {
         if (commandCount!=0) {
-          commands.setJSONObject(commandCount-1, command);
+          commandArray.setJSONObject(commandCount-1, command);
           command = new JSONObject();
         }
         commandCount++;
       }
       argType = messagePair.substring(1);
       if (argType.equals("i")) {
-        command.setInt(theOscMessage.get(i*2).stringValue(), theOscMessage.get(i*2+1).intValue());
+        command.setInt(recvMsg.get(i*2).stringValue(), recvMsg.get(i*2+1).intValue());
       } else if (argType.equals("f")) {
-        command.setFloat(theOscMessage.get(i*2).stringValue(), theOscMessage.get(i*2+1).floatValue());
+        command.setFloat(recvMsg.get(i*2).stringValue(), recvMsg.get(i*2+1).floatValue());
       } else if (argType.equals("s")) {
-        command.setString(theOscMessage.get(i*2).stringValue(), theOscMessage.get(i*2+1).stringValue());
+        command.setString(recvMsg.get(i*2).stringValue(), recvMsg.get(i*2+1).stringValue());
       }
     }
-    commands.setJSONObject(commandCount-1, command);
-    print(commands);
-    saveJSONArray(commands, "data/commands.json");
+    commandArray.setJSONObject(commandCount-1, command);
+    print(commandArray);
+    saveJSONArray(commandArray, "data/commands.json");
   }
 };
 
