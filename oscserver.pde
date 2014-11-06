@@ -5,11 +5,12 @@ class OSCServer {
   OscP5 viperServer;
   NetAddress hostLocation;
   
-  Hashtable<Integer, String> registeredDevices;
+  String[] registeredDevices;
   int numDevices;
+  int MAXDEVICES = 200;
 
   OSCServer() {
-    registeredDevices = new Hashtable<Integer, String>();
+    registeredDevices = new String[MAXDEVICES];
 
     loadServerConfig();
     loadRegisteredDevices();
@@ -34,6 +35,7 @@ class OSCServer {
   void loadRegisteredDevices() {
     BufferedReader reader;
     String line;
+    int lineCount = 0;
     
     try {
       reader = createReader("registeredDevices.txt");
@@ -44,15 +46,15 @@ class OSCServer {
           break;
         }
         
-        String[] device = split(line, ",");
-        registeredDevices.put(int(device[0]), device[1]);
-        
+        registeredDevices[lineCount] = line;
+       
+        lineCount++; 
       } while(line!=null);
     } catch (Exception e) {
       // File unreadable or corrupted
       e.printStackTrace();
     }
-    numDevices = registeredDevices.size();
+    numDevices = lineCount;
   }
   
   void sendTestMessage(OscMessage testMessage, NetAddress sendLoc) {
@@ -103,6 +105,8 @@ class OSCServer {
     String recvMsgType;
     String messagePair;
     String argType;
+    String deviceSerialCode;
+    String saveLoc;
     int recvMsgLength;
     int commandCount;
     int i;
@@ -140,7 +144,12 @@ class OSCServer {
     }
     commandArray.setJSONObject(commandCount-1, command);
     print(commandArray);
-    saveJSONArray(commandArray, "data/commands.json");
+    
+    if(recvMsg.get(0).stringValue().equals("deviceID")) {
+      deviceID = recvMsg.get(1).stringValue();
+    }
+    saveLoc = "data/" + deviceID + ".json";
+    saveJSONArray(commandArray, saveLoc);
   }
   
   int getNumDevices() {
