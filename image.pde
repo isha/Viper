@@ -54,7 +54,7 @@ class Image {
           b = constrain(b, 0, 255);
           
           // Make a new color and set pixel in the window
-          color c = color(r, g, b);
+          color c = color(r, g, b, alpha(picture.pixels[loc]));
 
           //pixels[py*width + px] = c;
           picture.pixels[loc] = c;
@@ -92,6 +92,66 @@ class Image {
 
   void threshold(float thresholdValue) {
     picture.filter(THRESHOLD, thresholdValue);
+  }
+
+  void setTransparency(int magnitude) {
+    for (int px = 0; px < picture.width; px++) {
+      for (int py = 0; py < picture.height; py++ ) {
+
+        // Calculate the 1D location from a 2D grid
+        int loc = px + py*picture.width;
+
+        // check transparency
+        if (alpha(picture.pixels[loc]) != 0.0) {
+
+          // Get the R,G,B values from image
+          float r,g,b;
+          r = red (picture.pixels[loc]);
+          g = green (picture.pixels[loc]);
+          b = blue (picture.pixels[loc]);
+
+          // Constrain alpha value to make sure they are within 1-255 alpha range
+          magnitude = constrain(magnitude, 0, 255);
+
+          // Make a new color and set pixel in the window
+          color c = color(r, g, b, magnitude);
+
+          picture.pixels[loc] = c;
+          picture.updatePixels();
+        }
+      }
+    }
+  }
+
+  void adjustHue(int dR, int dG, int dB) {
+    for (int px = 0; px < picture.width; px++) {
+      for (int py = 0; py < picture.height; py++ ) {
+
+        // Calculate the 1D location from a 2D grid
+        int loc = px + py*picture.width;
+
+        // check transparency
+        if (alpha(picture.pixels[loc]) != 0.0) {
+
+          // Get the R,G,B values from image
+          float r,g,b;
+          r = red (picture.pixels[loc]) + dR;
+          g = green (picture.pixels[loc]) + dG;
+          b = blue (picture.pixels[loc]) + dB;
+
+          // Constrain RGB to make sure they are within 0-255 color range
+          r = constrain(r, 0, 255);
+          g = constrain(g, 0, 255);
+          b = constrain(b, 0, 255);
+
+          // Make a new color and set pixel in the window
+          color c = color(r, g, b, alpha(picture.pixels[loc]));
+
+          picture.pixels[loc] = c;
+          picture.updatePixels();
+        }
+      }
+    }
   }
 
   void updateSize(int w, int h) {

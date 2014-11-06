@@ -1,5 +1,6 @@
 [
   {
+    "deviceId": 109,
     "method": "create",
     "posX": 35,
     "posY": 120,
@@ -7,6 +8,7 @@
     "id": 7
   },
   {
+    "deviceId": 109,
     "method": "create",
     "posX": 800,
     "posY": 320,
@@ -14,6 +16,7 @@
     "id": 11
   },
   {
+    "deviceId": 109,
     "method": "create",
     "posX": 1200,
     "posY": 60,
@@ -21,6 +24,7 @@
     "id": 2
   },
   {
+    "deviceId": 109,
     "id": 11,
     "method": "update",
     "easing": 0.01,
@@ -28,6 +32,7 @@
     "endY": 280
   },
   {
+    "deviceId": 109,
     "id": 2,
     "method": "update",
     "easing": 0.005,
@@ -35,6 +40,7 @@
     "endY": 100
   },
   {
+    "deviceId": 109,
     "id": 7,
     "method": "update",
     "easing": 0.009,

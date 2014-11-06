@@ -135,6 +135,18 @@ class Channel implements Runnable {
       img.setBrightness(instr.getInt("brightness"));
     }
 
+    if (instr.hasKey("threshold")) {
+      img.threshold(instr.getFloat("threshold"));
+    }
+
+    if (instr.hasKey("transparency")) {
+      img.setTransparency(instr.getInt("transparency"));
+    }
+
+    if (instr.hasKey("adjustHue")) {
+      img.adjustHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"));
+    }
+
     if (instr.hasKey("easing")) {
       img.setEasing(instr.getFloat("easing"));
       img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));

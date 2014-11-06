@@ -23,16 +23,16 @@ void setup() {
   queues = new Hashtable<Integer, ConcurrentLinkedQueue<JSONObject>>();
 
   if (TESTMODE) {
-    ConcurrentLinkedQueue<JSONObject> queue1 = addChannel(1);
-    ConcurrentLinkedQueue<JSONObject> queue2 = addChannel(2);
+    ConcurrentLinkedQueue<JSONObject> queue1 = addChannel(90);
+    ConcurrentLinkedQueue<JSONObject> queue2 = addChannel(21);
     ConcurrentLinkedQueue<JSONObject> mainQueue = new ConcurrentLinkedQueue<JSONObject>();
 
-    Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleGifInstructions.json"));
+    Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleHueInstructions.json"));
     instructionReader1.start();
-    Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "sampleFilterInstructions.json"));
+    Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "sampleTransparencyInstructions.json"));
     instructionReader2.start();
-    Thread instructionReader3 = new Thread(new InstructionReader(mainQueue, "sampleMasterInstructions.json"));
-    instructionReader3.start();
+    // Thread instructionReader3 = new Thread(new InstructionReader(mainQueue, "sampleMasterInstructions.json"));
+    // instructionReader3.start();
 
     Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
     delegateInstructions.start();
