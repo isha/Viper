@@ -19,8 +19,14 @@ class InstructionDelegator implements Runnable {
             }
           }
           else if (instr.hasKey("deviceId")) {
-            ConcurrentLinkedQueue<JSONObject> channelQueue = queues.get(instr.getInt("deviceId"));
-            channelQueue.add(instr);
+            int id = instr.getInt("deviceId");
+
+            if (queues.containsKey(id)) {
+              ConcurrentLinkedQueue<JSONObject> channelQueue = queues.get(id);
+              channelQueue.add(instr);
+            } else {
+              println("[error] Invalid device ID: "+id);
+            }
           }
         }
       }
