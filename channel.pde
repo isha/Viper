@@ -23,34 +23,20 @@ class Channel implements Runnable {
       // Run instruction if pending in queue
 
       if (instr != null) {
-        if (!instr.hasKey("id")) {
+        if (instr.hasKey("master")) {
+          Enumeration<Integer> v = videos.keys();
+          while (v.hasMoreElements()) {
+            applyInstrToId(instr, v.nextElement());
+          }
+          Enumeration<Integer> i = images.keys();
+          while (i.hasMoreElements()) {
+            applyInstrToId(instr, i.nextElement());
+          }
+        }
+        else if (!instr.hasKey("id")) {
           println("[error] ID is required");
         } else {
-          if (instr.getString("method").equals("create")) {
-            if (instr.hasKey("image")) {
-              createImage(instr);
-            } else if (instr.hasKey("video")) {
-              createVideo(instr);
-            }
-          }
-          else if (instr.getString("method").equals("update")) {
-            if (images.containsKey(instr.getInt("id"))) {
-              updateImage(instr);
-            } else if (videos.containsKey(instr.getInt("id"))) {
-              updateVideo(instr);
-            } else {
-              println("[error] Invalid ID: "+instr.getInt("id"));
-            }
-          }
-          else if (instr.getString("method").equals("delete")) {
-            if (images.containsKey(instr.getInt("id"))) {
-              deleteImage(instr);
-            } else if (videos.containsKey(instr.getInt("id"))) {
-              deleteVideo(instr);
-            } else {
-              println("[error] Invalid ID: "+instr.getInt("id"));
-            }
-          }
+          applyInstrToId(instr, instr.getInt("id"));
         }
       }
     }
@@ -71,6 +57,34 @@ class Channel implements Runnable {
     Enumeration<Image> i = images.elements();
     while (i.hasMoreElements()) {
       i.nextElement().draw();
+    }
+  }
+
+  void applyInstrToId(JSONObject instr, int id) {
+    if (instr.getString("method").equals("create")) {
+      if (instr.hasKey("image")) {
+        createImage(instr);
+      } else if (instr.hasKey("video")) {
+        createVideo(instr);
+      }
+    }
+    else if (instr.getString("method").equals("update")) {
+      if (images.containsKey(id)) {
+        updateImage(instr, id);
+      } else if (videos.containsKey(id)) {
+        updateVideo(instr, id);
+      } else {
+        println("[error] Invalid ID: "+id);
+      }
+    }
+    else if (instr.getString("method").equals("delete")) {
+      if (images.containsKey(id)) {
+        deleteImage(instr, id);
+      } else if (videos.containsKey(id)) {
+        deleteVideo(instr, id);
+      } else {
+        println("[error] Invalid ID: "+id);
+      }
     }
   }
 
@@ -102,16 +116,16 @@ class Channel implements Runnable {
     }
   }
 
-  void deleteImage(JSONObject instr) {
-    images.remove(instr.getInt("id"));
+  void deleteImage(JSONObject instr, Integer id) {
+    images.remove(id);
   }
   
-  void deleteVideo(JSONObject instr) {
-    videos.remove(instr.getInt("id"));
+  void deleteVideo(JSONObject instr, Integer id) {
+    videos.remove(id);
   }
 
-  void updateImage(JSONObject instr) {
-    Image img = images.get(instr.getInt("id"));
+  void updateImage(JSONObject instr, Integer id) {
+    Image img = images.get(id);
 
     if (instr.hasKey("width") && instr.hasKey("height")) {
       img.updateSize(instr.getInt("width"), instr.getInt("height"));
@@ -119,6 +133,18 @@ class Channel implements Runnable {
     
     if (instr.hasKey("brightness")) {
       img.setBrightness(instr.getInt("brightness"));
+    }
+
+    if (instr.hasKey("threshold")) {
+      img.threshold(instr.getFloat("threshold"));
+    }
+
+    if (instr.hasKey("transparency")) {
+      img.setTransparency(instr.getInt("transparency"));
+    }
+
+    if (instr.hasKey("adjustHue")) {
+      img.adjustHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"));
     }
 
     if (instr.hasKey("easing")) {
@@ -155,8 +181,8 @@ class Channel implements Runnable {
     }
   }
 
-  void updateVideo(JSONObject instr) {
-    Video vid = videos.get(instr.getInt("id"));
+  void updateVideo(JSONObject instr, Integer id) {
+    Video vid = videos.get(id);
 
     if (instr.hasKey("easing")) {
       vid.setEasing(instr.getFloat("easing"));

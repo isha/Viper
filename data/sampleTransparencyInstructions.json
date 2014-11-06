@@ -1,0 +1,16 @@
+[
+  {
+    "deviceId": 21,
+    "method": "create",
+    "posX": 35,
+    "posY": 120,
+    "image": "fish2.gif",
+    "id": 0
+  },
+  {
+    "deviceId": 21,
+  	"method": "update",
+  	"transparency": 100,
+  	"id": 0
+  }
+]

@@ -1,5 +1,6 @@
 [
   {
+    "deviceId": 45,
     "method": "create",
     "posX": 35,
     "posY": 120,
@@ -7,6 +8,7 @@
     "id": 0
   },
   {
+    "deviceId": 45,
     "id": 0,
     "method": "update",
     "easing": 0.08,
@@ -14,11 +16,13 @@
     "endY": 500
   },
   {
+    "deviceId": 45,
     "id": 0,
     "method": "update",
     "brightness": 60
   },
   {
+    "deviceId": 45,
     "id": 0,
     "method": "update",
     "easing": 0.08,
