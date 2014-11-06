@@ -7,29 +7,56 @@ class OSCServer {
   
   String[] registeredDevices;
   int numDevices;
+  int numPorts;
   int MAXDEVICES = 200;
+  int MAXPORTS = 20;
+  int DEFAULTPORT = 12000;
 
   OSCServer() {
     registeredDevices = new String[MAXDEVICES];
 
     loadServerConfig();
     loadRegisteredDevices();
-    hostLocation = new NetAddress("127.0.0.1", 5003);
+    hostLocation = new NetAddress("127.0.0.1", 12002);
   }
 
   protected void loadServerConfig() {
     JSONObject serverConfig;
-    int port;
+    int[] ports;
+    int startPort, endPort;
+    int i;
+    
+    ports = new int[MAXPORTS];
     try {
       // Try loading the server config file and retrieving the configuration
       serverConfig = loadJSONObject("serverConfig.json");
-      port = serverConfig.getInt("port");
+      startPort = serverConfig.getInt("StartPort");
+      endPort = serverConfig.getInt("EndPort");
+      
+      numPorts = endPort-startPort+1;
+      if(numPorts < 0 || numPorts > MAXPORTS) {
+        Exception fileError = new Exception("Port configuration may be corrupted. Check serverConfig.txt file.");
+        throw fileError;
+      }
+      
+      for(i=startPort; i<=endPort; i++) {
+        ports[i-startPort] = i;
+      }
     } catch (Exception e) {
+      print(e.getMessage());
       // If loading the config file fails, set to default values
-      port = 5001;
+      for(i=0;i<MAXPORTS;i++) {
+        ports[i] = DEFAULTPORT + i;
+      }
+      startPort = DEFAULTPORT;
+      endPort = DEFAULTPORT + MAXPORTS - 1;
+      numPorts = MAXPORTS;
     }
-
-    viperServer = new OscP5(this, port);
+    
+    viperServer = new OscP5(this, ports[0]);
+    for(i=1;i<numPorts;i++) {
+      new OscP5(this, ports[i]);
+    }
   }
   
   void loadRegisteredDevices() {
@@ -149,7 +176,7 @@ class OSCServer {
       }
     }
     commandArray.setJSONObject(commandCount-1, command);
-    
+    print(commandArray);
     if(deviceID != null) {
       saveLoc = "data/" + deviceID + ".json";
       saveJSONArray(commandArray, saveLoc);
@@ -158,5 +185,13 @@ class OSCServer {
   
   int getNumDevices() {
     return numDevices;
+  }
+  
+  int getNumPorts() {
+    return numPorts;
+  }
+  
+  String[] getRegisteredDeviceIDs() {
+    return registeredDevices;
   }
 };
