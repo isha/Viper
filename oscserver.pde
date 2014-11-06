@@ -73,9 +73,7 @@ class OSCServer {
     message.add(120);
     message.add("image");
     message.add("fish2.gif");
-
-    message.add("deviceId");
-    message.add("10295710feajawMwn11j");
+    
     message.add("method");
     message.add("update");
     message.add("easing");
@@ -105,7 +103,7 @@ class OSCServer {
     String recvMsgType;
     String messagePair;
     String argType;
-    String deviceSerialCode;
+    String deviceID;
     String saveLoc;
     int recvMsgLength;
     int commandCount;
@@ -116,7 +114,15 @@ class OSCServer {
       //consider it a rogue message and discard
       return;
     }
-
+    
+    if(recvMsg.get(0).stringValue().equals("deviceId")) {
+      deviceID = recvMsg.get(1).stringValue();
+    } else {
+      //if the deviceID is not the first thing we find, 
+      //consider it a rouge message and discard
+      return;
+    }
+    
     commandArray = new JSONArray();
 
     recvMsgType = recvMsg.typetag();
@@ -143,13 +149,11 @@ class OSCServer {
       }
     }
     commandArray.setJSONObject(commandCount-1, command);
-    print(commandArray);
     
-    if(recvMsg.get(0).stringValue().equals("deviceID")) {
-      deviceID = recvMsg.get(1).stringValue();
+    if(deviceID != null) {
+      saveLoc = "data/" + deviceID + ".json";
+      saveJSONArray(commandArray, saveLoc);
     }
-    saveLoc = "data/" + deviceID + ".json";
-    saveJSONArray(commandArray, saveLoc);
   }
   
   int getNumDevices() {
