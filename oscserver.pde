@@ -4,9 +4,15 @@ import netP5.*;
 class OSCServer {
   OscP5 viperServer;
   NetAddress hostLocation;
+  
+  Hashtable<Integer, String> registeredDevices;
+  int numDevices;
 
   OSCServer() {
+    registeredDevices = new Hashtable<Integer, String>();
+
     loadServerConfig();
+    loadRegisteredDevices();
     hostLocation = new NetAddress("127.0.0.1", 5003);
   }
 
@@ -24,7 +30,31 @@ class OSCServer {
 
     viperServer = new OscP5(this, port);
   }
-
+  
+  void loadRegisteredDevices() {
+    BufferedReader reader;
+    String line;
+    
+    try {
+      reader = createReader("registeredDevices.txt");
+      do {
+        line = reader.readLine();
+        
+        if(line==null) {
+          break;
+        }
+        
+        String[] device = split(line, ",");
+        registeredDevices.put(int(device[0]), device[1]);
+        
+      } while(line!=null);
+    } catch (Exception e) {
+      // File unreadable or corrupted
+      e.printStackTrace();
+    }
+    numDevices = registeredDevices.size();
+  }
+  
   void sendTestMessage(OscMessage testMessage, NetAddress sendLoc) {
     viperServer.send(testMessage, sendLoc);
   }
@@ -112,5 +142,8 @@ class OSCServer {
     print(commandArray);
     saveJSONArray(commandArray, "data/commands.json");
   }
+  
+  int getNumDevices() {
+    return numDevices;
+  }
 };
-
