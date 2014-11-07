@@ -9,7 +9,7 @@ class OSCServer {
   int numDevices;
   int numPorts;
   int MAXDEVICES = 200;
-  int MAXPORTS = 20;
+  int MAXPORTS = 5;
   int DEFAULTPORT = 12000;
 
   OSCServer() {
@@ -84,7 +84,7 @@ class OSCServer {
     numDevices = lineCount;
   }
   
-  void sendTestMessage(OscMessage testMessage, NetAddress sendLoc) {
+  void sendMessage(OscMessage testMessage, NetAddress sendLoc) {
     viperServer.send(testMessage, sendLoc);
   }
 
@@ -113,11 +113,10 @@ class OSCServer {
 
   void mousePressed() {
     // create an osc message
-    OscMessage testMessage = new OscMessage("/rime");
+    OscMessage dataList = new OscMessage("/viper");
 
-    testEasing(testMessage);
-
-    sendTestMessage(testMessage, hostLocation);
+    readDataFolder(dataList);
+    sendMessage(dataList, hostLocation);
   }
 
   /*
@@ -194,17 +193,28 @@ class OSCServer {
   String[] getRegisteredDeviceIDs() {
     return registeredDevices;
   }
-  void readFolder()
-{
-  // we'll have a look in the data folder
-java.io.File folder = new java.io.File(dataPath(""));
- 
-// list the files in the data folder
-String[] filenames = folder.list();
- 
-// display the filenames
-for (int i = 0; i < filenames.length; i++) 
-{
-  println(filenames[i]);
-}
+  
+  void readDataFolder(OscMessage dataList) {
+    // we'll have a look in the data folder
+    File folder = new File(dataPath(""));
+     
+    // list the files in the data folder
+    String[] filenames = folder.list();
+    
+    // display the filenames
+    for (int i=0; i<filenames.length; i++) {
+      if(filenames[i].length() > 5) {
+        if(!(filenames[i].substring(filenames[i].length()-5, filenames[i].length()).equals(".json")) &&
+            !(filenames[i].substring(filenames[i].length()-4, filenames[i].length()).equals(".txt"))) {
+          dataList.add(filenames[i]);
+        }
+      } else if(filenames[i].length() > 4) {
+        if(!(filenames[i].substring(filenames[i].length()-4, filenames[i].length()).equals(".txt"))) {
+          dataList.add(filenames[i]);
+        }
+      } else {
+        dataList.add(filenames[i]);
+      }
+    }
+  }
 };
