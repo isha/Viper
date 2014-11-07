@@ -3,6 +3,8 @@ class Channel implements Runnable {
   Hashtable<Integer, Video> videos;
   PImage backImage;
 
+  long currentTime;
+
   ConcurrentLinkedQueue<JSONObject> queue;
   
   Channel(ConcurrentLinkedQueue<JSONObject> queue, String backImageFile) {
@@ -132,7 +134,7 @@ class Channel implements Runnable {
     }
     
     if (instr.hasKey("brightness")) {
-      img.setBrightness(instr.getInt("brightness"));
+      img.startBrightness(instr.getInt("brightness"), instr.getInt("totaltime"), instr.getInt("numupdates"));
     }
 
     if (instr.hasKey("threshold")) {
