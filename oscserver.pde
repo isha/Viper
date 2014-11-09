@@ -141,7 +141,7 @@ class OSCServer {
       return;
     }
     
-    if(recvMsg.get(0).stringValue().equals("deviceId")) {
+    if(recvMsg.get(0).stringValue().equalsIgnoreCase("deviceId")) {
       deviceID = recvMsg.get(1).stringValue();
     } else {
       //if the deviceID is not the first thing we find, 
@@ -158,7 +158,7 @@ class OSCServer {
     command = new JSONObject();
     for(i=0; i<recvMsgLength; i++) {
       messagePair = recvMsgType.substring(i*2, i*2 + 2);
-      if (recvMsg.get(i*2).stringValue().equals("method")) {
+      if (recvMsg.get(i*2).stringValue().equalsIgnoreCase("method")) {
         if (commandCount!=0) {
           commandArray.setJSONObject(commandCount-1, command);
           command = new JSONObject();
@@ -204,12 +204,12 @@ class OSCServer {
     // display the filenames
     for (int i=0; i<filenames.length; i++) {
       if(filenames[i].length() > 5) {
-        if(!(filenames[i].substring(filenames[i].length()-5, filenames[i].length()).equals(".json")) &&
-            !(filenames[i].substring(filenames[i].length()-4, filenames[i].length()).equals(".txt"))) {
+        if(!(filenames[i].substring(filenames[i].length()-5, filenames[i].length()).equalsIgnoreCase(".json")) &&
+            !(filenames[i].substring(filenames[i].length()-4, filenames[i].length()).equalsIgnoreCase(".txt"))) {
           dataList.add(filenames[i]);
         }
       } else if(filenames[i].length() > 4) {
-        if(!(filenames[i].substring(filenames[i].length()-4, filenames[i].length()).equals(".txt"))) {
+        if(!(filenames[i].substring(filenames[i].length()-4, filenames[i].length()).equalsIgnoreCase(".txt"))) {
           dataList.add(filenames[i]);
         }
       } else {
