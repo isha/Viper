@@ -9,7 +9,7 @@ class OSCServer {
   int numDevices;
   int numPorts;
   int MAXDEVICES = 200;
-  int MAXPORTS = 1;
+  int MAXPORTS = 15;
   int DEFAULTPORT = 12000;
 
   OSCServer() {
@@ -163,7 +163,6 @@ class OSCServer {
     message.add(100);
     message.add("deviceId");
     message.add("oijgoaij2ojgawojfiawfjoa");
-    
   }
 
   void mousePressed() {
@@ -182,13 +181,11 @@ class OSCServer {
     Triggers when the server receives an OSC message
    */ 
   void oscEvent(OscMessage recvMsg) {
-    JSONArray commandArray;
     JSONObject command;
     String recvMsgType;
     String messagePair;
     String argType;
     String deviceID;
-    String saveLoc;
     int recvMsgLength;
     int commandCount;
     int i;
@@ -218,8 +215,6 @@ class OSCServer {
       return;
     }
     
-    commandArray = new JSONArray();
-
     recvMsgType = recvMsg.typetag();
     recvMsgLength = (recvMsgType.length()) / 2;
 
@@ -227,9 +222,9 @@ class OSCServer {
     command = new JSONObject();
     for(i=0; i<recvMsgLength; i++) {
       messagePair = recvMsgType.substring(i*2, i*2 + 2);
-      if (recvMsg.get(i*2).stringValue().equalsIgnoreCase("method")) {
+      if(recvMsg.get(i*2).stringValue().equalsIgnoreCase("method")) {
         if (commandCount!=0) {
-          commandArray.setJSONObject(commandCount-1, command);
+          mainQueue.add(command);
           command = new JSONObject();
         }
         commandCount++;
@@ -243,19 +238,9 @@ class OSCServer {
         command.setString(recvMsg.get(i*2).stringValue(), recvMsg.get(i*2+1).stringValue());
       }
     }
-    commandArray.setJSONObject(commandCount-1, command);
-
-    for(int j=0;j<commandArray.size();j++) {
-      mainQueue.add(commandArray.getJSONObject(j));
-    }
-    
-    print(commandArray);
-    if(deviceID != null) {
-      saveLoc = "data/" + deviceID + ".json";
-      saveJSONArray(commandArray, saveLoc);
-    }
+    mainQueue.add(command);
   }
-  
+ 
   int getNumDevices() {
     return numDevices;
   }
