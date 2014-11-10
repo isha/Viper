@@ -19,7 +19,7 @@ class InstructionDelegator implements Runnable {
             }
           }
           else if (instr.hasKey("deviceId")) {
-            int id = instr.getInt("deviceId");
+            String id = instr.getString("deviceId");
 
             if (queues.containsKey(id)) {
               ConcurrentLinkedQueue<JSONObject> channelQueue = queues.get(id);

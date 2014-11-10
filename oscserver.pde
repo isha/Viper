@@ -9,7 +9,7 @@ class OSCServer {
   int numDevices;
   int numPorts;
   int MAXDEVICES = 200;
-  int MAXPORTS = 5;
+  int MAXPORTS = 1;
   int DEFAULTPORT = 12000;
 
   OSCServer() {
@@ -17,7 +17,7 @@ class OSCServer {
 
     loadServerConfig();
     loadRegisteredDevices();
-    hostLocation = new NetAddress("127.0.0.1", 12002);
+    hostLocation = new NetAddress("127.0.0.1", 12000);
   }
 
   protected void loadServerConfig() {
@@ -74,7 +74,6 @@ class OSCServer {
         }
         
         registeredDevices[lineCount] = line;
-       
         lineCount++; 
       } while(line!=null);
     } catch (Exception e) {
@@ -91,7 +90,8 @@ class OSCServer {
   void testEasing(OscMessage message) {
     // creates a sample easing message
     message.add("deviceId");
-    message.add("10295710feajawMwn11j");
+    message.add("oijgoaij2ojgawojfiawfjoa");
+    
     message.add("method");
     message.add("create");
     message.add("posX");
@@ -99,24 +99,82 @@ class OSCServer {
     message.add("posY");
     message.add(120);
     message.add("image");
-    message.add("fish2.gif");
+    message.add("fish1.gif");
+    message.add("id");
+    message.add(7);
+    
+    message.add("method");
+    message.add("create");
+    message.add("posX");
+    message.add(800);
+    message.add("posY");
+    message.add(320);
+    message.add("image");
+    message.add("shark.gif");
+    message.add("id");
+    message.add(11);
+    message.add("deviceId");
+    message.add("oijgoaij2ojgawojfiawfjoa");
+    
+    message.add("method");
+    message.add("create");
+    message.add("posX");
+    message.add(1200);
+    message.add("posY");
+    message.add(60);
+    message.add("image");
+    message.add("magical-starfish.gif");
+    message.add("id");
+    message.add(2);
+    message.add("deviceId");
+    message.add("oijgoaij2ojgawojfiawfjoa");
     
     message.add("method");
     message.add("update");
+    message.add("id");
+    message.add(2);
+    message.add("blur");
+    message.add(6);
+    message.add("deviceId");
+    message.add("oijgoaij2ojgawojfiawfjoa");
+    
+    message.add("method");
+    message.add("update");
+    message.add("id");
+    message.add(11);
     message.add("easing");
-    message.add(0.008);
+    message.add(0.01);
     message.add("endX");
-    message.add(1000);
+    message.add(20);
     message.add("endY");
-    message.add(500);
+    message.add(280);
+    message.add("deviceId");
+    message.add("oijgoaij2ojgawojfiawfjoa");
+    
+    message.add("method");
+    message.add("update");
+    message.add("id");
+    message.add(2);
+    message.add("easing");
+    message.add(0.005);
+    message.add("endX");
+    message.add(20);
+    message.add("endY");
+    message.add(100);
+    message.add("deviceId");
+    message.add("oijgoaij2ojgawojfiawfjoa");
+    
   }
 
   void mousePressed() {
     // create an osc message
     OscMessage dataList = new OscMessage("/viper");
-
     readDataFolder(dataList);
     sendMessage(dataList, hostLocation);
+    
+    OscMessage testEasing = new OscMessage("/rime");
+    testEasing(testEasing);
+    sendMessage(testEasing, hostLocation);
   }
 
   /*
@@ -134,6 +192,7 @@ class OSCServer {
     int recvMsgLength;
     int commandCount;
     int i;
+    boolean goodID = false;
 
     if(recvMsg.checkAddrPattern("/rime") == false) {
       //if the OSC message is received without address tag '/rime',
@@ -143,9 +202,19 @@ class OSCServer {
     
     if(recvMsg.get(0).stringValue().equalsIgnoreCase("deviceId")) {
       deviceID = recvMsg.get(1).stringValue();
+      for(i=0;i<numDevices;i++) {
+        if(registeredDevices[i].equals(deviceID)) {
+          goodID = true;
+        }
+      }
+      if(goodID==false) {
+        //if the device ID we got from message does not match any of the registered devices' ID
+        //consider it a rogue message and discard
+        return;
+      }
     } else {
       //if the deviceID is not the first thing we find, 
-      //consider it a rouge message and discard
+      //consider it a rogue message and discard
       return;
     }
     
@@ -175,6 +244,11 @@ class OSCServer {
       }
     }
     commandArray.setJSONObject(commandCount-1, command);
+
+    for(int j=0;j<commandArray.size();j++) {
+      mainQueue.add(commandArray.getJSONObject(j));
+    }
+    
     print(commandArray);
     if(deviceID != null) {
       saveLoc = "data/" + deviceID + ".json";
