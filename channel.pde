@@ -146,7 +146,7 @@ class Channel implements Runnable {
     }
 
     if (instr.hasKey("adjustHue")) {
-      img.adjustHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"));
+      img.startHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"), instr.getInt("totaltime"), instr.getInt("numupdates"));
     }
 
     if (instr.hasKey("easing")) {

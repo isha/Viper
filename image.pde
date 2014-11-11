@@ -133,6 +133,138 @@ class Image {
     }
   }
 
+  void startHue (int totalRedMagnitude, int totalGreenMagnitude, int totalBlueMagnitude, int totalUpdateTime, int numUpdates) {
+    startRedHue(totalRedMagnitude, totalUpdateTime, numUpdates);
+    startGreenHue(totalGreenMagnitude, totalUpdateTime, numUpdates);
+    startBlueHue(totalBlueMagnitude, totalUpdateTime, numUpdates);
+  }
+
+  void startRedHue (int totalRedMagnitude, int totalUpdateTime, int numUpdates) {
+    numUpdatesLeft[RED_VALUE] = numUpdates;
+    intervalTime[RED_VALUE] = totalUpdateTime/numUpdates;
+    updateMagnitude[RED_VALUE] = totalRedMagnitude/numUpdates;
+    updateFlag[RED_VALUE] = 1;
+  }
+
+  void startGreenHue (int totalGreenMagnitude, int totalUpdateTime, int numUpdates) {
+    numUpdatesLeft[GREEN_VALUE] = numUpdates;
+    intervalTime[GREEN_VALUE] = totalUpdateTime/numUpdates;
+    updateMagnitude[GREEN_VALUE] = totalGreenMagnitude/numUpdates;
+    updateFlag[GREEN_VALUE] = 1;
+  }
+
+  void startBlueHue (int totalBlueMagnitude, int totalUpdateTime, int numUpdates) {
+    numUpdatesLeft[BLUE_VALUE] = numUpdates;
+    intervalTime[BLUE_VALUE] = totalUpdateTime/numUpdates;
+    updateMagnitude[BLUE_VALUE] = totalBlueMagnitude/numUpdates;
+    updateFlag[BLUE_VALUE] = 1;
+  }  
+
+  void adjustRedHue (int magnitude) {
+    for (int px = 0; px < picture.width; px++) {
+      for (int py = 0; py < picture.height; py++ ) {
+
+        // Calculate the 1D location from a 2D grid
+        int loc = px + py*picture.width;
+
+        // check transparency
+        if (alpha(picture.pixels[loc]) != 0.0) {
+
+          // Get the R,G,B values from image
+          float r,g,b;
+          r = red (picture.pixels[loc]);
+          g = green (picture.pixels[loc]);
+          b = blue (picture.pixels[loc]);
+
+          // Adjust the brightness by adding or subtracting RGB values
+          r += magnitude;
+
+          // Constrain RGB to make sure they are within 0-255 color range
+          r = constrain(r, 0, 255);
+          g = constrain(g, 0, 255);
+          b = constrain(b, 0, 255);
+          
+          // Make a new color and set pixel in the window
+          color c = color(r, g, b, alpha(picture.pixels[loc]));
+
+          //pixels[py*width + px] = c;
+          picture.pixels[loc] = c;
+          picture.updatePixels();
+        }
+      }
+    }
+  }
+
+  void adjustGreenHue (int magnitude) {
+    for (int px = 0; px < picture.width; px++) {
+      for (int py = 0; py < picture.height; py++ ) {
+
+        // Calculate the 1D location from a 2D grid
+        int loc = px + py*picture.width;
+
+        // check transparency
+        if (alpha(picture.pixels[loc]) != 0.0) {
+          
+          // Get the R,G,B values from image
+          float r,g,b;
+          r = red (picture.pixels[loc]);
+          g = green (picture.pixels[loc]);
+          b = blue (picture.pixels[loc]);
+
+          // Adjust the brightness by adding or subtracting RGB values
+          g += magnitude;
+
+          // Constrain RGB to make sure they are within 0-255 color range
+          r = constrain(r, 0, 255);
+          g = constrain(g, 0, 255);
+          b = constrain(b, 0, 255);
+          
+          // Make a new color and set pixel in the window
+          color c = color(r, g, b, alpha(picture.pixels[loc]));
+
+          //pixels[py*width + px] = c;
+          picture.pixels[loc] = c;
+          picture.updatePixels();
+        }
+      }
+    }
+  }
+
+  void adjustBlueHue (int magnitude) {
+    for (int px = 0; px < picture.width; px++) {
+      for (int py = 0; py < picture.height; py++ ) {
+
+        // Calculate the 1D location from a 2D grid
+        int loc = px + py*picture.width;
+
+        // check transparency
+        if (alpha(picture.pixels[loc]) != 0.0) {
+          
+          // Get the R,G,B values from image
+          float r,g,b;
+          r = red (picture.pixels[loc]);
+          g = green (picture.pixels[loc]);
+          b = blue (picture.pixels[loc]);
+
+          // Adjust the brightness by adding or subtracting RGB values
+          b += magnitude;
+
+          // Constrain RGB to make sure they are within 0-255 color range
+          r = constrain(r, 0, 255);
+          g = constrain(g, 0, 255);
+          b = constrain(b, 0, 255);
+          
+          // Make a new color and set pixel in the window
+          color c = color(r, g, b, alpha(picture.pixels[loc]));
+
+          //pixels[py*width + px] = c;
+          picture.pixels[loc] = c;
+          picture.updatePixels();
+        }
+      }
+    }
+  }
+
   void blur(int magnitude) {
     picture.filter(BLUR, magnitude);
   }
@@ -230,6 +362,39 @@ class Image {
       }
       else if (numUpdatesLeft[TRANSPARENCY_VALUE] == 0) {
         updateFlag[TRANSPARENCY_VALUE] = 0;
+      }
+    }
+
+    if (updateFlag[RED_VALUE] == 1) {
+      if ((System.currentTimeMillis() - timeOfLastUpdate[RED_VALUE] > intervalTime[RED_VALUE]) && (numUpdatesLeft[RED_VALUE] > 0) ) {
+        adjustRedHue(updateMagnitude[RED_VALUE]);
+        timeOfLastUpdate[RED_VALUE] = System.currentTimeMillis();
+        numUpdatesLeft[RED_VALUE]--;
+      }
+      else if (numUpdatesLeft[RED_VALUE] == 0) {
+        updateFlag[RED_VALUE] = 0;
+      }
+    }
+
+    if (updateFlag[GREEN_VALUE] == 1) {
+      if ((System.currentTimeMillis() - timeOfLastUpdate[GREEN_VALUE] > intervalTime[GREEN_VALUE]) && (numUpdatesLeft[GREEN_VALUE] > 0) ) {
+        adjustGreenHue(updateMagnitude[GREEN_VALUE]);
+        timeOfLastUpdate[GREEN_VALUE] = System.currentTimeMillis();
+        numUpdatesLeft[GREEN_VALUE]--;
+      }
+      else if (numUpdatesLeft[GREEN_VALUE] == 0) {
+        updateFlag[GREEN_VALUE] = 0;
+      }
+    }
+
+    if (updateFlag[BLUE_VALUE] == 1) {
+      if ((System.currentTimeMillis() - timeOfLastUpdate[BLUE_VALUE] > intervalTime[BLUE_VALUE]) && (numUpdatesLeft[BLUE_VALUE] > 0) ) {
+        adjustBlueHue(updateMagnitude[BLUE_VALUE]);
+        timeOfLastUpdate[BLUE_VALUE] = System.currentTimeMillis();
+        numUpdatesLeft[BLUE_VALUE]--;
+      }
+      else if (numUpdatesLeft[BLUE_VALUE] == 0) {
+        updateFlag[BLUE_VALUE] = 0;
       }
     }
 

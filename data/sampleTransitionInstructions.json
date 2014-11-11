@@ -19,16 +19,11 @@
     "deviceId": 21,
     "id": 1,
     "method": "update",
-    "transparency": 240,
+    "adjustHue": 0,
+    "red": -255,
+    "green": 100,
+    "blue": 50,
     "totaltime": 3000,
-    "numupdates": 120
-  },
-  {
-    "deviceId": 21,
-    "id": 1,
-    "method": "update",
-    "brightness": 120,
-    "totaltime": 3000,
-    "numupdates": 120
-  }  
+    "numupdates": 100
+  }
 ]
