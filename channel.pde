@@ -142,7 +142,7 @@ class Channel implements Runnable {
     }
 
     if (instr.hasKey("transparency")) {
-      img.setTransparency(instr.getInt("transparency"));
+      img.startTransparency(instr.getInt("transparency"), instr.getInt("totaltime"), instr.getInt("numupdates"));
     }
 
     if (instr.hasKey("adjustHue")) {

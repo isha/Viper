@@ -2,11 +2,21 @@ class Image {
   int x, y;
   int targetX, targetY;
   float easing = 0.1;
-  int numUpdatesLeft;
-  int updateMagnitude;
-  long timeOfLastUpdate;
-  long intervalTime;
-  int updateFlag;
+
+  // image effect transition variables
+  private static final int BRIGHTNESS_VALUE = 0;
+  private static final int TRANSPARENCY_VALUE = 1;
+  private static final int RED_VALUE = 2;
+  private static final int GREEN_VALUE = 3;
+  private static final int BLUE_VALUE = 4;
+  private static final int BLUR_VALUE = 5;
+  private static final int NUM_TRANSITIONS = 6;
+
+  int[] numUpdatesLeft;
+  int[] updateMagnitude;
+  long[] timeOfLastUpdate;
+  long[] intervalTime;
+  int[] updateFlag;
 
   PImage picture;
 
@@ -21,11 +31,11 @@ class Image {
     targetX = x = posX;
     targetY = y = posY;
 
-    numUpdatesLeft = 0;
-    updateMagnitude = 0;
-    timeOfLastUpdate = 0;
-    intervalTime = 0;
-    updateFlag = 0;
+    numUpdatesLeft = new int[NUM_TRANSITIONS];
+    updateMagnitude = new int[NUM_TRANSITIONS];
+    timeOfLastUpdate = new long[NUM_TRANSITIONS];
+    intervalTime = new long[NUM_TRANSITIONS];
+    updateFlag = new int[NUM_TRANSITIONS];
   }
 
   void setEasing(float e) {
@@ -38,34 +48,14 @@ class Image {
   }
 
   void startBrightness(int totalMagnitude, int totalUpdateTime, int numUpdates) {
-    // save numUpdates in numUpdatesLeft
-    numUpdatesLeft = numUpdates;
 
-    // find the intervalTime: intervalTime = totalUpdateTime/numUpdates
-    intervalTime = totalUpdateTime/numUpdates;
-
-    // divide magnitude of change by number of updates: updateMagnitude = totalMagnitude/numUpdates
-    updateMagnitude = totalMagnitude/numUpdates;
-
-    // set updateFlag to 1;
-    updateFlag = 1;
+    numUpdatesLeft[BRIGHTNESS_VALUE] = numUpdates;
+    intervalTime[BRIGHTNESS_VALUE] = totalUpdateTime/numUpdates;
+    updateMagnitude[BRIGHTNESS_VALUE] = totalMagnitude/numUpdates;
+    updateFlag[BRIGHTNESS_VALUE] = 1;
   }
 
-  // at every draw, find difference of currentTime with timeOfLastUpdate = timeElapsedSinceLastUpdate
-  // if timeElapsedSinceLastUpdate is greater than intervalTime AND numUpdatesLeft > 0
-    // update brightness (setBrightness)
-    // change the timeOfLastUpdate = 0
-    // reduce numUpdatesLeft by 1
-  // else if numUpdatesLeft = 0
-    // set updateFlag to 0
-
-  // new image variables:
-    // int numUpdatesLeft
-    // long timeOfLastUpdate
-    // long intervalTime
-    // int updateMagnitude
-
-  void setBrightness(int magnitude) {
+  void adjustBrightness(int magnitude) {
 
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
@@ -98,13 +88,49 @@ class Image {
           //pixels[py*width + px] = c;
           picture.pixels[loc] = c;
           picture.updatePixels();
-
         }
-
       }
     }
+  }
 
+  void startTransparency(int totalMagnitude, int totalUpdateTime, int numUpdates) {
+    numUpdatesLeft[TRANSPARENCY_VALUE] = numUpdates;
+    intervalTime[TRANSPARENCY_VALUE] = totalUpdateTime/numUpdates;
+    updateMagnitude[TRANSPARENCY_VALUE] = totalMagnitude/numUpdates;
+    updateFlag[TRANSPARENCY_VALUE] = 1;
+  }
 
+  void adjustTransparency(int magnitude) {
+    for (int px = 0; px < picture.width; px++) {
+      for (int py = 0; py < picture.height; py++ ) {
+
+        // Calculate the 1D location from a 2D grid
+        int loc = px + py*picture.width;
+
+        // check transparency
+        if (alpha(picture.pixels[loc]) != 0.0) {
+
+          // Get the R,G,B values from image
+          float r,g,b;
+          r = red (picture.pixels[loc]);
+          g = green (picture.pixels[loc]);
+          b = blue (picture.pixels[loc]);
+
+          // get the alpha value
+          int a = (int) alpha(picture.pixels[loc]);
+
+          // Constrain alpha value to make sure they are within 1-255 alpha range
+          a -= magnitude;
+          a = constrain(a, 1, 255);
+
+          // Make a new color and set pixel in the window
+          color c = color(r, g, b, a);
+
+          picture.pixels[loc] = c;
+          picture.updatePixels();
+        }
+      }
+    }
   }
 
   void blur(int magnitude) {
@@ -135,34 +161,7 @@ class Image {
     picture.filter(THRESHOLD, thresholdValue);
   }
 
-  void setTransparency(int magnitude) {
-    for (int px = 0; px < picture.width; px++) {
-      for (int py = 0; py < picture.height; py++ ) {
 
-        // Calculate the 1D location from a 2D grid
-        int loc = px + py*picture.width;
-
-        // check transparency
-        if (alpha(picture.pixels[loc]) != 0.0) {
-
-          // Get the R,G,B values from image
-          float r,g,b;
-          r = red (picture.pixels[loc]);
-          g = green (picture.pixels[loc]);
-          b = blue (picture.pixels[loc]);
-
-          // Constrain alpha value to make sure they are within 1-255 alpha range
-          magnitude = constrain(magnitude, 0, 255);
-
-          // Make a new color and set pixel in the window
-          color c = color(r, g, b, magnitude);
-
-          picture.pixels[loc] = c;
-          picture.updatePixels();
-        }
-      }
-    }
-  }
 
   void adjustHue(int dR, int dG, int dB) {
     for (int px = 0; px < picture.width; px++) {
@@ -210,50 +209,31 @@ class Image {
       y += dy * easing;
     }
 
-    if (updateFlag == 1) {
-        if ((System.currentTimeMillis() - timeOfLastUpdate > intervalTime) && (numUpdatesLeft > 0) ) {
-          setBrightness(updateMagnitude);
-          timeOfLastUpdate = System.currentTimeMillis();
-          numUpdatesLeft--;
-        }
-        else if (numUpdatesLeft == 0) {
-          updateFlag = 0;
-        }
+    // effect transition checks - put a for loop here to iterate through all effect transitions
+    // replace BRIGHTNESS_VALUE with NUM_TRANSITION
+    if (updateFlag[BRIGHTNESS_VALUE] == 1) {
+      if ((System.currentTimeMillis() - timeOfLastUpdate[BRIGHTNESS_VALUE] > intervalTime[BRIGHTNESS_VALUE]) && (numUpdatesLeft[BRIGHTNESS_VALUE] > 0) ) {
+        adjustBrightness(updateMagnitude[BRIGHTNESS_VALUE]);
+        timeOfLastUpdate[BRIGHTNESS_VALUE] = System.currentTimeMillis();
+        numUpdatesLeft[BRIGHTNESS_VALUE]--;
       }
+      else if (numUpdatesLeft[BRIGHTNESS_VALUE] == 0) {
+        updateFlag[BRIGHTNESS_VALUE] = 0;
+      }
+    }
+
+    if (updateFlag[TRANSPARENCY_VALUE] == 1) {
+      if ((System.currentTimeMillis() - timeOfLastUpdate[TRANSPARENCY_VALUE] > intervalTime[TRANSPARENCY_VALUE]) && (numUpdatesLeft[TRANSPARENCY_VALUE] > 0) ) {
+        adjustTransparency(updateMagnitude[TRANSPARENCY_VALUE]);
+        timeOfLastUpdate[TRANSPARENCY_VALUE] = System.currentTimeMillis();
+        numUpdatesLeft[TRANSPARENCY_VALUE]--;
+      }
+      else if (numUpdatesLeft[TRANSPARENCY_VALUE] == 0) {
+        updateFlag[TRANSPARENCY_VALUE] = 0;
+      }
+    }
 
     image(picture, x, y);
-  }
-
-  int getUpdateFlag() {
-    return updateFlag;
-  }
-
-  long getIntervalTime() {
-    return intervalTime;
-  }
-
-  int getUpdateMagnitude() {
-    return updateMagnitude;
-  }
-
-  long getTimeOfLastUpdate() {
-    return timeOfLastUpdate;
-  }
-
-  int getNumUpdatesLeft() {
-    return numUpdatesLeft;
-  }
-
-  void setTimeOfLastUpdate(long time_value) {
-    timeOfLastUpdate = time_value;
-  }
-
-  void setNumUpdatesLeft(int updatesLeft) {
-    numUpdatesLeft = updatesLeft;
-  }
-
-  void setUpdateFlag(int flag) {
-    updateFlag = flag;
   }
 
 };

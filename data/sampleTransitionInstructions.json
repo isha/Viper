@@ -17,18 +17,18 @@
   },
   {
     "deviceId": 21,
+    "id": 1,
     "method": "update",
-    "brightness": -120,
+    "transparency": 240,
     "totaltime": 3000,
-    "numupdates": 120,
-    "id": 1  	
+    "numupdates": 120
   },
   {
     "deviceId": 21,
     "id": 1,
     "method": "update",
-    "easing": 0.01,
-    "endX": 20,
-    "endY": 280
-  }
+    "brightness": 120,
+    "totaltime": 3000,
+    "numupdates": 120
+  }  
 ]
