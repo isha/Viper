@@ -1,6 +1,6 @@
 [
   {
-    "deviceId": 90,
+    "deviceId": "90",
     "method": "create",
     "posX": 650,
     "posY": 420,
@@ -8,13 +8,13 @@
     "id": 0
   },
   {
-    "deviceId": 90,
+    "deviceId": "90",
     "method": "update",
     "transparency": 100,
     "id": 0
   },
   {
-    "deviceId": 90,
+    "deviceId": "90",
     "method": "update",
     "adjustHue": 1,
     "red": 0,
@@ -23,13 +23,13 @@
     "id": 0
   },
   {
-    "deviceId": 90,
+    "deviceId": "90",
     "method": "update",
     "brightness": 50,
     "id": 0
   },
   {
-    "deviceId": 90,
+    "deviceId": "90",
     "method": "update",
     "blur": 6,
     "id": 0

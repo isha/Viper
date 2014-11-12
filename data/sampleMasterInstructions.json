@@ -1,16 +1,16 @@
 [
   {
-    "master": 1,
+    "master": "1",
     "method": "update",
     "invert": 1
   },
   {
-    "master": 1,
+    "master": "1",
     "method": "update",
     "posterize": 10      
   },
   {
-    "master": 1,
+    "master": "1",
     "method": "update",
     "posterize": 10      
   },
