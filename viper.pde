@@ -8,7 +8,7 @@ import processing.video.*;
 import gifAnimation.*;
 
 
-static final boolean TESTMODE = false;
+static final boolean TESTMODE = true;
 
 PApplet app;
 
@@ -28,8 +28,8 @@ void setup() {
     ConcurrentLinkedQueue<JSONObject> queue2 = addChannel("21");
     mainQueue = new ConcurrentLinkedQueue<JSONObject>();
 
-    Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleHueInstructions.json"));
-    instructionReader1.start();
+    // Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleHueInstructions.json"));
+    // instructionReader1.start();
     Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "sampleTransparencyInstructions.json"));
     instructionReader2.start();
     // Thread instructionReader3 = new Thread(new InstructionReader(mainQueue, "sampleMasterInstructions.json"));

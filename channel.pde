@@ -1,6 +1,7 @@
 class Channel implements Runnable {
   Hashtable<Integer, Image> images;
   Hashtable<Integer, Video> videos;
+  Hashtable<Integer, AnimatedGif> gifs;
   PImage backImage;
 
   ConcurrentLinkedQueue<JSONObject> queue;
@@ -8,6 +9,7 @@ class Channel implements Runnable {
   Channel(ConcurrentLinkedQueue<JSONObject> queue, String backImageFile) {
     images = new Hashtable<Integer, Image>();
     videos = new Hashtable<Integer, Video>();
+    gifs = new Hashtable<Integer, AnimatedGif>();
 
     backImage = loadImage(backImageFile);
     size(backImage.width, backImage.height);
@@ -58,6 +60,12 @@ class Channel implements Runnable {
     while (i.hasMoreElements()) {
       i.nextElement().draw();
     }
+
+    // Draw all gifs
+    Enumeration<AnimatedGif> g = gifs.elements();
+    while (g.hasMoreElements()) {
+      g.nextElement().draw();
+    }
   }
 
   void applyInstrToId(JSONObject instr, int id) {
@@ -71,6 +79,8 @@ class Channel implements Runnable {
     else if (instr.getString("method").equals("update")) {
       if (images.containsKey(id)) {
         updateImage(instr, id);
+      } else if (gifs.containsKey(id)) {
+        updateGif(instr, id);
       } else if (videos.containsKey(id)) {
         updateVideo(instr, id);
       } else {
@@ -95,8 +105,13 @@ class Channel implements Runnable {
 
     File f = new File(dataPath(filename));
     if (f.exists()) {
-      Image img = new Image(filename, posX, posY);
-      images.put(instr.getInt("id"), img);
+      if (filename.endsWith(".gif")) {
+        AnimatedGif gif = new AnimatedGif(filename, posX, posY);
+        gifs.put(instr.getInt("id"), gif);
+      } else {
+        Image img = new Image(filename, posX, posY);
+        images.put(instr.getInt("id"), img);
+      }
     } else {
       println("[error] File "+filename+" does not exist");
     }
@@ -118,6 +133,10 @@ class Channel implements Runnable {
 
   void deleteImage(JSONObject instr, Integer id) {
     images.remove(id);
+  }
+
+  void deleteGif(JSONObject instr, Integer id) {
+    gifs.remove(id);
   }
   
   void deleteVideo(JSONObject instr, Integer id) {
@@ -178,6 +197,14 @@ class Channel implements Runnable {
 
     if (instr.hasKey("threshold")) {
       img.threshold(instr.getFloat("threshold"));
+    }
+  }
+
+  void updateGif(JSONObject instr, Integer id) {
+    AnimatedGif gif = gifs.get(id);
+
+    if (instr.hasKey("transparency")) {
+      gif.setTransparency(instr.getInt("transparency"));
     }
   }
 
