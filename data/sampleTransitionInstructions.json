@@ -19,11 +19,79 @@
     "deviceId": 21,
     "id": 1,
     "method": "update",
-    "adjustHue": 0,
-    "red": -255,
-    "green": 100,
-    "blue": 50,
+    "brightness": 100,
     "totaltime": 3000,
     "numupdates": 100
+  },
+  {
+    "deviceId": 21,
+    "id": 1,
+    "method": "update",
+    "easing": 0.01,
+    "endX": 20,
+    "endY": 280
+  },
+  {
+    "deviceId": 21,
+    "id": 1,
+    "method": "update",
+    "brightness": -200,
+    "totaltime": 8000,
+    "numupdates": 100   
+  },
+  {
+    "deviceId": 21,
+    "id": 1,
+    "method": "update",
+    "easing": 0.01,
+    "endX": 200,
+    "endY": 500
+  },
+  {
+    "deviceId": 21,
+    "id": 1,
+    "method": "update",
+    "brightness": 100,
+    "totaltime": 3000,
+    "numupdates": 100
+  },
+  {
+    "deviceId": 21,
+    "id": 1,
+    "method": "update",
+    "transparency": 150,
+    "totaltime": 3000,
+    "numupdates": 100
+  },
+  {
+    "deviceId": 21,
+    "id": 1,
+    "method": "update",
+    "blur": 3
+  },
+  {
+    "deviceId": 21,
+    "id": 1,
+    "method": "update",
+    "easing": 0.01,
+    "endX": 700,
+    "endY": 100
+  },
+  {
+    "deviceId": 21,
+    "id": 1,
+    "method": "update",
+    "hue": 0,
+    "red": 0,
+    "green": 200,
+    "blue": 0,
+    "totaltime": 3000,
+    "numupdates": 100
+  },
+  {
+    "deviceId": 21,
+    "id": 1,
+    "method": "update",
+    "invert": 0
   }
 ]

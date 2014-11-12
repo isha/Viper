@@ -9,14 +9,13 @@ class Image {
   private static final int RED_VALUE = 2;
   private static final int GREEN_VALUE = 3;
   private static final int BLUE_VALUE = 4;
-  private static final int BLUR_VALUE = 5;
-  private static final int NUM_TRANSITIONS = 6;
+  private static final int NUM_TRANSITIONS = 5;
 
   int[] numUpdatesLeft;
   int[] updateMagnitude;
   long[] timeOfLastUpdate;
   long[] intervalTime;
-  int[] updateFlag;
+  boolean[] updateFlag;
 
   PImage picture;
 
@@ -35,7 +34,7 @@ class Image {
     updateMagnitude = new int[NUM_TRANSITIONS];
     timeOfLastUpdate = new long[NUM_TRANSITIONS];
     intervalTime = new long[NUM_TRANSITIONS];
-    updateFlag = new int[NUM_TRANSITIONS];
+    updateFlag = new boolean[NUM_TRANSITIONS];
   }
 
   void setEasing(float e) {
@@ -52,7 +51,7 @@ class Image {
     numUpdatesLeft[BRIGHTNESS_VALUE] = numUpdates;
     intervalTime[BRIGHTNESS_VALUE] = totalUpdateTime/numUpdates;
     updateMagnitude[BRIGHTNESS_VALUE] = totalMagnitude/numUpdates;
-    updateFlag[BRIGHTNESS_VALUE] = 1;
+    updateFlag[BRIGHTNESS_VALUE] = true;
   }
 
   void adjustBrightness(int magnitude) {
@@ -97,7 +96,7 @@ class Image {
     numUpdatesLeft[TRANSPARENCY_VALUE] = numUpdates;
     intervalTime[TRANSPARENCY_VALUE] = totalUpdateTime/numUpdates;
     updateMagnitude[TRANSPARENCY_VALUE] = totalMagnitude/numUpdates;
-    updateFlag[TRANSPARENCY_VALUE] = 1;
+    updateFlag[TRANSPARENCY_VALUE] = true;
   }
 
   void adjustTransparency(int magnitude) {
@@ -143,21 +142,21 @@ class Image {
     numUpdatesLeft[RED_VALUE] = numUpdates;
     intervalTime[RED_VALUE] = totalUpdateTime/numUpdates;
     updateMagnitude[RED_VALUE] = totalRedMagnitude/numUpdates;
-    updateFlag[RED_VALUE] = 1;
+    updateFlag[RED_VALUE] = true;
   }
 
   void startGreenHue (int totalGreenMagnitude, int totalUpdateTime, int numUpdates) {
     numUpdatesLeft[GREEN_VALUE] = numUpdates;
     intervalTime[GREEN_VALUE] = totalUpdateTime/numUpdates;
     updateMagnitude[GREEN_VALUE] = totalGreenMagnitude/numUpdates;
-    updateFlag[GREEN_VALUE] = 1;
+    updateFlag[GREEN_VALUE] = true;
   }
 
   void startBlueHue (int totalBlueMagnitude, int totalUpdateTime, int numUpdates) {
     numUpdatesLeft[BLUE_VALUE] = numUpdates;
     intervalTime[BLUE_VALUE] = totalUpdateTime/numUpdates;
     updateMagnitude[BLUE_VALUE] = totalBlueMagnitude/numUpdates;
-    updateFlag[BLUE_VALUE] = 1;
+    updateFlag[BLUE_VALUE] = true;
   }  
 
   void adjustRedHue (int magnitude) {
@@ -293,39 +292,6 @@ class Image {
     picture.filter(THRESHOLD, thresholdValue);
   }
 
-
-
-  void adjustHue(int dR, int dG, int dB) {
-    for (int px = 0; px < picture.width; px++) {
-      for (int py = 0; py < picture.height; py++ ) {
-
-        // Calculate the 1D location from a 2D grid
-        int loc = px + py*picture.width;
-
-        // check transparency
-        if (alpha(picture.pixels[loc]) != 0.0) {
-
-          // Get the R,G,B values from image
-          float r,g,b;
-          r = red (picture.pixels[loc]) + dR;
-          g = green (picture.pixels[loc]) + dG;
-          b = blue (picture.pixels[loc]) + dB;
-
-          // Constrain RGB to make sure they are within 0-255 color range
-          r = constrain(r, 0, 255);
-          g = constrain(g, 0, 255);
-          b = constrain(b, 0, 255);
-
-          // Make a new color and set pixel in the window
-          color c = color(r, g, b, alpha(picture.pixels[loc]));
-
-          picture.pixels[loc] = c;
-          picture.updatePixels();
-        }
-      }
-    }
-  }
-
   void updateSize(int w, int h) {
     picture.resize(w, h);
   }
@@ -341,61 +307,31 @@ class Image {
       y += dy * easing;
     }
 
-    // effect transition checks - put a for loop here to iterate through all effect transitions
-    // replace BRIGHTNESS_VALUE with NUM_TRANSITION
-    if (updateFlag[BRIGHTNESS_VALUE] == 1) {
-      if ((System.currentTimeMillis() - timeOfLastUpdate[BRIGHTNESS_VALUE] > intervalTime[BRIGHTNESS_VALUE]) && (numUpdatesLeft[BRIGHTNESS_VALUE] > 0) ) {
-        adjustBrightness(updateMagnitude[BRIGHTNESS_VALUE]);
-        timeOfLastUpdate[BRIGHTNESS_VALUE] = System.currentTimeMillis();
-        numUpdatesLeft[BRIGHTNESS_VALUE]--;
-      }
-      else if (numUpdatesLeft[BRIGHTNESS_VALUE] == 0) {
-        updateFlag[BRIGHTNESS_VALUE] = 0;
-      }
-    }
+    // iterate through all possible effects 
+    for (int i = 0; i < NUM_TRANSITIONS; i++) {
 
-    if (updateFlag[TRANSPARENCY_VALUE] == 1) {
-      if ((System.currentTimeMillis() - timeOfLastUpdate[TRANSPARENCY_VALUE] > intervalTime[TRANSPARENCY_VALUE]) && (numUpdatesLeft[TRANSPARENCY_VALUE] > 0) ) {
-        adjustTransparency(updateMagnitude[TRANSPARENCY_VALUE]);
-        timeOfLastUpdate[TRANSPARENCY_VALUE] = System.currentTimeMillis();
-        numUpdatesLeft[TRANSPARENCY_VALUE]--;
-      }
-      else if (numUpdatesLeft[TRANSPARENCY_VALUE] == 0) {
-        updateFlag[TRANSPARENCY_VALUE] = 0;
-      }
-    }
+      if (updateFlag[i] == true) {
+        if ((System.currentTimeMillis() - timeOfLastUpdate[i] > intervalTime[i]) && (numUpdatesLeft[i] > 0) ) {
 
-    if (updateFlag[RED_VALUE] == 1) {
-      if ((System.currentTimeMillis() - timeOfLastUpdate[RED_VALUE] > intervalTime[RED_VALUE]) && (numUpdatesLeft[RED_VALUE] > 0) ) {
-        adjustRedHue(updateMagnitude[RED_VALUE]);
-        timeOfLastUpdate[RED_VALUE] = System.currentTimeMillis();
-        numUpdatesLeft[RED_VALUE]--;
-      }
-      else if (numUpdatesLeft[RED_VALUE] == 0) {
-        updateFlag[RED_VALUE] = 0;
-      }
-    }
+          if (i == BRIGHTNESS_VALUE) 
+            { adjustBrightness(updateMagnitude[i]); }
+          else if (i == TRANSPARENCY_VALUE) 
+            { adjustTransparency(updateMagnitude[i]); }
+          else if (i == RED_VALUE) 
+            { adjustRedHue(updateMagnitude[i]); }
+          else if (i == GREEN_VALUE) 
+            { adjustGreenHue(updateMagnitude[i]); }
+          else if (i == BLUE_VALUE) 
+            { adjustBlueHue(updateMagnitude[i]); }
 
-    if (updateFlag[GREEN_VALUE] == 1) {
-      if ((System.currentTimeMillis() - timeOfLastUpdate[GREEN_VALUE] > intervalTime[GREEN_VALUE]) && (numUpdatesLeft[GREEN_VALUE] > 0) ) {
-        adjustGreenHue(updateMagnitude[GREEN_VALUE]);
-        timeOfLastUpdate[GREEN_VALUE] = System.currentTimeMillis();
-        numUpdatesLeft[GREEN_VALUE]--;
+          timeOfLastUpdate[i] = System.currentTimeMillis();
+          numUpdatesLeft[i]--;
+        }
       }
-      else if (numUpdatesLeft[GREEN_VALUE] == 0) {
-        updateFlag[GREEN_VALUE] = 0;
+      else if (numUpdatesLeft[i] == 0) {
+        updateFlag[i] = false;
       }
-    }
 
-    if (updateFlag[BLUE_VALUE] == 1) {
-      if ((System.currentTimeMillis() - timeOfLastUpdate[BLUE_VALUE] > intervalTime[BLUE_VALUE]) && (numUpdatesLeft[BLUE_VALUE] > 0) ) {
-        adjustBlueHue(updateMagnitude[BLUE_VALUE]);
-        timeOfLastUpdate[BLUE_VALUE] = System.currentTimeMillis();
-        numUpdatesLeft[BLUE_VALUE]--;
-      }
-      else if (numUpdatesLeft[BLUE_VALUE] == 0) {
-        updateFlag[BLUE_VALUE] = 0;
-      }
     }
 
     image(picture, x, y);
