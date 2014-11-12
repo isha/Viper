@@ -27,7 +27,7 @@ class InstructionDelegator implements Runnable {
             } else {
               println("[error] Invalid device ID: "+id);
             }
-          }
+          } else { println("[error] Device ID not provided"); }
         }
       }
     } catch (Exception ex) {
