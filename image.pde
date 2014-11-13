@@ -270,7 +270,8 @@ class Image {
   }
 
   void blur(int magnitude) {
-    picture.filter(BLUR, magnitude);
+    int constrainedValue = constrain(magnitude, 1, 5);
+    picture.filter(BLUR, constrainedValue);
   }
 
   void gray() {
@@ -282,7 +283,8 @@ class Image {
   }
 
   void posterize(int numColours) {
-    picture.filter(POSTERIZE, numColours);
+    int constrainedValue = constrain(numColours, 2, 255);
+    picture.filter(POSTERIZE, constrainedValue);
   }
 
   void erode() {
@@ -294,7 +296,8 @@ class Image {
   }
 
   void threshold(float thresholdValue) {
-    picture.filter(THRESHOLD, thresholdValue);
+    float constrainedValue = constrain(thresholdValue, 0.0, 1.0);
+    picture.filter(THRESHOLD, constrainedValue);
   }
 
   void updateSize(int w, int h) {
