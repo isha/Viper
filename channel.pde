@@ -206,6 +206,51 @@ class Channel implements Runnable {
     if (instr.hasKey("transparency")) {
       gif.setTransparency(instr.getInt("transparency"));
     }
+    
+    if (instr.hasKey("brightness")) {
+      gif.setBrightness(instr.getInt("brightness"));
+    }
+
+    if (instr.hasKey("threshold")) {
+      gif.threshold(instr.getFloat("threshold"));
+    }
+
+    if (instr.hasKey("adjustHue")) {
+      gif.adjustHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"));
+    }
+
+    if (instr.hasKey("easing")) {
+      gif.setEasing(instr.getFloat("easing"));
+      gif.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
+    }
+
+    if (instr.hasKey("blur")) {
+      gif.blur(instr.getInt("blur"));
+    }
+
+    if (instr.hasKey("gray")) {
+      gif.gray();
+    }
+
+    if (instr.hasKey("invert")) {
+      gif.invert();
+    }
+
+    if (instr.hasKey("posterize")) {
+      gif.posterize(instr.getInt("posterize"));
+    }
+
+    if (instr.hasKey("erode")) {
+      gif.erode();
+    }
+
+    if (instr.hasKey("dilate")) {
+      gif.dilate();
+    }
+
+    if (instr.hasKey("threshold")) {
+      gif.threshold(instr.getFloat("threshold"));
+    }
   }
 
   void updateVideo(JSONObject instr, Integer id) {
