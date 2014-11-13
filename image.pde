@@ -34,6 +34,12 @@ class Image {
 
   Image(PImage pic) {
     picture = pic;
+
+    numUpdatesLeft = new int[NUM_TRANSITIONS];
+    updateMagnitude = new int[NUM_TRANSITIONS];
+    timeOfLastUpdate = new long[NUM_TRANSITIONS];
+    intervalTime = new long[NUM_TRANSITIONS];
+    updateFlag = new boolean[NUM_TRANSITIONS];
   }
 
   void setEasing(float e) {
@@ -295,17 +301,7 @@ class Image {
     picture.resize(w, h);
   }
 
-  void draw() {
-    int dx = targetX - x;
-    if(abs(dx) > 1) {
-      x += dx * easing;
-    }
-
-    int dy = targetY - y;
-    if(abs(dy) > 1) {
-      y += dy * easing;
-    }
-
+  void applyEffects() {
     // iterate through all possible effects 
     for (int i = 0; i < NUM_TRANSITIONS; i++) {
 
@@ -332,7 +328,21 @@ class Image {
       }
 
     }
+  }
 
+  void draw() {
+    int dx = targetX - x;
+    if(abs(dx) > 1) {
+      x += dx * easing;
+    }
+
+    int dy = targetY - y;
+    if(abs(dy) > 1) {
+      y += dy * easing;
+    }
+
+    applyEffects();
+    
     image(picture, x, y);
   }
 

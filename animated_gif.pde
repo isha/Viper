@@ -31,21 +31,21 @@ class AnimatedGif {
     targetY = posY;
   }
 
-  void setBrightness(int magnitude) {
+  void startBrightness(int magnitude, int totaltime, int numupdates) {
     for (int i=0; i<frames.length; i++) {
-      frames[i].setBrightness(magnitude);
+      frames[i].startBrightness(magnitude, totaltime, numupdates);
     }
   }
 
-  void setTransparency(int magnitude) {
+  void startTransparency(int magnitude, int totaltime, int numupdates) {
     for (int i=0; i<frames.length; i++) {
-      frames[i].setTransparency(magnitude);
+      frames[i].startTransparency(magnitude, totaltime, numupdates);
     }
   }
 
-  void adjustHue(int dR, int dG, int dB) {
+  void startHue(int dR, int dG, int dB, int totaltime, int numupdates) {
     for (int i=0; i<frames.length; i++) {
-      frames[i].adjustHue(dR, dG, dB);
+      frames[i].startHue(dR, dG, dB, totaltime, numupdates);
     }
   }
 
@@ -102,6 +102,11 @@ class AnimatedGif {
     if(abs(dy) > 1) {
       y += dy * easing;
     }
+
+    for (int i=0; i<frames.length; i++) {
+      frames[i].applyEffects();
+    }
+
     image(picture, x, y);
   }
 };

@@ -206,19 +206,19 @@ class Channel implements Runnable {
     AnimatedGif gif = gifs.get(id);
 
     if (instr.hasKey("transparency")) {
-      gif.setTransparency(instr.getInt("transparency"));
+      gif.startTransparency(instr.getInt("transparency"), instr.getInt("totaltime"), instr.getInt("numupdates"));
     }
     
     if (instr.hasKey("brightness")) {
-      gif.setBrightness(instr.getInt("brightness"));
+      gif.startBrightness(instr.getInt("brightness"), instr.getInt("totaltime"), instr.getInt("numupdates"));
     }
 
     if (instr.hasKey("threshold")) {
       gif.threshold(instr.getFloat("threshold"));
     }
 
-    if (instr.hasKey("adjustHue")) {
-      gif.adjustHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"));
+    if (instr.hasKey("hue")) {
+      gif.startHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"), instr.getInt("totaltime"), instr.getInt("numupdates"));
     }
 
     if (instr.hasKey("easing")) {
