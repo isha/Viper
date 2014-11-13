@@ -30,7 +30,7 @@ void setup() {
 
     // Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleHueInstructions.json"));
     // instructionReader1.start();
-    Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "sampleTransparencyInstructions.json"));
+    Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "sampleGifEffectsInstructions.json"));
     instructionReader2.start();
     // Thread instructionReader3 = new Thread(new InstructionReader(mainQueue, "sampleMasterInstructions.json"));
     // instructionReader3.start();
