@@ -4,6 +4,8 @@ class Channel implements Runnable {
   Hashtable<Integer, AnimatedGif> gifs;
   PImage backImage;
 
+  long currentTime;
+
   ConcurrentLinkedQueue<JSONObject> queue;
   
   Channel(ConcurrentLinkedQueue<JSONObject> queue, String backImageFile) {
@@ -151,7 +153,7 @@ class Channel implements Runnable {
     }
     
     if (instr.hasKey("brightness")) {
-      img.setBrightness(instr.getInt("brightness"));
+      img.startBrightness(instr.getInt("brightness"), instr.getInt("totaltime"), instr.getInt("numupdates"));
     }
 
     if (instr.hasKey("threshold")) {
@@ -159,11 +161,11 @@ class Channel implements Runnable {
     }
 
     if (instr.hasKey("transparency")) {
-      img.setTransparency(instr.getInt("transparency"));
+      img.startTransparency(instr.getInt("transparency"), instr.getInt("totaltime"), instr.getInt("numupdates"));
     }
 
-    if (instr.hasKey("adjustHue")) {
-      img.adjustHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"));
+    if (instr.hasKey("hue")) {
+      img.startHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"), instr.getInt("totaltime"), instr.getInt("numupdates"));
     }
 
     if (instr.hasKey("easing")) {

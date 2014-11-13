@@ -30,10 +30,14 @@ void setup() {
 
     // Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleHueInstructions.json"));
     // instructionReader1.start();
-    Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "sampleGifEffectsInstructions.json"));
-    instructionReader2.start();
+
+    // Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "sampleTransparencyInstructions.json"));
+    // instructionReader2.start();
+
     // Thread instructionReader3 = new Thread(new InstructionReader(mainQueue, "sampleMasterInstructions.json"));
     // instructionReader3.start();
+    Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleTransitionInstructions.json"));
+    instructionReader1.start();    
 
     Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
     delegateInstructions.start();
@@ -80,6 +84,7 @@ void draw() {
   while (channel.hasMoreElements ()) {
     channel.nextElement().drawAll();
   }
+
 }
 
 void mousePressed() {
