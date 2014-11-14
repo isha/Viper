@@ -43,6 +43,12 @@ class AnimatedGif {
     }
   }
 
+  void setTransparency(int magnitude) {
+    for (int i=0; i<frames.length; i++) {
+      frames[i].setTransparency(magnitude);
+    }
+  }
+
   void startHue(int dR, int dG, int dB, int totaltime, int numupdates) {
     for (int i=0; i<frames.length; i++) {
       frames[i].startHue(dR, dG, dB, totaltime, numupdates);

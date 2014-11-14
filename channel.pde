@@ -164,6 +164,10 @@ class Channel implements Runnable {
       img.startTransparency(instr.getInt("transparency"), instr.getInt("totaltime"), instr.getInt("numupdates"));
     }
 
+    if (instr.hasKey("setTransparency")) {
+      img.setTransparency(instr.getInt("setTransparency"));
+    }
+
     if (instr.hasKey("hue")) {
       img.startHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"), instr.getInt("totaltime"), instr.getInt("numupdates"));
     }
@@ -207,6 +211,10 @@ class Channel implements Runnable {
 
     if (instr.hasKey("transparency")) {
       gif.startTransparency(instr.getInt("transparency"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+    }
+
+    if (instr.hasKey("setTransparency")) {
+      gif.setTransparency(instr.getInt("setTransparency"));
     }
     
     if (instr.hasKey("brightness")) {
