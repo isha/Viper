@@ -9,11 +9,13 @@ import gifAnimation.*;
 
 
 static final boolean TESTMODE = true;
+static final boolean RECORD = true;
 
 PApplet app;
 
 Hashtable<String, Channel> channels;
 Hashtable<String, ConcurrentLinkedQueue<JSONObject>> queues;
+Hashtable<String, PrintWriter> recorders;
 ConcurrentLinkedQueue<JSONObject> mainQueue;
 
 OSCServer oscServer;
@@ -22,6 +24,13 @@ void setup() {
   app = this;
   channels = new Hashtable<String, Channel>();
   queues = new Hashtable<String, ConcurrentLinkedQueue<JSONObject>>();
+  
+  if (RECORD) {
+    recorders = new Hashtable<String, PrintWriter>();
+    
+    PrintWriter recorder = createWriter("logs/master/messages.json");
+    recorders.put("master", recorder);
+  }
 
   if (TESTMODE) {
     ConcurrentLinkedQueue<JSONObject> queue1 = addChannel("90");
@@ -42,6 +51,7 @@ void setup() {
     Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
     delegateInstructions.start();
   } else {
+
     oscServer = new OSCServer();
     mainQueue = new ConcurrentLinkedQueue<JSONObject>();
     
@@ -62,6 +72,15 @@ ConcurrentLinkedQueue<JSONObject> addChannel(String deviceID) {
 
   Thread channelThread = new Thread(channel);
   channelThread.start();
+
+  if (RECORD) {
+    String first = "logs/";
+    String last = "/messages.json";
+    String filename = first + deviceID + last;
+
+    PrintWriter recorder = createWriter(filename);
+    recorders.put(deviceID, recorder);
+  }
 
   return queue;
 }

@@ -17,6 +17,13 @@ class InstructionDelegator implements Runnable {
             while (channelQueue.hasMoreElements()) {
               channelQueue.nextElement().add(instr);
             }
+
+            if (RECORD) {
+              String message = instr.toString();
+              PrintWriter r = recorders.get("master");
+              r.println(message);
+              r.flush();
+            }
           }
           else if (instr.hasKey("deviceId")) {
             String id = instr.getString("deviceId");
@@ -24,6 +31,14 @@ class InstructionDelegator implements Runnable {
             if (queues.containsKey(id)) {
               ConcurrentLinkedQueue<JSONObject> channelQueue = queues.get(id);
               channelQueue.add(instr);
+
+              if (RECORD) {
+                String message = instr.toString();
+                PrintWriter r = recorders.get(id);
+                r.println(message);
+                r.flush();
+              }
+
             } else {
               println("[error] Invalid device ID: "+id);
             }
