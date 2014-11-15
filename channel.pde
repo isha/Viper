@@ -270,5 +270,19 @@ class Channel implements Runnable {
       vid.setEasing(instr.getFloat("easing"));
       vid.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
     }
+
+    if (instr.hasKey("reverse")) {
+      if (instr.hasKey("speed")) {
+        vid.setPlaybackSpeed(instr.getFloat("speed"));
+      } 
+      vid.setReversePlaybackSpeed();
+      vid.updatePlaybackSpeed();
+    }
+
+    if (instr.hasKey("speed")) {
+      vid.setPlaybackSpeed(instr.getFloat("speed"));
+      vid.updatePlaybackSpeed();
+    } 
+
   }
 };

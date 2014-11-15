@@ -17,14 +17,6 @@
   },
   {
     "deviceId": "109",
-    "method": "create",
-    "posX": 1200,
-    "posY": 60,
-    "image": "fish2.gif",
-    "id": 2
-  },
-  {
-    "deviceId": "109",
     "id": 11,
     "method": "update",
     "easing": 0.01,
@@ -33,11 +25,15 @@
   },
   {
     "deviceId": "109",
-    "id": 2,
+    "id": 11,
     "method": "update",
-    "easing": 0.005,
-    "endX": 20,
-    "endY": 100
+    "reverse": 1
+  },
+  {
+    "deviceId": "109",
+    "id": 7,
+    "method": "update",
+    "speed": 0.3,
   },
   {
     "deviceId": "109",

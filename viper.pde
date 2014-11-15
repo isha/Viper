@@ -9,7 +9,7 @@ import gifAnimation.*;
 
 
 static final boolean TESTMODE = true;
-static final boolean RECORD = true;
+static final boolean RECORD = false;
 
 PApplet app;
 
@@ -33,20 +33,18 @@ void setup() {
   }
 
   if (TESTMODE) {
-    ConcurrentLinkedQueue<JSONObject> queue1 = addChannel("90");
+    ConcurrentLinkedQueue<JSONObject> queue1 = addChannel("109");
     ConcurrentLinkedQueue<JSONObject> queue2 = addChannel("21");
     mainQueue = new ConcurrentLinkedQueue<JSONObject>();
 
-    // Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleHueInstructions.json"));
-    // instructionReader1.start();
+    Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleVideoInstructions.json"));
+    instructionReader1.start();
 
     // Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "sampleTransparencyInstructions.json"));
     // instructionReader2.start();
 
     // Thread instructionReader3 = new Thread(new InstructionReader(mainQueue, "sampleMasterInstructions.json"));
-    // instructionReader3.start();
-    Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleTransitionInstructions.json"));
-    instructionReader1.start();    
+    // instructionReader3.start(); 
 
     Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
     delegateInstructions.start();
