@@ -11,8 +11,9 @@ class OSCServer {
   int numDevices;
   int numPorts;
   int MAXDEVICES = 200;
-  int MAXPORTS = 1;
+  int MAXPORTS = 100;
   int DEFAULTPORT = 12000;
+  int DEFAULTNUMPORTS = 20;
 
   OSCServer() {
     registeredDevices = new String[MAXDEVICES];
@@ -27,34 +28,29 @@ class OSCServer {
   protected void loadServerConfig() {
     JSONObject serverConfig;
     int[] ports;
-    int startPort, endPort;
+    int startPort;
     int i;
     
-    ports = new int[MAXPORTS];
     try {
       // Try loading the server config file and retrieving the configuration
       serverConfig = loadJSONObject("serverConfig.json");
+      numPorts = serverConfig.getInt("NumberOfPorts");
       startPort = serverConfig.getInt("StartPort");
-      endPort = serverConfig.getInt("EndPort");
       
-      numPorts = endPort-startPort+1;
       if(numPorts < 0 || numPorts > MAXPORTS) {
         Exception fileError = new Exception("Port configuration may be corrupted. Check serverConfig.txt file.");
         throw fileError;
       }
-      
-      for(i=startPort; i<=endPort; i++) {
-        ports[i-startPort] = i;
-      }
     } catch (Exception e) {
       print(e.getMessage());
       // If loading the config file fails, set to default values
-      for(i=0;i<MAXPORTS;i++) {
-        ports[i] = DEFAULTPORT + i;
-      }
-      startPort = DEFAULTPORT;
-      endPort = DEFAULTPORT + MAXPORTS - 1;
-      numPorts = MAXPORTS;
+      numPorts = DEFAULTNUMPORTS;
+      startPort = DEFAULTPORT;      
+    }
+    
+    ports = new int[numPorts];
+    for(i=0; i<numPorts; i++) {
+      ports[i] = startPort + i;
     }
     
     viperServer = new OscP5(this, ports[0]);

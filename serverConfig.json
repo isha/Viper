@@ -1,4 +1,4 @@
 {
+	"NumberOfPorts": 1,
 	"StartPort": 11000,
-	"EndPort": 11019
 }
