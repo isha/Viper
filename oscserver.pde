@@ -6,14 +6,18 @@ class OSCServer {
   NetAddress hostLocation;
   
   String[] registeredDevices;
+  String[] registeredDeviceAddresses;
+  Integer[] registeredDevicePorts;
   int numDevices;
   int numPorts;
   int MAXDEVICES = 200;
-  int MAXPORTS = 15;
+  int MAXPORTS = 1;
   int DEFAULTPORT = 12000;
 
   OSCServer() {
     registeredDevices = new String[MAXDEVICES];
+    registeredDeviceAddresses = new String[MAXDEVICES];
+    registeredDevicePorts= new Integer[MAXDEVICES];
 
     loadServerConfig();
     loadRegisteredDevices();
@@ -62,6 +66,7 @@ class OSCServer {
   void loadRegisteredDevices() {
     BufferedReader reader;
     String line;
+    String[] lineTokens;
     int lineCount = 0;
     
     try {
@@ -71,9 +76,13 @@ class OSCServer {
         
         if(line==null) {
           break;
+        } else {
+          lineTokens = splitTokens(line, ", ");
         }
         
-        registeredDevices[lineCount] = line;
+        registeredDevices[lineCount] = lineTokens[0];
+        registeredDeviceAddresses[lineCount] = lineTokens[1];
+        registeredDevicePorts[lineCount] = int(lineTokens[2]);
         lineCount++; 
       } while(line!=null);
     } catch (Exception e) {
@@ -166,14 +175,18 @@ class OSCServer {
   }
 
   void mousePressed() {
-    // create an osc message
-    OscMessage dataList = new OscMessage("/viper");
-    readDataFolder(dataList);
-    sendMessage(dataList, hostLocation);
-    
+    // create an osc message    
     OscMessage testEasing = new OscMessage("/rime");
     testEasing(testEasing);
     sendMessage(testEasing, hostLocation);
+  }
+
+  void sendDataList(String deviceID, Integer deviceIndex) {
+    OscMessage dataList = new OscMessage("/viper");
+    readDataFolder(dataList);
+    
+    NetAddress rimeLocation = new NetAddress(registeredDeviceAddresses[deviceIndex], registeredDevicePorts[deviceIndex]);
+    sendMessage(dataList, rimeLocation);
   }
 
   /*
@@ -188,6 +201,7 @@ class OSCServer {
     String deviceID;
     int recvMsgLength;
     int commandCount;
+    int deviceIndex;
     int i;
     boolean goodID = false;
 
@@ -199,9 +213,10 @@ class OSCServer {
     
     if(recvMsg.get(0).stringValue().equalsIgnoreCase("deviceId")) {
       deviceID = recvMsg.get(1).stringValue();
-      for(i=0;i<numDevices;i++) {
-        if(registeredDevices[i].equals(deviceID)) {
+      for(deviceIndex=0;deviceIndex<numDevices;deviceIndex++) {
+        if(registeredDevices[deviceIndex].equals(deviceID)) {
           goodID = true;
+          break;
         }
       }
       if(goodID==false) {
@@ -212,6 +227,12 @@ class OSCServer {
     } else {
       //if the deviceID is not the first thing we find, 
       //consider it a rogue message and discard
+      return;
+    }
+    
+    if(recvMsg.get(2).stringValue().equalsIgnoreCase("datalist")) {
+      // Send the data list (complete list of all images' and videos' filenames if requested
+      sendDataList(deviceID, deviceIndex);
       return;
     }
     
