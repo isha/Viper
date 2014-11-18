@@ -1,0 +1,37 @@
+[
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "demo/Blue.png",
+    "id": 0
+  },
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "demo/Fading Blue.jpeg",
+    "id": 1
+  },
+  {
+    "deviceId": "1",
+    "method": "update",
+    "id": 1,
+    "gray": 1
+  },
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "demo/Dark Blue.jpg",
+    "id": 2
+  },
+
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "video": "undersea-jelly-fish.mp4",
+    "id": 3
+  },
+]

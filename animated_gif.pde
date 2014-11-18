@@ -97,6 +97,9 @@ class AnimatedGif {
     }
   }
 
+  Gif getGif() {
+    return picture;
+  }
 
   void draw() {
     int dx = targetX - x;

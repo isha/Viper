@@ -362,6 +362,10 @@ class Image {
     }
   }
 
+  PImage getPImage() {
+    return picture;
+  }
+
   void draw() {
     int dx = targetX - x;
     if(abs(dx) > 1) {
