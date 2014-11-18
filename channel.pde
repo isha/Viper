@@ -2,19 +2,26 @@ class Channel implements Runnable {
   Hashtable<Integer, Image> images;
   Hashtable<Integer, Video> videos;
   Hashtable<Integer, AnimatedGif> gifs;
-  PImage backImage;
+
+  Image backImage;
+  int backImageId;
+
+  AnimatedGif backGif;
+  int backGifId;
+
+  Video backVideo;
+  int backVideoId;
 
   long currentTime;
 
   ConcurrentLinkedQueue<JSONObject> queue;
   
-  Channel(ConcurrentLinkedQueue<JSONObject> queue, String backImageFile) {
+  Channel(ConcurrentLinkedQueue<JSONObject> queue) {
     images = new Hashtable<Integer, Image>();
     videos = new Hashtable<Integer, Video>();
     gifs = new Hashtable<Integer, AnimatedGif>();
 
-    backImage = loadImage(backImageFile);
-    size(backImage.width, backImage.height);
+    size(WIDTH, HEIGHT);
 
     this.queue = queue;
   }
@@ -47,7 +54,13 @@ class Channel implements Runnable {
   }
 
   void drawBackground() {
-    image(backImage, 0, 0);
+    if (backImage != null) {
+      image(backImage.getPImage(), 0, 0, WIDTH, HEIGHT);
+    } else if (backGif != null) {
+      image(backGif.getGif(), 0, 0, WIDTH, HEIGHT);
+    } else if (backVideo != null) {
+      image(backVideo.getMovie(), 0, 0, WIDTH, HEIGHT);
+    }
   }
 
   void drawAll() {
@@ -72,18 +85,22 @@ class Channel implements Runnable {
 
   void applyInstrToId(JSONObject instr, int id) {
     if (instr.getString("method").equals("create")) {
-      if (instr.hasKey("image")) {
+      if (instr.hasKey("background")) {
+        setBackground(instr);
+      } else if (instr.hasKey("image")) {
         createImage(instr);
       } else if (instr.hasKey("video")) {
         createVideo(instr);
+      } else {
+        println("[error] image or video key required when creating");
       }
     }
     else if (instr.getString("method").equals("update")) {
-      if (images.containsKey(id)) {
+      if (images.containsKey(id) || backImageId == id) {
         updateImage(instr, id);
-      } else if (gifs.containsKey(id)) {
+      } else if (gifs.containsKey(id) || backGifId == id) {
         updateGif(instr, id);
-      } else if (videos.containsKey(id)) {
+      } else if (videos.containsKey(id) || backVideoId == id) {
         updateVideo(instr, id);
       } else {
         println("[error] Invalid ID: "+id);
@@ -96,6 +113,39 @@ class Channel implements Runnable {
         deleteVideo(instr, id);
       } else {
         println("[error] Invalid ID: "+id);
+      }
+    }
+  }
+
+  void setBackground(JSONObject instr) {
+    backGif = null;
+    backImage = null;
+    backVideo = null;
+    backGifId = backImageId = backVideoId = -1;
+
+    if (instr.hasKey("image")) {
+      String filename = instr.getString("image");
+      File f = new File(dataPath(filename));
+      if (f.exists()) {
+        if (filename.endsWith(".gif")) {
+          AnimatedGif gif = new AnimatedGif(filename, 0, 0);
+          backGif = gif; backGifId = instr.getInt("id");
+        } else {
+          Image img = new Image(filename, 0, 0);
+          backImage = img; backImageId = instr.getInt("id");
+        }
+      } else {
+        println("[error] File "+filename+" does not exist");
+      }
+    } else if (instr.hasKey("video")) {
+      String filename = instr.getString("video");
+
+      File f = new File(dataPath(filename));
+      if (f.exists()) {
+        Video vid = new Video(filename, 0, 0);
+        backVideo = vid; backVideoId = instr.getInt("id");
+      } else {
+        println("[error] File "+filename+" does not exist");
       }
     }
   }
@@ -146,7 +196,12 @@ class Channel implements Runnable {
   }
 
   void updateImage(JSONObject instr, Integer id) {
-    Image img = images.get(id);
+    Image img;
+    if (backImageId ==  id) {
+      img = backImage;
+    } else {
+      img = images.get(id);
+    }
 
     if (instr.hasKey("width") && instr.hasKey("height")) {
       img.updateSize(instr.getInt("width"), instr.getInt("height"));
@@ -207,7 +262,12 @@ class Channel implements Runnable {
   }
 
   void updateGif(JSONObject instr, Integer id) {
-    AnimatedGif gif = gifs.get(id);
+    AnimatedGif gif;
+    if (backGifId == id) {
+      gif = backGif;
+    } else {
+      gif = gifs.get(id);
+    }
 
     if (instr.hasKey("transparency")) {
       gif.startTransparency(instr.getInt("transparency"), instr.getInt("totaltime"), instr.getInt("numupdates"));
@@ -264,7 +324,12 @@ class Channel implements Runnable {
   }
 
   void updateVideo(JSONObject instr, Integer id) {
-    Video vid = videos.get(id);
+    Video vid;
+    if (backVideoId ==  id) {
+      vid = backVideo;
+    } else {
+      vid = videos.get(id);
+    }
 
     if (instr.hasKey("easing")) {
       vid.setEasing(instr.getFloat("easing"));

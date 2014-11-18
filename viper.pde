@@ -10,6 +10,8 @@ import gifAnimation.*;
 
 static final boolean TESTMODE = true;
 static final boolean RECORD = false;
+static final int WIDTH = 1000;
+static final int HEIGHT = 600;
 
 PApplet app;
 
@@ -33,11 +35,11 @@ void setup() {
   }
 
   if (TESTMODE) {
-    ConcurrentLinkedQueue<JSONObject> queue1 = addChannel("109");
-    ConcurrentLinkedQueue<JSONObject> queue2 = addChannel("21");
+    ConcurrentLinkedQueue<JSONObject> queue1 = addChannel("1");
+    ConcurrentLinkedQueue<JSONObject> queue2 = addChannel("2");
     mainQueue = new ConcurrentLinkedQueue<JSONObject>();
 
-    Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleVideoInstructions.json"));
+    Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "demo/instructions1.json"));
     instructionReader1.start();
 
     // Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "sampleTransparencyInstructions.json"));
@@ -65,7 +67,7 @@ ConcurrentLinkedQueue<JSONObject> addChannel(String deviceID) {
   ConcurrentLinkedQueue<JSONObject> queue = new ConcurrentLinkedQueue<JSONObject>();
   queues.put(deviceID, queue);
 
-  Channel channel = new Channel(queue, "ocean.jpg");
+  Channel channel = new Channel(queue);
   channels.put(deviceID, channel);
 
   Thread channelThread = new Thread(channel);

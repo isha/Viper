@@ -34,6 +34,10 @@ class Video {
     targetY = posY;
   }
 
+  Movie getMovie() {
+    return video;
+  }
+
   void draw() {
     int dx = targetX - x;
     if(abs(dx) > 1) {
