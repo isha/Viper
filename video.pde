@@ -3,7 +3,7 @@ class Video {
   int targetX, targetY;
   float easing = 0.1;
   float speed;
-  int currentScale = 100;
+  float currentScale = 1.0;
 
   Movie video;
 
@@ -40,7 +40,7 @@ class Video {
   }
 
   void setScale(int s) {
-    currentScale = s;
+    currentScale = (float) s/100.0;
   }
 
   void draw() {
@@ -54,6 +54,6 @@ class Video {
       y += dy * easing;
     }
 
-    image(video, x, y, video.width*(currentScale/100), video.height*(currentScale/100));
+    image(video, x, y, video.width*currentScale, video.height*currentScale);
   }
 };

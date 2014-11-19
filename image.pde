@@ -2,7 +2,7 @@ class Image {
   int x, y;
   int targetX, targetY;
   float easing = 0.1;
-  int currentScale = 100;
+  float currentScale = 1.0;
 
   // image effect transition variables
   private static final int BRIGHTNESS_VALUE = 0;
@@ -335,7 +335,7 @@ class Image {
   }
 
   void setScale(int s) {
-    currentScale = s;
+    currentScale = (float) s/100.0;
   }
 
   void applyEffects() {
@@ -384,7 +384,7 @@ class Image {
 
     applyEffects();
     
-    image(picture, x, y, picture.width*(currentScale/100), picture.height*(currentScale/100));
+    image(picture, x, y, picture.width*currentScale, picture.height*currentScale);
   }
 
 };
