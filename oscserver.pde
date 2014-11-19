@@ -83,91 +83,6 @@ class OSCServer {
     viperServer.send(testMessage, sendLoc);
   }
 
-  void testEasing(OscMessage message) {
-    // creates a sample easing message
-    message.add("deviceId");
-    message.add("oijgoaij2ojgawojfiawfjoa");
-    
-    message.add("method");
-    message.add("create");
-    message.add("posX");
-    message.add(35);
-    message.add("posY");
-    message.add(120);
-    message.add("image");
-    message.add("fish1.gif");
-    message.add("id");
-    message.add(7);
-    
-    message.add("method");
-    message.add("create");
-    message.add("posX");
-    message.add(800);
-    message.add("posY");
-    message.add(320);
-    message.add("image");
-    message.add("shark.gif");
-    message.add("id");
-    message.add(11);
-    message.add("deviceId");
-    message.add("oijgoaij2ojgawojfiawfjoa");
-    
-    message.add("method");
-    message.add("create");
-    message.add("posX");
-    message.add(1200);
-    message.add("posY");
-    message.add(60);
-    message.add("image");
-    message.add("magical-starfish.gif");
-    message.add("id");
-    message.add(2);
-    message.add("deviceId");
-    message.add("oijgoaij2ojgawojfiawfjoa");
-    
-    message.add("method");
-    message.add("update");
-    message.add("id");
-    message.add(2);
-    message.add("blur");
-    message.add(6);
-    message.add("deviceId");
-    message.add("oijgoaij2ojgawojfiawfjoa");
-    
-    message.add("method");
-    message.add("update");
-    message.add("id");
-    message.add(11);
-    message.add("easing");
-    message.add(0.01);
-    message.add("endX");
-    message.add(20);
-    message.add("endY");
-    message.add(280);
-    message.add("deviceId");
-    message.add("oijgoaij2ojgawojfiawfjoa");
-    
-    message.add("method");
-    message.add("update");
-    message.add("id");
-    message.add(2);
-    message.add("easing");
-    message.add(0.005);
-    message.add("endX");
-    message.add(20);
-    message.add("endY");
-    message.add(100);
-    message.add("deviceId");
-    message.add("oijgoaij2ojgawojfiawfjoa");
-  }
-
-  void mousePressed() {
-    // create an osc message    
-    OscMessage testEasing = new OscMessage("/rime");
-    testEasing(testEasing);
-    sendMessage(testEasing, hostLocation);
-  }
-
   void sendDataList(String deviceID, String deviceAddr, Integer devicePort) {
     OscMessage dataList = new OscMessage("/viper");
     readDataFolder(dataList);
@@ -191,6 +106,8 @@ class OSCServer {
     int i;
     boolean goodID = false;
 
+    recvMsg.print();
+    
     if(recvMsg.checkAddrPattern("/rime") == false) {
       //if the OSC message is received without address tag '/rime',
       //consider it a rogue message and discard
@@ -216,8 +133,9 @@ class OSCServer {
       return;
     }
     
-    if(recvMsg.get(2).stringValue().equalsIgnoreCase("datalist")) {
+    if(recvMsg.get(3).stringValue().equalsIgnoreCase("datalist")) {
       // Send the data list (complete list of all images' and videos' filenames if requested
+      delay(500);
       sendDataList(deviceID, recvMsg.netAddress().address(), recvMsg.netAddress().port());
       return;
     }
@@ -264,23 +182,48 @@ class OSCServer {
     // we'll have a look in the data folder
     File folder = new File(dataPath(""));
      
+    getFilenames(dataList, folder, "");    
+  }
+
+  void getFilenames(OscMessage dataList, File folder, String prefix) {
     // list the files in the data folder
-    String[] filenames = folder.list();
+    //String[] filenames = folder.list();
+    File[] filenames = folder.listFiles();
+    String newPrefix;
     
     // display the filenames
     for (int i=0; i<filenames.length; i++) {
-      if(filenames[i].length() > 5) {
-        if(!(filenames[i].substring(filenames[i].length()-5, filenames[i].length()).equalsIgnoreCase(".json")) &&
-            !(filenames[i].substring(filenames[i].length()-4, filenames[i].length()).equalsIgnoreCase(".txt"))) {
-          dataList.add(filenames[i]);
+      print("\n");
+      if(filenames[i].isDirectory()) {
+        if(prefix == "") {
+          newPrefix = filenames[i].getName();
+        } else {
+          newPrefix = prefix + "/" + filenames[i].getName();
         }
-      } else if(filenames[i].length() > 4) {
-        if(!(filenames[i].substring(filenames[i].length()-4, filenames[i].length()).equalsIgnoreCase(".txt"))) {
-          dataList.add(filenames[i]);
+        getFilenames(dataList, filenames[i], newPrefix);
+      } else if(filenames[i].isFile()) {
+        if(prefix == "") {
+          filterFilenames(dataList, filenames[i].getName());
+        } else {
+          filterFilenames(dataList, prefix + "/" + filenames[i].getName());
         }
-      } else {
-        dataList.add(filenames[i]);
       }
     }
   }
+  
+  void filterFilenames(OscMessage dataList, String filename) {
+    if(filename.length() > 5) {
+      if(!(filename.substring(filename.length()-5, filename.length()).equalsIgnoreCase(".json")) &&
+          !(filename.substring(filename.length()-4, filename.length()).equalsIgnoreCase(".txt"))) {
+        dataList.add(filename + ",");
+      }
+    } else if(filename.length() > 4) {
+      if(!(filename.substring(filename.length()-4, filename.length()).equalsIgnoreCase(".txt"))) {
+        dataList.add(filename + ",");
+      }
+    } else {
+      dataList.add(filename + ",");
+    }
+  }
+
 };
