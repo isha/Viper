@@ -17,6 +17,8 @@ class Channel implements Runnable {
   int textPosY;
 
   long currentTime;
+  long timerStart;
+  long timer;
 
   ConcurrentLinkedQueue<JSONObject> queue;
   
@@ -33,6 +35,11 @@ class Channel implements Runnable {
 
   void run() {
     while (true) {
+      if (timer != 0 && System.currentTimeMillis() - timerStart < timer) {
+        continue;
+      } 
+      timer = 0;
+
       JSONObject instr;
       instr = queue.poll();
 
@@ -59,6 +66,11 @@ class Channel implements Runnable {
           }
         } else {
           applyInstrToId(instr, instr.getInt("id"));
+        }
+
+        if (instr.hasKey("sleep")) {
+          timerStart = System.currentTimeMillis();
+          timer = instr.getInt("sleep");
         }
       }
 
@@ -126,16 +138,18 @@ class Channel implements Runnable {
       } else if (videos.containsKey(id) || backVideoId == id) {
         updateVideo(instr, id);
       } else {
-        println("[error] Invalid ID: "+id);
+        println("[error] Invalid ID: "+id+" for update");
       }
     }
     else if (instr.getString("method").equals("delete")) {
       if (images.containsKey(id)) {
         deleteImage(instr, id);
+      } else if (gifs.containsKey(id)) {
+        deleteGif(instr, id); 
       } else if (videos.containsKey(id)) {
         deleteVideo(instr, id);
       } else {
-        println("[error] Invalid ID: "+id);
+        println("[error] Invalid ID: "+id+" for delete");
       }
     }
   }
