@@ -229,7 +229,7 @@ class OSCServer {
     command = new JSONObject();
     for(i=0; i<recvMsgLength; i++) {
       messagePair = recvMsgType.substring(i*2, i*2 + 2);
-      if(recvMsg.get(i*2).stringValue().equalsIgnoreCase("method")) {
+      if(recvMsg.get(i*2).stringValue().equalsIgnoreCase("deviceId")) {
         if (commandCount!=0) {
           mainQueue.add(command);
           command = new JSONObject();
