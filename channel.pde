@@ -12,6 +12,10 @@ class Channel implements Runnable {
   Video backVideo;
   int backVideoId;
 
+  String textStr;
+  int textPosX;
+  int textPosY;
+
   long currentTime;
 
   ConcurrentLinkedQueue<JSONObject> queue;
@@ -20,6 +24,7 @@ class Channel implements Runnable {
     images = new Hashtable<Integer, Image>();
     videos = new Hashtable<Integer, Video>();
     gifs = new Hashtable<Integer, AnimatedGif>();
+    backGifId = backImageId = backVideoId = -1;
 
     size(WIDTH, HEIGHT);
 
@@ -43,13 +48,20 @@ class Channel implements Runnable {
           while (i.hasMoreElements()) {
             applyInstrToId(instr, i.nextElement());
           }
-        }
+        } 
         else if (!instr.hasKey("id")) {
-          println("[error] ID is required");
+          if (instr.hasKey("text")) {
+            textStr = instr.getString("text");
+            textPosX = instr.getInt("textPosX");
+            textPosY = instr.getInt("textPosY");
+          } else {
+            println("[error] ID is required");
+          }
         } else {
           applyInstrToId(instr, instr.getInt("id"));
         }
       }
+
     }
   }
 
@@ -81,9 +93,20 @@ class Channel implements Runnable {
     while (g.hasMoreElements()) {
       g.nextElement().draw();
     }
+
+    // Draw all text
+    if (textStr != null) {
+      text(textStr, textPosX, textPosY);
+    }
   }
 
   void applyInstrToId(JSONObject instr, int id) {
+    if (instr.hasKey("text")) {
+      textStr = instr.getString("text");
+      textPosX = instr.getInt("textPosX");
+      textPosY = instr.getInt("textPosY");
+    }
+
     if (instr.getString("method").equals("create")) {
       if (instr.hasKey("background")) {
         setBackground(instr);
@@ -109,8 +132,6 @@ class Channel implements Runnable {
     else if (instr.getString("method").equals("delete")) {
       if (images.containsKey(id)) {
         deleteImage(instr, id);
-      } else if (gifs.containsKey(id)) {
-        deleteGif(instr, id);
       } else if (videos.containsKey(id)) {
         deleteVideo(instr, id);
       } else {
