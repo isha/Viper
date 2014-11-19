@@ -320,7 +320,7 @@ class Image {
           b = blue (picture.pixels[loc]);
    
           // Constrain red value to make sure they are within 0-255 alpha range
-          r = constrain(magnitude, 0, 255);
+          r = constrain(r, 0, 255);
 
           // Make a new color and set pixel in the window
           color c = color(r, g, b, alpha(picture.pixels[loc]));
@@ -349,7 +349,7 @@ class Image {
           b = blue (picture.pixels[loc]);
    
           // Constrain green value to make sure they are within 0-255 alpha range
-          g = constrain(magnitude, 0, 255);
+          g = constrain(g, 0, 255);
 
           // Make a new color and set pixel in the window
           color c = color(r, g, b, alpha(picture.pixels[loc]));
@@ -378,7 +378,7 @@ class Image {
           b = blue (originalPicture.pixels[loc]) + magnitude;
    
           // Constrain blue value to make sure they are within 0-255 alpha range
-          b = constrain(magnitude, 0, 255);
+          b = constrain(b, 0, 255);
 
           // Make a new color and set pixel in the window
           color c = color(r, g, b, alpha(picture.pixels[loc]));
@@ -389,6 +389,37 @@ class Image {
       }
     }    
   }
+
+  void setBrightness(int magnitude) {
+    for (int px = 0; px < picture.width; px++) {
+      for (int py = 0; py < picture.height; py++ ) {
+
+        // Calculate the 1D location from a 2D grid
+        int loc = px + py*picture.width;
+
+        // check transparency
+        if (alpha(picture.pixels[loc]) != 0.0) {
+
+          // Get the R,G,B values from image
+          float r,g,b;
+          r = red (originalPicture.pixels[loc]) + magnitude;
+          g = green (originalPicture.pixels[loc]) + magnitude;
+          b = blue (originalPicture.pixels[loc]) + magnitude;
+   
+          // Constrain blue value to make sure they are within 0-255 alpha range
+          r = constrain(r, 0, 255);
+          g = constrain(g, 0, 255);
+          b = constrain(b, 0, 255);
+
+          // Make a new color and set pixel in the window
+          color c = color(r, g, b, alpha(picture.pixels[loc]));
+
+          picture.pixels[loc] = c;
+          picture.updatePixels();
+        }
+      }
+    }    
+  }  
 
   void blur(int magnitude) {
     int constrainedValue = constrain(magnitude, 1, 5);

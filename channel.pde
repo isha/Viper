@@ -277,6 +277,10 @@ class Channel implements Runnable {
       img.setBlue(instr.getInt("setBlue"));
     }    
 
+    if (instr.hasKey("setBrightness")) {
+      img.setBrightness(instr.getInt("setBrightness"));
+    }
+
     if (instr.hasKey("easing")) {
       if (instr.hasKey("endX") && instr.hasKey("endY")) {
         img.setEasing(instr.getFloat("easing"));
@@ -370,6 +374,10 @@ class Channel implements Runnable {
     if (instr.hasKey("setBlue")) {
       gif.setBlue(instr.getInt("setBlue"));
     }    
+
+    if (instr.hasKey("setBrightness")) {
+      gif.setBrightness(instr.getInt("setBrightness"));
+    }
 
     if (instr.hasKey("easing")) {
       if (instr.hasKey("endX") && instr.hasKey("endY")) {
