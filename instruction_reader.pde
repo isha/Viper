@@ -14,11 +14,10 @@ class InstructionReader implements Runnable {
 
       while (instructionCounter < instructions.size()) {
         instr = instructions.getJSONObject(instructionCounter++);
-        queue.add(instr);
-
         if (!instr.hasKey("sleep")) {
-          Thread.currentThread().sleep(1000);
+          instr.setInt("sleep", 1000);
         }
+        queue.add(instr);
       }
     } catch (Exception ex) {
       ex.printStackTrace();

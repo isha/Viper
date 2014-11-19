@@ -35,9 +35,10 @@ class Channel implements Runnable {
 
   void run() {
     while (true) {
-      if (System.currentTimeMillis() - timerStart < timer) {
+      if (timer != 0 && System.currentTimeMillis() - timerStart < timer) {
         continue;
-      }
+      } 
+      timer = 0;
 
       JSONObject instr;
       instr = queue.poll();
