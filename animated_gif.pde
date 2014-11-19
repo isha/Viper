@@ -50,6 +50,30 @@ class AnimatedGif {
     }
   }
 
+  void setRed(int magnitude) {
+    for (int i=0; i<frames.length; i++) {
+      frames[i].setRed(magnitude);
+    }    
+  }
+
+  void setGreen(int magnitude) {
+    for (int i=0; i<frames.length; i++) {
+      frames[i].setGreen(magnitude);
+    }    
+  }
+
+  void setBlue(int magnitude) {
+    for (int i=0; i<frames.length; i++) {
+      frames[i].setBlue(magnitude);
+    }    
+  }
+
+  void setBrightness(int magnitude) {
+    for (int i=0; i<frames.length; i++) {
+      frames[i].setBrightness(magnitude);
+    }        
+  }
+
   void startHue(int dR, int dG, int dB, int totaltime, int numupdates) {
     for (int i=0; i<frames.length; i++) {
       frames[i].startHue(dR, dG, dB, totaltime, numupdates);
