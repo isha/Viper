@@ -18,9 +18,11 @@ class Image {
   boolean[] updateFlag;
 
   PImage picture;
+  PImage originalPicture;
 
   Image(String filename, int posX, int posY) {
     picture = loadImage(filename);
+    originalPicture = loadImage(filename);
     
     targetX = x = posX;
     targetY = y = posY;
@@ -30,16 +32,19 @@ class Image {
     timeOfLastUpdate = new long[NUM_TRANSITIONS];
     intervalTime = new long[NUM_TRANSITIONS];
     updateFlag = new boolean[NUM_TRANSITIONS];
+
   }
 
   Image(PImage pic) {
     picture = pic;
+    originalPicture = pic;
 
     numUpdatesLeft = new int[NUM_TRANSITIONS];
     updateMagnitude = new int[NUM_TRANSITIONS];
     timeOfLastUpdate = new long[NUM_TRANSITIONS];
     intervalTime = new long[NUM_TRANSITIONS];
     updateFlag = new boolean[NUM_TRANSITIONS];
+
   }
 
   void setEasing(float e) {
@@ -296,6 +301,93 @@ class Image {
         }
       }
     }
+  }
+
+  void setRed(int magnitude) {
+    for (int px = 0; px < picture.width; px++) {
+      for (int py = 0; py < picture.height; py++ ) {
+
+        // Calculate the 1D location from a 2D grid
+        int loc = px + py*picture.width;
+
+        // check transparency
+        if (alpha(picture.pixels[loc]) != 0.0) {
+
+          // Get the R,G,B values from image
+          float r,g,b;
+          r = red (originalPicture.pixels[loc]) + magnitude;
+          g = green (picture.pixels[loc]);
+          b = blue (picture.pixels[loc]);
+   
+          // Constrain red value to make sure they are within 0-255 alpha range
+          r = constrain(magnitude, 0, 255);
+
+          // Make a new color and set pixel in the window
+          color c = color(r, g, b, alpha(picture.pixels[loc]));
+
+          picture.pixels[loc] = c;
+          picture.updatePixels();
+        }
+      }
+    }    
+  }
+
+  void setGreen(int magnitude) {
+    for (int px = 0; px < picture.width; px++) {
+      for (int py = 0; py < picture.height; py++ ) {
+
+        // Calculate the 1D location from a 2D grid
+        int loc = px + py*picture.width;
+
+        // check transparency
+        if (alpha(picture.pixels[loc]) != 0.0) {
+
+          // Get the R,G,B values from image
+          float r,g,b;
+          r = red (picture.pixels[loc]);
+          g = green (originalPicture.pixels[loc]) + magnitude;
+          b = blue (picture.pixels[loc]);
+   
+          // Constrain green value to make sure they are within 0-255 alpha range
+          g = constrain(magnitude, 0, 255);
+
+          // Make a new color and set pixel in the window
+          color c = color(r, g, b, alpha(picture.pixels[loc]));
+
+          picture.pixels[loc] = c;
+          picture.updatePixels();
+        }
+      }
+    }    
+  }
+
+  void setBlue(int magnitude) {
+    for (int px = 0; px < picture.width; px++) {
+      for (int py = 0; py < picture.height; py++ ) {
+
+        // Calculate the 1D location from a 2D grid
+        int loc = px + py*picture.width;
+
+        // check transparency
+        if (alpha(picture.pixels[loc]) != 0.0) {
+
+          // Get the R,G,B values from image
+          float r,g,b;
+          r = red (picture.pixels[loc]);
+          g = green (picture.pixels[loc]);
+          b = blue (originalPicture.pixels[loc]) + magnitude;
+   
+          // Constrain blue value to make sure they are within 0-255 alpha range
+          b = constrain(magnitude, 0, 255);
+
+          // Make a new color and set pixel in the window
+          color c = color(r, g, b, alpha(picture.pixels[loc]));
+
+          picture.pixels[loc] = c;
+          picture.updatePixels();
+        }
+      }
+    }    
   }
 
   void blur(int magnitude) {

@@ -265,6 +265,18 @@ class Channel implements Runnable {
       }
     }
 
+    if (instr.hasKey("setRed")) {
+      img.setRed(instr.getInt("setRed"));
+    }    
+
+    if (instr.hasKey("setGreen")) {
+      img.setGreen(instr.getInt("setGreen"));
+    }    
+
+    if (instr.hasKey("setBlue")) {
+      img.setBlue(instr.getInt("setBlue"));
+    }    
+
     if (instr.hasKey("easing")) {
       if (instr.hasKey("endX") && instr.hasKey("endY")) {
         img.setEasing(instr.getFloat("easing"));
@@ -346,6 +358,18 @@ class Channel implements Runnable {
         println("[error] Missing or incorrect parameters in hue instruction");
       }
     }
+
+    if (instr.hasKey("setRed")) {
+      gif.setRed(instr.getInt("setRed"));
+    }    
+
+    if (instr.hasKey("setGreen")) {
+      gif.setGreen(instr.getInt("setGreen"));
+    }    
+
+    if (instr.hasKey("setBlue")) {
+      gif.setBlue(instr.getInt("setBlue"));
+    }    
 
     if (instr.hasKey("easing")) {
       if (instr.hasKey("endX") && instr.hasKey("endY")) {
