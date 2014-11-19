@@ -106,12 +106,6 @@ void draw() {
 
 }
 
-void mousePressed() {
-  if (!TESTMODE) {
-    oscServer.mousePressed();
-  }
-}
-
 // Called every time a new frame is available to read
 void movieEvent(Movie m) {
   m.read();
