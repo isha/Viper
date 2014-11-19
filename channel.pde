@@ -231,7 +231,12 @@ class Channel implements Runnable {
     }
     
     if (instr.hasKey("brightness")) {
-      img.startBrightness(instr.getInt("brightness"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+      if (instr.hasKey("totaltime") && instr.hasKey("numupdates")) {
+        img.startBrightness(instr.getInt("brightness"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+      }
+      else {
+        println("[error] Missing or incorrect parameters in brightness instruction");
+      }
     }
 
     if (instr.hasKey("threshold")) {
@@ -239,7 +244,12 @@ class Channel implements Runnable {
     }
 
     if (instr.hasKey("transparency")) {
-      img.startTransparency(instr.getInt("transparency"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+      if (instr.hasKey("totaltime") && instr.hasKey("numupdates")) {
+        img.startTransparency(instr.getInt("transparency"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+      }
+      else {
+        println("[error] Missing or incorrect parameters in transparency instruction");
+      }
     }
 
     if (instr.hasKey("setTransparency")) {
@@ -247,12 +257,22 @@ class Channel implements Runnable {
     }
 
     if (instr.hasKey("hue")) {
-      img.startHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+      if (instr.hasKey("red") && instr.hasKey("green") && instr.hasKey("blue") && instr.hasKey("totaltime") && instr.hasKey("numupdates")) {
+        img.startHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+      }
+      else {
+        println("[error] Missing or incorrect parameters in hue instruction");
+      }
     }
 
     if (instr.hasKey("easing")) {
-      img.setEasing(instr.getFloat("easing"));
-      img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
+      if (instr.hasKey("endX") && instr.hasKey("endY")) {
+        img.setEasing(instr.getFloat("easing"));
+        img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));        
+      }
+      else {
+        println("[error] Missing or incorrect parameters in easing instruction");
+      }
     }
 
     if (instr.hasKey("blur")) {
@@ -293,7 +313,12 @@ class Channel implements Runnable {
     }
 
     if (instr.hasKey("transparency")) {
-      gif.startTransparency(instr.getInt("transparency"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+      if (instr.hasKey("totaltime") && instr.hasKey("numupdates")) {
+        gif.startTransparency(instr.getInt("transparency"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+      }
+      else {
+        println("[error] Missing or incorrect parameters in transparency instruction");
+      }
     }
 
     if (instr.hasKey("setTransparency")) {
@@ -301,7 +326,12 @@ class Channel implements Runnable {
     }
     
     if (instr.hasKey("brightness")) {
-      gif.startBrightness(instr.getInt("brightness"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+      if (instr.hasKey("totaltime") && instr.hasKey("numupdates")) {
+        gif.startBrightness(instr.getInt("brightness"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+      }
+      else {
+        println("[error] Missing or incorrect parameters in brightness instruction");
+      }
     }
 
     if (instr.hasKey("threshold")) {
@@ -309,12 +339,22 @@ class Channel implements Runnable {
     }
 
     if (instr.hasKey("hue")) {
-      gif.startHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+      if (instr.hasKey("red") && instr.hasKey("green") && instr.hasKey("blue") && instr.hasKey("totaltime") && instr.hasKey("numupdates")) {
+        gif.startHue(instr.getInt("red"), instr.getInt("green"), instr.getInt("blue"), instr.getInt("totaltime"), instr.getInt("numupdates"));
+      }
+      else {
+        println("[error] Missing or incorrect parameters in hue instruction");
+      }
     }
 
     if (instr.hasKey("easing")) {
-      gif.setEasing(instr.getFloat("easing"));
-      gif.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
+      if (instr.hasKey("endX") && instr.hasKey("endY")) {
+        gif.setEasing(instr.getFloat("easing"));
+        gif.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
+      }
+      else {
+        println("[error] Missing or incorrect parameters in easing instruction");
+      }
     }
 
     if (instr.hasKey("blur")) {
