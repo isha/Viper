@@ -2,6 +2,7 @@ class AnimatedGif {
   int x, y;
   int targetX, targetY;
   float easing = 0.1;
+  int currentScale = 100;
 
   Gif picture;
   Image[] frames; 
@@ -101,6 +102,10 @@ class AnimatedGif {
     return picture;
   }
 
+  void setScale(int s) {
+    currentScale = s;
+  }
+
   void draw() {
     int dx = targetX - x;
     if(abs(dx) > 1) {
@@ -116,6 +121,6 @@ class AnimatedGif {
       frames[i].applyEffects();
     }
 
-    image(picture, x, y);
+    image(picture, x, y, picture.width*(currentScale/100), picture.height*(currentScale/100));
   }
 };
