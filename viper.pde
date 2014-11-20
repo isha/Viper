@@ -9,7 +9,7 @@ import gifAnimation.*;
 
 
 static final boolean TESTMODE = true;
-static final boolean RECORD = false;
+static final boolean RECORD = true;
 static final int WIDTH = 1000;
 static final int HEIGHT = 600;
 
@@ -37,16 +37,17 @@ void setup() {
   if (TESTMODE) {
     ConcurrentLinkedQueue<JSONObject> queue1 = addChannel("1");
     ConcurrentLinkedQueue<JSONObject> queue2 = addChannel("2");
+    ConcurrentLinkedQueue<JSONObject> queue3 = addChannel("3");
     mainQueue = new ConcurrentLinkedQueue<JSONObject>();
 
     Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "demo/instructions1.json"));
     instructionReader1.start();
 
-    // Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "sampleTransparencyInstructions.json"));
-    // instructionReader2.start();
+    Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "demo/instructions2.json"));
+    instructionReader2.start();
 
-    // Thread instructionReader3 = new Thread(new InstructionReader(mainQueue, "sampleMasterInstructions.json"));
-    // instructionReader3.start(); 
+    Thread instructionReader3 = new Thread(new InstructionReader(mainQueue, "demo/instructions3.json"));
+    instructionReader3.start(); 
 
     Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
     delegateInstructions.start();
