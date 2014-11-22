@@ -4,6 +4,7 @@ class Image {
   float easing = 0.1;
   float currentScale = 1.0;
   float width, height;
+  int degsToRotate;
 
   // image effect transition variables
   private static final int BRIGHTNESS_VALUE = 0;
@@ -18,6 +19,8 @@ class Image {
   long[] timeOfLastUpdate;
   long[] intervalTime;
   boolean[] updateFlag;
+
+  boolean rotateFlag;
 
   PImage picture;
   PImage originalPicture;
@@ -34,6 +37,7 @@ class Image {
     timeOfLastUpdate = new long[NUM_TRANSITIONS];
     intervalTime = new long[NUM_TRANSITIONS];
     updateFlag = new boolean[NUM_TRANSITIONS];
+    degsToRotate = 0;
 
     width = picture.width;
     height = picture.height;
@@ -48,6 +52,7 @@ class Image {
     timeOfLastUpdate = new long[NUM_TRANSITIONS];
     intervalTime = new long[NUM_TRANSITIONS];
     updateFlag = new boolean[NUM_TRANSITIONS];
+    degsToRotate = 0;
 
   }
 
@@ -465,6 +470,10 @@ class Image {
     currentScale = (float) s/100.0;
   }
 
+  void setRotation(int degs) {
+    degsToRotate = degs;
+  }
+
   void applyEffects() {
     // iterate through all possible effects 
     for (int i = 0; i < NUM_TRANSITIONS; i++) {
@@ -494,6 +503,17 @@ class Image {
     }
   }
 
+  void applyRotate() {
+    // shift origin of coordinate system to the center of the image being rotated
+    translate(x + (picture.width*currentScale)/2, y + (picture.height*currentScale)/2);
+
+    // rotate the image
+    rotate(radians(degsToRotate));
+
+    // revert coordinate system back
+    translate(-x - (picture.width*currentScale)/2, - y - (picture.height*currentScale)/2);
+  }
+
   PImage getPImage() {
     return picture;
   }
@@ -510,8 +530,13 @@ class Image {
     }
 
     applyEffects();
-    
-    image(picture, x, y, width*currentScale, height*currentScale);
+
+    pushMatrix();
+    applyRotate();
+
+    image(picture, x, y, picture.width*currentScale, picture.height*currentScale);    
+
+    popMatrix();    
   }
 
 };

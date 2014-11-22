@@ -336,6 +336,10 @@ class Channel implements Runnable {
     if (instr.hasKey("threshold")) {
       img.threshold(instr.getFloat("threshold"));
     }
+
+    if (instr.hasKey("rotate")) {
+      img.setRotation(instr.getInt("rotate"));
+    }
   }
 
   void updateGif(JSONObject instr, Integer id) {
