@@ -504,12 +504,14 @@ class Image {
   }
 
   void applyRotate() {
-    pushMatrix();
+    // shift origin of coordinate system to the center of the image being rotated
     translate(x + (picture.width*currentScale)/2, y + (picture.height*currentScale)/2);
+
+    // rotate the image
     rotate(radians(degsToRotate));
+
+    // revert coordinate system back
     translate(-x - (picture.width*currentScale)/2, - y - (picture.height*currentScale)/2);
-    image(picture, x, y, picture.width*currentScale, picture.height*currentScale);
-    popMatrix();
   }
 
   PImage getPImage() {
@@ -529,8 +531,12 @@ class Image {
 
     applyEffects();
 
+    pushMatrix();
     applyRotate();
-    
+
+    image(picture, x, y, picture.width*currentScale, picture.height*currentScale);    
+
+    popMatrix();    
   }
 
 };
