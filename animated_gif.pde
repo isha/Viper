@@ -3,6 +3,7 @@ class AnimatedGif {
   int targetX, targetY;
   float easing = 0.1;
   float currentScale = 1.0;
+  float width, height;
 
   Gif picture;
   Image[] frames; 
@@ -21,6 +22,9 @@ class AnimatedGif {
     for (int i=0; i<images.length; i++) {
       frames[i] = new Image(images[i]);
     }
+
+    width = picture.width;
+    height = picture.height;
   }
 
   void setEasing(float e) {
@@ -130,6 +134,11 @@ class AnimatedGif {
     currentScale = (float) s/100.0;
   }
 
+  void updateSize(float w, float h) {
+    width = w;
+    height = h;
+  }
+
   void draw() {
     int dx = targetX - x;
     if(abs(dx) > 1) {
@@ -145,6 +154,6 @@ class AnimatedGif {
       frames[i].applyEffects();
     }
 
-    image(picture, x, y, picture.width*currentScale, picture.height*currentScale);
+    image(picture, x, y, width*currentScale, height*currentScale);
   }
 };

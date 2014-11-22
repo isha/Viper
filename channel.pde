@@ -241,7 +241,7 @@ class Channel implements Runnable {
     }
 
     if (instr.hasKey("width") && instr.hasKey("height")) {
-      img.updateSize(instr.getInt("width"), instr.getInt("height"));
+      img.updateSize(instr.getFloat("width"), instr.getFloat("height"));
     }
 
     if (instr.hasKey("scale")) {
@@ -350,6 +350,10 @@ class Channel implements Runnable {
       gif.setScale(instr.getInt("scale"));
     }
 
+    if (instr.hasKey("width") && instr.hasKey("height")) {
+      gif.updateSize(instr.getFloat("width"), instr.getFloat("height"));
+    }
+
     if (instr.hasKey("transparency")) {
       if (instr.hasKey("totaltime") && instr.hasKey("numupdates")) {
         gif.startTransparency(instr.getInt("transparency"), instr.getInt("totaltime"), instr.getInt("numupdates"));
@@ -450,6 +454,10 @@ class Channel implements Runnable {
 
     if (instr.hasKey("scale")) {
       vid.setScale(instr.getInt("scale"));
+    }
+
+    if (instr.hasKey("width") && instr.hasKey("height")) {
+      vid.updateSize(instr.getFloat("width"), instr.getFloat("height"));
     }
 
     if (instr.hasKey("easing")) {

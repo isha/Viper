@@ -3,6 +3,7 @@ class Image {
   int targetX, targetY;
   float easing = 0.1;
   float currentScale = 1.0;
+  float width, height;
 
   // image effect transition variables
   private static final int BRIGHTNESS_VALUE = 0;
@@ -34,6 +35,8 @@ class Image {
     intervalTime = new long[NUM_TRANSITIONS];
     updateFlag = new boolean[NUM_TRANSITIONS];
 
+    width = picture.width;
+    height = picture.height;
   }
 
   Image(PImage pic) {
@@ -453,8 +456,9 @@ class Image {
     picture.filter(THRESHOLD, constrainedValue);
   }
 
-  void updateSize(int w, int h) {
-    picture.resize(w, h);
+  void updateSize(float w, float h) {
+    width = w;
+    height = h;
   }
 
   void setScale(int s) {
@@ -507,7 +511,7 @@ class Image {
 
     applyEffects();
     
-    image(picture, x, y, picture.width*currentScale, picture.height*currentScale);
+    image(picture, x, y, width*currentScale, height*currentScale);
   }
 
 };

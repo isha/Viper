@@ -1,0 +1,43 @@
+[
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "demo/Fading Blue.jpeg",
+    "id": 1,
+  },
+  {
+    "deviceId": "1",
+    "method": "create",
+    "posX": 35,
+    "posY": 120,
+    "video": "single-goldfish.mp4",
+    "id": 7,
+    "sleep": 1000,
+  },
+  {
+    "deviceId": "1",
+    "method": "update",
+    "id": 7,
+    "width": 50,
+    "height": 50,
+    "sleep": 1000,
+  },
+  {
+    "deviceId": "1",
+    "method": "create",
+    "posX": 850,
+    "posY": 120,
+    "image": "magical-starfish.gif",
+    "id": 10,
+    "sleep": 1000,
+  },
+  {
+    "deviceId": "1",
+    "method": "update",
+    "id": 10,
+    "width": 50,
+    "height": 50
+  },
+
+]
