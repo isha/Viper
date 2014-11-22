@@ -1,0 +1,53 @@
+[
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "ocean.jpg",
+    "id": 2
+  },
+  {
+    "deviceId": "1",
+    "method": "create",
+    "posX": 300,
+    "posY": 300,
+    "image": "demo/ship2.png",
+    "id": 0
+  },
+  {
+    "deviceId": "1",
+    "method": "create",
+    "posX": 100,
+    "posY": 100,
+    "image": "demo/ship2.png",
+    "id": 1    
+  },
+  {
+    "deviceId": "1",
+    "method": "update",
+    "rotate": -40,
+    "id": 1
+  },
+  {
+    "deviceId": "1",
+    "id": 1,
+    "method": "update",
+    "easing": 0.01,
+    "endX": 20,
+    "endY": 280
+  },
+  {
+    "deviceId": "1",
+    "method": "update",
+    "id": 1,
+    "brightness": 200,
+    "totaltime": 1000,
+    "numupdates": 20
+  },
+  {
+    "deviceId": "1",
+    "method": "update",
+    "rotate": 120,
+    "id": 0
+  },
+]
