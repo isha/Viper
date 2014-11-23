@@ -65,18 +65,18 @@ void runViper() {
 
   if (TESTMODE) {
     ConcurrentLinkedQueue<JSONObject> queue1 = addChannel("1");
-    ConcurrentLinkedQueue<JSONObject> queue2 = addChannel("2");
-    ConcurrentLinkedQueue<JSONObject> queue3 = addChannel("3");
+    // ConcurrentLinkedQueue<JSONObject> queue2 = addChannel("2");
+    // ConcurrentLinkedQueue<JSONObject> queue3 = addChannel("3");
     mainQueue = new ConcurrentLinkedQueue<JSONObject>();
 
-    Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "demo/instructions1.json"));
+    Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleRotateInstructions.json"));
     instructionReader1.start();
 
-    Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "demo/instructions2.json"));
-    instructionReader2.start();
+    // Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "demo/instructions2.json"));
+    // instructionReader2.start();
 
-    Thread instructionReader3 = new Thread(new InstructionReader(mainQueue, "demo/instructions3.json"));
-    instructionReader3.start(); 
+    // Thread instructionReader3 = new Thread(new InstructionReader(mainQueue, "demo/instructions3.json"));
+    // instructionReader3.start(); 
 
     Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
     delegateInstructions.start();
