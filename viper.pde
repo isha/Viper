@@ -6,14 +6,15 @@ import java.util.*;
 import java.util.concurrent.*;
 import processing.video.*;
 import gifAnimation.*;
+import g4p_controls.*;
 
 
-static final boolean TESTMODE = true;
-static final boolean RECORD = true;
-static final int WIDTH = 1000;
-static final int HEIGHT = 600;
+static boolean TESTMODE = false;
+static boolean RECORD = false;
+static int WIDTH = 1000;
+static int HEIGHT = 600;
 
-PApplet app;
+PApplet main_app;
 
 Hashtable<String, Channel> channels;
 Hashtable<String, ConcurrentLinkedQueue<JSONObject>> queues;
@@ -21,12 +22,40 @@ Hashtable<String, PrintWriter> recorders;
 ConcurrentLinkedQueue<JSONObject> mainQueue;
 
 OSCServer oscServer;
+GWindow p_window;
 
 void setup() {
-  app = this;
+  size(480, 320);
+  
+  main_app = this;
   channels = new Hashtable<String, Channel>();
   queues = new Hashtable<String, ConcurrentLinkedQueue<JSONObject>>();
-  
+  createGUI();
+}
+
+synchronized public void p_window_draw1(GWinApplet appc, GWinData data) { //_CODE_:p_window:303508:
+  appc.background(230);
+
+  // Draw all channels background
+  Enumeration<Channel> channel = channels.elements();
+  while (channel.hasMoreElements ()) {
+    channel.nextElement().drawBackground(appc);
+  }
+
+  // Draw all channels
+  channel = channels.elements();
+  while (channel.hasMoreElements ()) {
+    channel.nextElement().drawAll(appc);
+  }
+
+} //_CODE_:p_window:303508:
+
+
+void runViper() {
+  p_window = new GWindow(this, "Performance Window", 0, 0, WIDTH, HEIGHT, false, JAVA2D);
+  p_window.setActionOnClose(G4P.CLOSE_WINDOW);
+  p_window.addDrawHandler(this, "p_window_draw1");
+
   if (RECORD) {
     recorders = new Hashtable<String, PrintWriter>();
     
@@ -51,6 +80,7 @@ void setup() {
 
     Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
     delegateInstructions.start();
+
   } else {
 
     oscServer = new OSCServer();
@@ -93,18 +123,6 @@ void removeChannel(String deviceID) {
 
 
 void draw() {
-  // Draw all channels background
-  Enumeration<Channel> channel = channels.elements();
-  while (channel.hasMoreElements ()) {
-    channel.nextElement().drawBackground();
-  }
-
-  // Draw all channels
-  channel = channels.elements();
-  while (channel.hasMoreElements ()) {
-    channel.nextElement().drawAll();
-  }
-
 }
 
 // Called every time a new frame is available to read

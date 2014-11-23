@@ -28,8 +28,6 @@ class Channel implements Runnable {
     gifs = new Hashtable<Integer, AnimatedGif>();
     backGifId = backImageId = backVideoId = -1;
 
-    size(WIDTH, HEIGHT);
-
     this.queue = queue;
   }
 
@@ -77,38 +75,38 @@ class Channel implements Runnable {
     }
   }
 
-  void drawBackground() {
+  void drawBackground(PApplet app) {
     if (backImage != null) {
-      image(backImage.getPImage(), 0, 0, WIDTH, HEIGHT);
+      app.image(backImage.getPImage(), 0, 0, WIDTH, HEIGHT);
     } else if (backGif != null) {
-      image(backGif.getGif(), 0, 0, WIDTH, HEIGHT);
+      app.image(backGif.getGif(), 0, 0, WIDTH, HEIGHT);
     } else if (backVideo != null) {
-      image(backVideo.getMovie(), 0, 0, WIDTH, HEIGHT);
+      app.image(backVideo.getMovie(), 0, 0, WIDTH, HEIGHT);
     }
   }
 
-  void drawAll() {
+  void drawAll(PApplet app) {
     // Draw all videos
     Enumeration<Video> v = videos.elements();
     while (v.hasMoreElements()) {
-      v.nextElement().draw();
+      v.nextElement().draw(app);
     }
 
     // Draw all images
     Enumeration<Image> i = images.elements();
     while (i.hasMoreElements()) {
-      i.nextElement().draw();
+      i.nextElement().draw(app);
     }
 
     // Draw all gifs
     Enumeration<AnimatedGif> g = gifs.elements();
     while (g.hasMoreElements()) {
-      g.nextElement().draw();
+      g.nextElement().draw(app);
     }
 
     // Draw all text
     if (textStr != null) {
-      text(textStr, textPosX, textPosY);
+      app.text(textStr, textPosX, textPosY);
     }
   }
 

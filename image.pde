@@ -518,7 +518,7 @@ class Image {
     return picture;
   }
 
-  void draw() {
+  void draw(PApplet app) {
     int dx = targetX - x;
     if(abs(dx) > 1) {
       x += dx * easing;
@@ -532,10 +532,8 @@ class Image {
     applyEffects();
 
     pushMatrix();
-    applyRotate();
-
-    image(picture, x, y, picture.width*currentScale, picture.height*currentScale);    
-
+    applyRotate();  
+    app.image(picture, x, y, width*currentScale, height*currentScale);
     popMatrix();    
   }
 

@@ -9,7 +9,7 @@ class AnimatedGif {
   Image[] frames; 
 
   AnimatedGif(String filename, int posX, int posY) {
-    Gif myAnimation = new Gif(app, filename);
+    Gif myAnimation = new Gif(main_app, filename);
     myAnimation.play();
     picture = myAnimation;
 
@@ -139,7 +139,7 @@ class AnimatedGif {
     height = h;
   }
 
-  void draw() {
+  void draw(PApplet app) {
     int dx = targetX - x;
     if(abs(dx) > 1) {
       x += dx * easing;
@@ -154,6 +154,6 @@ class AnimatedGif {
       frames[i].applyEffects();
     }
 
-    image(picture, x, y, width*currentScale, height*currentScale);
+    app.image(picture, x, y, width*currentScale, height*currentScale);
   }
 };
