@@ -6,12 +6,13 @@ import java.util.*;
 import java.util.concurrent.*;
 import processing.video.*;
 import gifAnimation.*;
+import g4p_controls.*;
 
 
-static final boolean TESTMODE = true;
-static final boolean RECORD = true;
-static final int WIDTH = 1000;
-static final int HEIGHT = 600;
+static boolean TESTMODE = false;
+static boolean RECORD = false;
+static final int WIDTH = 480;
+static final int HEIGHT = 320;
 
 PApplet app;
 
@@ -21,12 +22,27 @@ Hashtable<String, PrintWriter> recorders;
 ConcurrentLinkedQueue<JSONObject> mainQueue;
 
 OSCServer oscServer;
+GWindow p_window;
 
 void setup() {
+  size(WIDTH, HEIGHT);
+  
   app = this;
   channels = new Hashtable<String, Channel>();
   queues = new Hashtable<String, ConcurrentLinkedQueue<JSONObject>>();
-  
+  createGUI();
+}
+
+synchronized public void p_window_draw1(GWinApplet appc, GWinData data) { //_CODE_:p_window:303508:
+  appc.background(230);
+} //_CODE_:p_window:303508:
+
+
+void runViper() {
+  p_window = new GWindow(this, "Performance Window", 0, 0, 1000, 600, false, JAVA2D);
+  p_window.setActionOnClose(G4P.CLOSE_WINDOW);
+  p_window.addDrawHandler(this, "p_window_draw1");
+
   if (RECORD) {
     recorders = new Hashtable<String, PrintWriter>();
     
@@ -51,6 +67,7 @@ void setup() {
 
     Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
     delegateInstructions.start();
+
   } else {
 
     oscServer = new OSCServer();

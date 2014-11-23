@@ -28,8 +28,6 @@ class Channel implements Runnable {
     gifs = new Hashtable<Integer, AnimatedGif>();
     backGifId = backImageId = backVideoId = -1;
 
-    size(WIDTH, HEIGHT);
-
     this.queue = queue;
   }
 
