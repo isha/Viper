@@ -14,24 +14,24 @@
  * =========================================================
  */
 
-public void run_click1(GButton source, GEvent event) { //_CODE_:run:570473:
+public void run_click1(GButton source, GEvent event) { //_CODE_:run:570473: 
   runViper();
 } //_CODE_:run:570473:
 
-public void test_mode_clicked1(GCheckbox source, GEvent event) { //_CODE_:test_mode:461620:
+public void test_mode_clicked1(GCheckbox source, GEvent event) { //_CODE_:test_mode:461620: 
   TESTMODE = !TESTMODE;
 } //_CODE_:test_mode:461620:
 
-public void record_clicked1(GCheckbox source, GEvent event) { //_CODE_:record:415747:
+public void record_clicked1(GCheckbox source, GEvent event) { //_CODE_:record:415747: 
   RECORD = !RECORD;
 } //_CODE_:record:415747:
 
 public void p_win_height_change1(GTextField source, GEvent event) { //_CODE_:p_win_height:586132:
-  HEIGHT = Integer.parseInt(source.getText());
+  HEIGHT = Integer.parseInt(source.getText()); 
 } //_CODE_:p_win_height:586132:
 
 public void p_win_width_change1(GTextField source, GEvent event) { //_CODE_:p_win_width:577060:
-  WIDTH = Integer.parseInt(source.getText());
+  WIDTH = Integer.parseInt(source.getText()); 
 } //_CODE_:p_win_width:577060:
 
 
@@ -43,7 +43,7 @@ public void createGUI(){
   G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
   G4P.setCursor(ARROW);
   if(frame != null)
-    frame.setTitle("Sketch Window");
+    frame.setTitle("Viper");
   run = new GButton(this, 320, 265, 120, 40);
   run.setText("Run");
   run.setTextBold();
@@ -59,24 +59,27 @@ public void createGUI(){
   record.setOpaque(false);
   record.addEventHandler(this, "record_clicked1");
   label1 = new GLabel(this, 15, 15, 120, 40);
+  label1.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   label1.setText("Viper");
   label1.setTextBold();
   label1.setOpaque(false);
-  p_win_height = new GTextField(this, 105, 180, 80, 20, G4P.SCROLLBARS_NONE);
+  p_win_height = new GTextField(this, 65, 180, 80, 20, G4P.SCROLLBARS_NONE);
   p_win_height.setText("600");
   p_win_height.setPromptText("100");
   p_win_height.setOpaque(true);
   p_win_height.addEventHandler(this, "p_win_height_change1");
-  p_win_width = new GTextField(this, 105, 150, 80, 20, G4P.SCROLLBARS_NONE);
+  p_win_width = new GTextField(this, 65, 150, 80, 20, G4P.SCROLLBARS_NONE);
   p_win_width.setText("1000");
   p_win_width.setPromptText("100");
   p_win_width.setOpaque(true);
   p_win_width.addEventHandler(this, "p_win_width_change1");
-  p_win_width_label = new GLabel(this, 15, 150, 80, 20);
-  p_win_width_label.setText("Width");
+  p_win_width_label = new GLabel(this, 15, 150, 50, 20);
+  p_win_width_label.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  p_win_width_label.setText(" Width");
   p_win_width_label.setOpaque(false);
-  p_win_height_label = new GLabel(this, 15, 180, 80, 20);
-  p_win_height_label.setText("Height");
+  p_win_height_label = new GLabel(this, 15, 180, 50, 20);
+  p_win_height_label.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  p_win_height_label.setText(" Height");
   p_win_height_label.setOpaque(false);
 }
 
