@@ -105,8 +105,6 @@ class OSCServer {
     int commandCount;
     int i;
     boolean goodID = false;
-
-    recvMsg.print();
     
     if(recvMsg.checkAddrPattern("/rime") == false) {
       //if the OSC message is received without address tag '/rime',
