@@ -11,10 +11,10 @@ import g4p_controls.*;
 
 static boolean TESTMODE = false;
 static boolean RECORD = false;
-static final int WIDTH = 480;
-static final int HEIGHT = 320;
+static int WIDTH = 1000;
+static int HEIGHT = 600;
 
-PApplet app;
+PApplet main_app;
 
 Hashtable<String, Channel> channels;
 Hashtable<String, ConcurrentLinkedQueue<JSONObject>> queues;
@@ -25,9 +25,9 @@ OSCServer oscServer;
 GWindow p_window;
 
 void setup() {
-  size(WIDTH, HEIGHT);
+  size(480, 320);
   
-  app = this;
+  main_app = this;
   channels = new Hashtable<String, Channel>();
   queues = new Hashtable<String, ConcurrentLinkedQueue<JSONObject>>();
   createGUI();
@@ -35,11 +35,24 @@ void setup() {
 
 synchronized public void p_window_draw1(GWinApplet appc, GWinData data) { //_CODE_:p_window:303508:
   appc.background(230);
+
+  // Draw all channels background
+  Enumeration<Channel> channel = channels.elements();
+  while (channel.hasMoreElements ()) {
+    channel.nextElement().drawBackground(appc);
+  }
+
+  // Draw all channels
+  channel = channels.elements();
+  while (channel.hasMoreElements ()) {
+    channel.nextElement().drawAll(appc);
+  }
+
 } //_CODE_:p_window:303508:
 
 
 void runViper() {
-  p_window = new GWindow(this, "Performance Window", 0, 0, 1000, 600, false, JAVA2D);
+  p_window = new GWindow(this, "Performance Window", 0, 0, WIDTH, HEIGHT, false, JAVA2D);
   p_window.setActionOnClose(G4P.CLOSE_WINDOW);
   p_window.addDrawHandler(this, "p_window_draw1");
 
@@ -110,18 +123,6 @@ void removeChannel(String deviceID) {
 
 
 void draw() {
-  // Draw all channels background
-  Enumeration<Channel> channel = channels.elements();
-  while (channel.hasMoreElements ()) {
-    channel.nextElement().drawBackground();
-  }
-
-  // Draw all channels
-  channel = channels.elements();
-  while (channel.hasMoreElements ()) {
-    channel.nextElement().drawAll();
-  }
-
 }
 
 // Called every time a new frame is available to read

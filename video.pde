@@ -9,7 +9,7 @@ class Video {
   Movie video;
 
   Video(String filename, int posX, int posY) {
-    video = new Movie(app, filename);
+    video = new Movie(main_app, filename);
     video.loop();
     targetX = x = posX;
     targetY = y = posY;
@@ -51,7 +51,7 @@ class Video {
     height = h;
   }
 
-  void draw() {
+  void draw(PApplet app) {
     int dx = targetX - x;
     if(abs(dx) > 1) {
       x += dx * easing;
@@ -62,6 +62,6 @@ class Video {
       y += dy * easing;
     }
 
-    image(video, x, y, width*currentScale, height*currentScale);
+    app.image(video, x, y, width*currentScale, height*currentScale);
   }
 };

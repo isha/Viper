@@ -30,11 +30,11 @@ public void record_clicked1(GCheckbox source, GEvent event) { //_CODE_:record:41
 } //_CODE_:record:415747:
 
 public void p_win_height_change1(GTextField source, GEvent event) { //_CODE_:p_win_height:586132:
-  println("p_win_height - GTextField >> GEvent." + event + " @ " + millis());
+  HEIGHT = Integer.parseInt(source.getText());
 } //_CODE_:p_win_height:586132:
 
 public void p_win_width_change1(GTextField source, GEvent event) { //_CODE_:p_win_width:577060:
-  println("p_win_width - GTextField >> GEvent." + event + " @ " + millis());
+  WIDTH = Integer.parseInt(source.getText());
 } //_CODE_:p_win_width:577060:
 
 

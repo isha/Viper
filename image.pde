@@ -498,7 +498,7 @@ class Image {
     return picture;
   }
 
-  void draw() {
+  void draw(PApplet app) {
     int dx = targetX - x;
     if(abs(dx) > 1) {
       x += dx * easing;
@@ -511,7 +511,7 @@ class Image {
 
     applyEffects();
     
-    image(picture, x, y, width*currentScale, height*currentScale);
+    app.image(picture, x, y, width*currentScale, height*currentScale);
   }
 
 };
