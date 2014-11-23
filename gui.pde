@@ -15,17 +15,14 @@
  */
 
 public void run_click1(GButton source, GEvent event) { //_CODE_:run:570473:
-  println("run - GButton >> GEvent." + event + " @ " + millis());
   runViper();
 } //_CODE_:run:570473:
 
 public void test_mode_clicked1(GCheckbox source, GEvent event) { //_CODE_:test_mode:461620:
-  println("test_mode - GCheckbox >> GEvent." + event + " @ " + millis());
   TESTMODE = !TESTMODE;
 } //_CODE_:test_mode:461620:
 
 public void record_clicked1(GCheckbox source, GEvent event) { //_CODE_:record:415747:
-  println("record - GCheckbox >> GEvent." + event + " @ " + millis());
   RECORD = !RECORD;
 } //_CODE_:record:415747:
 

@@ -504,17 +504,14 @@ class Image {
   }
 
   void applyRotate(PApplet app) {
-    app.pushMatrix();
     // shift origin of coordinate system to the center of the image being rotated
-    app.translate(x + (picture.width*currentScale)/2, y + (picture.height*currentScale)/2);
+    app.translate(x + (width*currentScale)/2, y + (height*currentScale)/2);
 
     // rotate the image
     app.rotate(radians(degsToRotate));
 
     // revert coordinate system back
-    app.translate(-x - (picture.width*currentScale)/2, - y - (picture.height*currentScale)/2);
-    
-    app.popMatrix();
+    app.translate(-x - (width*currentScale)/2, - y - (height*currentScale)/2);
   }
 
   PImage getPImage() {
@@ -533,9 +530,11 @@ class Image {
     }
 
     applyEffects();
-    applyRotate(app);
 
-    app.image(picture, x, y, width*currentScale, height*currentScale);  
+    app.pushMatrix();
+    applyRotate(app);  
+    app.image(picture, x, y, width*currentScale, height*currentScale);
+    app.popMatrix();    
   }
 
 };

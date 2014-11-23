@@ -15,6 +15,7 @@ static int WIDTH = 1000;
 static int HEIGHT = 600;
 
 PApplet main_app;
+GWindow p_window;
 
 Hashtable<String, Channel> channels;
 Hashtable<String, ConcurrentLinkedQueue<JSONObject>> queues;
@@ -22,39 +23,21 @@ Hashtable<String, PrintWriter> recorders;
 ConcurrentLinkedQueue<JSONObject> mainQueue;
 
 OSCServer oscServer;
-GWindow p_window;
 
 void setup() {
   size(480, 320);
-  
   main_app = this;
+
+  createGUI();
+
   channels = new Hashtable<String, Channel>();
   queues = new Hashtable<String, ConcurrentLinkedQueue<JSONObject>>();
-  createGUI();
 }
 
-synchronized public void p_window_draw1(GWinApplet appc, GWinData data) { //_CODE_:p_window:303508:
-  appc.background(230);
-
-  // Draw all channels background
-  Enumeration<Channel> channel = channels.elements();
-  while (channel.hasMoreElements ()) {
-    channel.nextElement().drawBackground(appc);
-  }
-
-  // Draw all channels
-  channel = channels.elements();
-  while (channel.hasMoreElements ()) {
-    channel.nextElement().drawAll(appc);
-  }
-
-} //_CODE_:p_window:303508:
-
+void draw() {}
 
 void runViper() {
-  p_window = new GWindow(this, "Performance Window", 0, 0, WIDTH, HEIGHT, false, JAVA2D);
-  p_window.setActionOnClose(G4P.CLOSE_WINDOW);
-  p_window.addDrawHandler(this, "p_window_draw1");
+  createStageWindow();
 
   if (RECORD) {
     recorders = new Hashtable<String, PrintWriter>();
@@ -121,11 +104,31 @@ void removeChannel(String deviceID) {
   channels.remove(deviceID);
 }
 
-
-void draw() {
-}
-
 // Called every time a new frame is available to read
 void movieEvent(Movie m) {
   m.read();
 }
+
+void createStageWindow() {
+  p_window = new GWindow(this, "Performance Window", 0, 0, WIDTH, HEIGHT, false, JAVA2D);
+  p_window.setActionOnClose(G4P.CLOSE_WINDOW);
+  p_window.addDrawHandler(this, "p_window_draw1");
+}
+
+synchronized public void p_window_draw1(GWinApplet appc, GWinData data) {
+  appc.background(230);
+
+  // Draw all channels background
+  Enumeration<Channel> channel = channels.elements();
+  while (channel.hasMoreElements ()) {
+    channel.nextElement().drawBackground(appc);
+  }
+
+  // Draw all channels
+  channel = channels.elements();
+  while (channel.hasMoreElements ()) {
+    channel.nextElement().drawAll(appc);
+  }
+
+}
+
