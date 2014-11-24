@@ -29,6 +29,8 @@ void setup() {
   main_app = this;
 
   createGUI();
+  String myWAN = NetInfo.wan();
+  ip.setText(myWAN);
 
   channels = new Hashtable<String, Channel>();
   queues = new Hashtable<String, ConcurrentLinkedQueue<JSONObject>>();
@@ -67,6 +69,7 @@ void runViper() {
   } else {
 
     oscServer = new OSCServer();
+
     mainQueue = new ConcurrentLinkedQueue<JSONObject>();
     
     for (int i=0; i<oscServer.getNumDevices(); i++) {

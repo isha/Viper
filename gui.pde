@@ -14,15 +14,18 @@
  * =========================================================
  */
 
-public void run_click1(GButton source, GEvent event) { //_CODE_:run:570473: 
+public void run_click1(GButton source, GEvent event) { //_CODE_:run:570473:
+
   runViper();
 } //_CODE_:run:570473:
 
-public void test_mode_clicked1(GCheckbox source, GEvent event) { //_CODE_:test_mode:461620: 
+public void test_mode_clicked1(GCheckbox source, GEvent event) { //_CODE_:test_mode:461620:
+
   TESTMODE = !TESTMODE;
 } //_CODE_:test_mode:461620:
 
-public void record_clicked1(GCheckbox source, GEvent event) { //_CODE_:record:415747: 
+public void record_clicked1(GCheckbox source, GEvent event) { //_CODE_:record:415747:
+
   RECORD = !RECORD;
 } //_CODE_:record:415747:
 
@@ -33,6 +36,16 @@ public void p_win_height_change1(GTextField source, GEvent event) { //_CODE_:p_w
 public void p_win_width_change1(GTextField source, GEvent event) { //_CODE_:p_win_width:577060:
   WIDTH = Integer.parseInt(source.getText()); 
 } //_CODE_:p_win_width:577060:
+
+public void num_ports_change1(GTextField source, GEvent event) { //_CODE_:num_ports:992607:
+
+  NUM_PORTS = Integer.parseInt(source.getText());
+} //_CODE_:num_ports:992607:
+
+public void port_change1(GTextField source, GEvent event) { //_CODE_:port:619840:
+
+  PORT = Integer.parseInt(source.getText());
+} //_CODE_:port:619840:
 
 
 
@@ -48,12 +61,12 @@ public void createGUI(){
   run.setText("Run");
   run.setTextBold();
   run.addEventHandler(this, "run_click1");
-  test_mode = new GCheckbox(this, 15, 110, 120, 20);
+  test_mode = new GCheckbox(this, 15, 110, 130, 20);
   test_mode.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   test_mode.setText(" Test Mode");
   test_mode.setOpaque(false);
   test_mode.addEventHandler(this, "test_mode_clicked1");
-  record = new GCheckbox(this, 15, 80, 120, 20);
+  record = new GCheckbox(this, 15, 80, 130, 20);
   record.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   record.setText(" Record");
   record.setOpaque(false);
@@ -81,6 +94,30 @@ public void createGUI(){
   p_win_height_label.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   p_win_height_label.setText(" Height");
   p_win_height_label.setOpaque(false);
+  ip_label = new GLabel(this, 160, 80, 130, 20);
+  ip_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  ip_label.setText("IP Address");
+  ip_label.setOpaque(false);
+  port_label = new GLabel(this, 160, 110, 130, 20);
+  port_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  port_label.setText("Port");
+  port_label.setOpaque(false);
+  num_port_label = new GLabel(this, 160, 140, 130, 20);
+  num_port_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  num_port_label.setText("Number of Ports");
+  num_port_label.setOpaque(false);
+  num_ports = new GTextField(this, 300, 140, 140, 20, G4P.SCROLLBARS_NONE);
+  num_ports.setText("1");
+  num_ports.setOpaque(true);
+  num_ports.addEventHandler(this, "num_ports_change1");
+  port = new GTextField(this, 300, 110, 140, 20, G4P.SCROLLBARS_NONE);
+  port.setText("11000");
+  port.setOpaque(true);
+  port.addEventHandler(this, "port_change1");
+  ip = new GLabel(this, 300, 80, 140, 20);
+  ip.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  ip.setText("N/A");
+  ip.setOpaque(false);
 }
 
 // Variable declarations 
@@ -93,4 +130,10 @@ GTextField p_win_height;
 GTextField p_win_width; 
 GLabel p_win_width_label; 
 GLabel p_win_height_label; 
+GLabel ip_label; 
+GLabel port_label; 
+GLabel num_port_label; 
+GTextField num_ports; 
+GTextField port; 
+GLabel ip; 
 

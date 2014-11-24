@@ -1,6 +1,9 @@
 import oscP5.*;
 import netP5.*;
 
+int NUM_PORTS = 1;
+int PORT = 11000;
+
 class OSCServer {
   OscP5 viperServer;
   NetAddress hostLocation;
@@ -16,22 +19,20 @@ class OSCServer {
   OSCServer() {
     registeredDevices = new String[MAXDEVICES];
 
-    loadServerConfig();
+    loadServer();
     loadRegisteredDevices();
     hostLocation = new NetAddress("127.0.0.1", 11000);
   }
 
-  protected void loadServerConfig() {
-    JSONObject serverConfig;
+  protected void loadServer() {
     int[] ports;
     int startPort;
     int i;
     
     try {
       // Try loading the server config file and retrieving the configuration
-      serverConfig = loadJSONObject("serverConfig.json");
-      numPorts = serverConfig.getInt("NumberOfPorts");
-      startPort = serverConfig.getInt("StartPort");
+      numPorts = NUM_PORTS;
+      startPort = PORT;
       
       if(numPorts < 0 || numPorts > MAXPORTS) {
         Exception fileError = new Exception("Port configuration may be corrupted. Check serverConfig.txt file.");
