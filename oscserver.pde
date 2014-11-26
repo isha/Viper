@@ -86,6 +86,7 @@ class OSCServer {
 
   void sendDataList(String deviceID, String deviceAddr, Integer devicePort) {
     OscMessage dataList = new OscMessage("/viper");
+    dataList.add(",");
     readDataFolder(dataList);
     
     NetAddress rimeLocation = new NetAddress(deviceAddr, devicePort);
@@ -113,6 +114,10 @@ class OSCServer {
       return;
     }
     
+    if(recvMsg.typetag().length() < 4) {
+      return;
+    }
+    
     if(recvMsg.get(0).stringValue().equalsIgnoreCase("deviceId")) {
       deviceID = recvMsg.get(1).stringValue();
       for(i=0;i<numDevices;i++) {
@@ -134,9 +139,15 @@ class OSCServer {
     
     if(recvMsg.get(3).stringValue().equalsIgnoreCase("datalist")) {
       // Send the data list (complete list of all images' and videos' filenames if requested
-      delay(500);
+      delay(5);
       sendDataList(deviceID, recvMsg.netAddress().address(), recvMsg.netAddress().port());
       return;
+    }
+    
+    // if this is the first time a device is sending a command,
+    // allocate a channel for this device
+    if(!channels.containsKey(deviceID)) {
+      addChannel(deviceID);
     }
     
     recvMsgType = recvMsg.typetag();
@@ -192,7 +203,6 @@ class OSCServer {
     
     // display the filenames
     for (int i=0; i<filenames.length; i++) {
-      print("\n");
       if(filenames[i].isDirectory()) {
         if(prefix == "") {
           newPrefix = filenames[i].getName();

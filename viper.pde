@@ -72,9 +72,6 @@ void runViper() {
 
     mainQueue = new ConcurrentLinkedQueue<JSONObject>();
     
-    for (int i=0; i<oscServer.getNumDevices(); i++) {
-      addChannel(oscServer.getRegisteredDeviceIDs()[i]);
-    }
     Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
     delegateInstructions.start();
   }
