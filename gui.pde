@@ -15,6 +15,10 @@
  */
 
 public void run_click1(GButton source, GEvent event) { //_CODE_:run:570473:
+  HEIGHT = Integer.parseInt(p_win_height.getText().trim());
+  WIDTH = Integer.parseInt(p_win_width.getText().trim());
+  PORT = Integer.parseInt(port.getText().trim());
+  NUM_PORTS = Integer.parseInt(num_ports.getText().trim());
 
   runViper();
 } //_CODE_:run:570473:
@@ -30,21 +34,19 @@ public void record_clicked1(GCheckbox source, GEvent event) { //_CODE_:record:41
 } //_CODE_:record:415747:
 
 public void p_win_height_change1(GTextField source, GEvent event) { //_CODE_:p_win_height:586132:
-  HEIGHT = Integer.parseInt(source.getText()); 
+
 } //_CODE_:p_win_height:586132:
 
 public void p_win_width_change1(GTextField source, GEvent event) { //_CODE_:p_win_width:577060:
-  WIDTH = Integer.parseInt(source.getText()); 
+
 } //_CODE_:p_win_width:577060:
 
 public void num_ports_change1(GTextField source, GEvent event) { //_CODE_:num_ports:992607:
 
-  NUM_PORTS = Integer.parseInt(source.getText());
 } //_CODE_:num_ports:992607:
 
 public void port_change1(GTextField source, GEvent event) { //_CODE_:port:619840:
 
-  PORT = Integer.parseInt(source.getText());
 } //_CODE_:port:619840:
 
 

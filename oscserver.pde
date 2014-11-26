@@ -1,8 +1,10 @@
 import oscP5.*;
 import netP5.*;
 
-int NUM_PORTS = 1;
-int PORT = 11000;
+int DEFAULT_PORT = 11000;
+int DEFAULT_NUM_PORTS = 1;
+int NUM_PORTS = DEFAULT_NUM_PORTS;
+int PORT = DEFAULT_PORT;
 
 class OSCServer {
   OscP5 viperServer;
@@ -13,8 +15,6 @@ class OSCServer {
   int numPorts;
   int MAXDEVICES = 200;
   int MAXPORTS = 100;
-  int DEFAULTPORT = 12000;
-  int DEFAULTNUMPORTS = 20;
 
   OSCServer() {
     registeredDevices = new String[MAXDEVICES];
@@ -41,8 +41,8 @@ class OSCServer {
     } catch (Exception e) {
       print(e.getMessage());
       // If loading the config file fails, set to default values
-      numPorts = DEFAULTNUMPORTS;
-      startPort = DEFAULTPORT;      
+      numPorts = DEFAULT_NUM_PORTS;
+      startPort = DEFAULT_PORT;      
     }
     
     ports = new int[numPorts];

@@ -11,8 +11,10 @@ import g4p_controls.*;
 
 static boolean TESTMODE = false;
 static boolean RECORD = false;
-static int WIDTH = 1000;
-static int HEIGHT = 600;
+static int DEFAULT_WIDTH = 1000;
+static int DEFAULT_HEIGHT = 600;
+static int WIDTH = DEFAULT_WIDTH;
+static int HEIGHT = DEFAULT_HEIGHT;
 
 PApplet main_app;
 GWindow p_window;
