@@ -8,6 +8,13 @@ class InstructionReader implements Runnable {
     instructions = loadJSONArray(sampleInstructionFile);
   }
 
+  String getDeviceId() {
+    if (instructions.getJSONObject(0).hasKey("deviceId")) {
+      return instructions.getJSONObject(0).getString("deviceId");
+    }
+    return "";
+  }
+
   void run() {
     try {
       JSONObject instr;

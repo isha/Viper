@@ -49,6 +49,18 @@ public void port_change1(GTextField source, GEvent event) { //_CODE_:port:619840
 
 } //_CODE_:port:619840:
 
+public void test_file_1_change1(GTextField source, GEvent event) { //_CODE_:test_file_1:472951:
+
+} //_CODE_:test_file_1:472951:
+
+public void test_file_2_change1(GTextField source, GEvent event) { //_CODE_:test_file_2:350529:
+
+} //_CODE_:test_file_2:350529:
+
+public void test_file_3_change1(GTextField source, GEvent event) { //_CODE_:test_file_3:536373:
+
+} //_CODE_:test_file_3:536373:
+
 
 
 // Create all the GUI controls. 
@@ -63,37 +75,36 @@ public void createGUI(){
   run.setText("Run");
   run.setTextBold();
   run.addEventHandler(this, "run_click1");
-  test_mode = new GCheckbox(this, 15, 110, 130, 20);
+  test_mode = new GCheckbox(this, 20, 110, 130, 20);
   test_mode.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   test_mode.setText(" Test Mode");
   test_mode.setOpaque(false);
   test_mode.addEventHandler(this, "test_mode_clicked1");
-  record = new GCheckbox(this, 15, 80, 130, 20);
+  record = new GCheckbox(this, 20, 80, 130, 20);
   record.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   record.setText(" Record");
   record.setOpaque(false);
   record.addEventHandler(this, "record_clicked1");
-  label1 = new GLabel(this, 15, 15, 120, 40);
-  label1.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  label1 = new GLabel(this, 10, 10, 120, 40);
   label1.setText("Viper");
   label1.setTextBold();
   label1.setOpaque(false);
-  p_win_height = new GTextField(this, 65, 180, 80, 20, G4P.SCROLLBARS_NONE);
+  p_win_height = new GTextField(this, 300, 210, 80, 20, G4P.SCROLLBARS_NONE);
   p_win_height.setText("600");
   p_win_height.setPromptText("100");
   p_win_height.setOpaque(true);
   p_win_height.addEventHandler(this, "p_win_height_change1");
-  p_win_width = new GTextField(this, 65, 150, 80, 20, G4P.SCROLLBARS_NONE);
+  p_win_width = new GTextField(this, 300, 180, 80, 20, G4P.SCROLLBARS_NONE);
   p_win_width.setText("1000");
   p_win_width.setPromptText("100");
   p_win_width.setOpaque(true);
   p_win_width.addEventHandler(this, "p_win_width_change1");
-  p_win_width_label = new GLabel(this, 15, 150, 50, 20);
-  p_win_width_label.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  p_win_width_label = new GLabel(this, 240, 180, 50, 20);
+  p_win_width_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   p_win_width_label.setText(" Width");
   p_win_width_label.setOpaque(false);
-  p_win_height_label = new GLabel(this, 15, 180, 50, 20);
-  p_win_height_label.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  p_win_height_label = new GLabel(this, 240, 210, 50, 20);
+  p_win_height_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   p_win_height_label.setText(" Height");
   p_win_height_label.setOpaque(false);
   ip_label = new GLabel(this, 160, 80, 130, 20);
@@ -120,6 +131,22 @@ public void createGUI(){
   ip.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   ip.setText("N/A");
   ip.setOpaque(false);
+  test_file_1 = new GTextField(this, 20, 170, 130, 20, G4P.SCROLLBARS_NONE);
+  test_file_1.setText("demo/instructions1.json");
+  test_file_1.setOpaque(true);
+  test_file_1.addEventHandler(this, "test_file_1_change1");
+  test_file_2 = new GTextField(this, 20, 200, 130, 20, G4P.SCROLLBARS_NONE);
+  test_file_2.setText("demo/instructions2.json");
+  test_file_2.setOpaque(true);
+  test_file_2.addEventHandler(this, "test_file_2_change1");
+  test_file_label = new GLabel(this, 20, 140, 130, 20);
+  test_file_label.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  test_file_label.setText(" Enter test files below");
+  test_file_label.setOpaque(false);
+  test_file_3 = new GTextField(this, 20, 230, 130, 20, G4P.SCROLLBARS_NONE);
+  test_file_3.setText("demo/instructions3.json");
+  test_file_3.setOpaque(true);
+  test_file_3.addEventHandler(this, "test_file_3_change1");
 }
 
 // Variable declarations 
@@ -138,4 +165,8 @@ GLabel num_port_label;
 GTextField num_ports; 
 GTextField port; 
 GLabel ip; 
+GTextField test_file_1; 
+GTextField test_file_2; 
+GLabel test_file_label; 
+GTextField test_file_3; 
 
