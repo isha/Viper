@@ -51,19 +51,8 @@ void runViper() {
   }
 
   if (TESTMODE) {
-    ConcurrentLinkedQueue<JSONObject> queue1 = addChannel("1");
-    // ConcurrentLinkedQueue<JSONObject> queue2 = addChannel("2");
-    // ConcurrentLinkedQueue<JSONObject> queue3 = addChannel("3");
     mainQueue = new ConcurrentLinkedQueue<JSONObject>();
-
-    Thread instructionReader1 = new Thread(new InstructionReader(mainQueue, "sampleRotateInstructions.json"));
-    instructionReader1.start();
-
-    // Thread instructionReader2 = new Thread(new InstructionReader(mainQueue, "demo/instructions2.json"));
-    // instructionReader2.start();
-
-    // Thread instructionReader3 = new Thread(new InstructionReader(mainQueue, "demo/instructions3.json"));
-    // instructionReader3.start(); 
+    addTestChannels();
 
     Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
     delegateInstructions.start();
@@ -132,5 +121,22 @@ synchronized public void p_window_draw1(GWinApplet appc, GWinData data) {
     channel.nextElement().drawAll(appc);
   }
 
+}
+
+void addTestChannels() {
+  String[] testFiles = new String[3];
+  testFiles[0] = test_file_1.getText().trim();
+  testFiles[1] = test_file_2.getText().trim();
+  testFiles[2] = test_file_3.getText().trim();
+
+  for (int i=0; i<3; i++) {
+    if (!testFiles[i].isEmpty()) {
+      InstructionReader ir = new InstructionReader(mainQueue, testFiles[i]);
+      addChannel(ir.getDeviceId());
+
+      Thread irThread = new Thread(ir);
+      irThread.start();
+    }
+  }
 }
 
