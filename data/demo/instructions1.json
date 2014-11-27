@@ -107,4 +107,25 @@
     "textPosX": 10,
     "textPosY": 550,
   },
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "demo/Black.jpeg",
+    "id": 2,
+    "text": "Device 1: Background image #4",
+    "textPosX": 10,
+    "textPosY": 550,    
+    "sleep": 6000,
+    },
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "ocean.jpg",
+    "id": 2,
+    "text": "Device 1: Background image #5",
+    "textPosX": 10,
+    "textPosY": 550,        
+  }
 ]
