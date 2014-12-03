@@ -4,17 +4,19 @@ class AnimatedGif {
   float easing = 0.1;
   float currentScale = 1.0;
   float width, height;
+  boolean hidden;
 
   Gif picture;
   Image[] frames; 
 
-  AnimatedGif(String filename, int posX, int posY) {
+  AnimatedGif(String filename, int posX, int posY, boolean h) {
     Gif myAnimation = new Gif(main_app, filename);
     myAnimation.play();
     picture = myAnimation;
 
     targetX = x = posX;
     targetY = y = posY;
+    hidden = h;
 
     PImage[] images = picture.getPImages();
     frames = new Image[images.length];
@@ -139,6 +141,10 @@ class AnimatedGif {
     height = h;
   }
 
+  void setHidden(boolean h) {
+    hidden = h;
+  }
+
   void draw(PApplet app) {
     int dx = targetX - x;
     if(abs(dx) > 1) {
@@ -154,6 +160,8 @@ class AnimatedGif {
       frames[i].applyEffects();
     }
 
-    app.image(picture, x, y, width*currentScale, height*currentScale);
+    if (!hidden) {
+      app.image(picture, x, y, width*currentScale, height*currentScale);
+    }
   }
 };
