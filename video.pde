@@ -5,16 +5,18 @@ class Video {
   float speed;
   float currentScale = 1.0;
   float width, height;
+  boolean hidden;
 
   Movie video;
 
-  Video(String filename, int posX, int posY) {
+  Video(String filename, int posX, int posY, boolean h) {
     video = new Movie(main_app, filename);
     video.loop();
     targetX = x = posX;
     targetY = y = posY;
     width = video.width;
     height = video.height;
+    hidden = h;
   }
 
   void setEasing(float e) {
@@ -51,6 +53,10 @@ class Video {
     height = h;
   }
 
+  void setHidden(boolean h) {
+    hidden = h;
+  }
+
   void draw(PApplet app) {
     int dx = targetX - x;
     if(abs(dx) > 1) {
@@ -62,6 +68,8 @@ class Video {
       y += dy * easing;
     }
 
-    app.image(video, x, y, width*currentScale, height*currentScale);
+    if (!hidden) {
+      app.image(video, x, y, width*currentScale, height*currentScale);
+    }
   }
 };

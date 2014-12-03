@@ -5,6 +5,7 @@ class Image {
   float currentScale = 1.0;
   float width, height;
   int degsToRotate;
+  boolean hidden = false;
 
   // image effect transition variables
   private static final int BRIGHTNESS_VALUE = 0;
@@ -25,12 +26,13 @@ class Image {
   PImage picture;
   PImage originalPicture;
 
-  Image(String filename, int posX, int posY) {
+  Image(String filename, int posX, int posY, boolean h) {
     picture = loadImage(filename);
     originalPicture = loadImage(filename);
     
     targetX = x = posX;
     targetY = y = posY;
+    hidden = h;
 
     numUpdatesLeft = new int[NUM_TRANSITIONS];
     updateMagnitude = new int[NUM_TRANSITIONS];
@@ -518,6 +520,10 @@ class Image {
     return picture;
   }
 
+  void setHidden(boolean h) {
+    hidden = h;
+  }
+
   void draw(PApplet app) {
     int dx = targetX - x;
     if(abs(dx) > 1) {
@@ -533,7 +539,11 @@ class Image {
 
     app.pushMatrix();
     applyRotate(app);  
-    app.image(picture, x, y, width*currentScale, height*currentScale);
+    
+    if (!hidden) {
+      app.image(picture, x, y, width*currentScale, height*currentScale);
+    }
+    
     app.popMatrix();    
   }
 

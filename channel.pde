@@ -157,16 +157,22 @@ class Channel implements Runnable {
     backImage = null;
     backVideo = null;
     backGifId = backImageId = backVideoId = -1;
+    
+    boolean hidden = false;
+    if (instr.hasKey("hidden")) {
+      hidden = instr.getBoolean("hidden");
+    }
 
     if (instr.hasKey("image")) {
       String filename = instr.getString("image");
       File f = new File(dataPath(filename));
+
       if (f.exists()) {
         if (filename.endsWith(".gif")) {
-          AnimatedGif gif = new AnimatedGif(filename, 0, 0);
+          AnimatedGif gif = new AnimatedGif(filename, 0, 0, hidden);
           backGif = gif; backGifId = instr.getInt("id");
         } else {
-          Image img = new Image(filename, 0, 0);
+          Image img = new Image(filename, 0, 0, hidden);
           backImage = img; backImageId = instr.getInt("id");
         }
       } else {
@@ -177,7 +183,7 @@ class Channel implements Runnable {
 
       File f = new File(dataPath(filename));
       if (f.exists()) {
-        Video vid = new Video(filename, 0, 0);
+        Video vid = new Video(filename, 0, 0, hidden);
         backVideo = vid; backVideoId = instr.getInt("id");
       } else {
         println("[error] File "+filename+" does not exist");
@@ -189,14 +195,18 @@ class Channel implements Runnable {
     int posX = instr.hasKey("posX") ? instr.getInt("posX") : 0;
     int posY = instr.hasKey("posY") ? instr.getInt("posY") : 0;
     String filename = instr.getString("image");
+    boolean h = false;
+    if (instr.hasKey("hidden")) {
+      h = instr.getBoolean("hidden");
+    }
 
     File f = new File(dataPath(filename));
     if (f.exists()) {
       if (filename.endsWith(".gif")) {
-        AnimatedGif gif = new AnimatedGif(filename, posX, posY);
+        AnimatedGif gif = new AnimatedGif(filename, posX, posY, h);
         gifs.put(instr.getInt("id"), gif);
       } else {
-        Image img = new Image(filename, posX, posY);
+        Image img = new Image(filename, posX, posY, h);
         images.put(instr.getInt("id"), img);
       }
     } else {
@@ -208,10 +218,14 @@ class Channel implements Runnable {
     int posX = instr.hasKey("posX") ? instr.getInt("posX") : 0;
     int posY = instr.hasKey("posY") ? instr.getInt("posY") : 0;
     String filename = instr.getString("video");
+    boolean h = false;
+    if (instr.hasKey("hidden")) {
+      h = instr.getBoolean("hidden");
+    }
 
     File f = new File(dataPath(filename));
     if (f.exists()) {
-      Video vid = new Video(filename, posX, posY);
+      Video vid = new Video(filename, posX, posY, h);
       videos.put(instr.getInt("id"), vid);
     } else {
       println("[error] File "+filename+" does not exist");
@@ -236,6 +250,10 @@ class Channel implements Runnable {
       img = backImage;
     } else {
       img = images.get(id);
+    }
+
+    if (instr.hasKey("hidden")) {
+      img.setHidden(instr.getBoolean("hidden"));
     }
 
     if (instr.hasKey("width") && instr.hasKey("height")) {
@@ -348,6 +366,10 @@ class Channel implements Runnable {
       gif = gifs.get(id);
     }
 
+    if (instr.hasKey("hidden")) {
+      gif.setHidden(instr.getBoolean("hidden"));
+    }
+
     if (instr.hasKey("scale")) {
       gif.setScale(instr.getInt("scale"));
     }
@@ -452,6 +474,10 @@ class Channel implements Runnable {
       vid = backVideo;
     } else {
       vid = videos.get(id);
+    }
+
+    if (instr.hasKey("hidden")) {
+      vid.setHidden(instr.getBoolean("hidden"));
     }
 
     if (instr.hasKey("scale")) {
