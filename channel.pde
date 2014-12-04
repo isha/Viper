@@ -1,7 +1,13 @@
+final int IMAGE = 0;
+final int ANIMATEDGIF = 1;
+final int VIDEO = 2;
+
 class Channel implements Runnable {
   Hashtable<Integer, Image> images;
   Hashtable<Integer, Video> videos;
   Hashtable<Integer, AnimatedGif> gifs;
+
+  Hashtable<Integer, Integer> mapping;
 
   Image backImage;
   int backImageId;
@@ -26,6 +32,7 @@ class Channel implements Runnable {
     images = new Hashtable<Integer, Image>();
     videos = new Hashtable<Integer, Video>();
     gifs = new Hashtable<Integer, AnimatedGif>();
+    mapping = new Hashtable<Integer, Integer>();
     backGifId = backImageId = backVideoId = -1;
 
     this.queue = queue;
@@ -86,23 +93,17 @@ class Channel implements Runnable {
   }
 
   void drawAll(PApplet app) {
-    // Draw all videos
-    Enumeration<Video> v = videos.elements();
-    while (v.hasMoreElements()) {
-      v.nextElement().draw(app);
+    Enumeration<Integer> key = mapping.keys();
+    while (key.hasMoreElements()) {
+      int k = key.nextElement();
+      Integer mt = mapping.get(k);
+      switch (mt) {
+        case IMAGE: Image img = images.get(k); img.draw(app); break;
+        case ANIMATEDGIF: AnimatedGif gif = gifs.get(k); gif.draw(app); break;
+        case VIDEO: Video vid = videos.get(k); vid.draw(app); break;
+      }
     }
 
-    // Draw all images
-    Enumeration<Image> i = images.elements();
-    while (i.hasMoreElements()) {
-      i.nextElement().draw(app);
-    }
-
-    // Draw all gifs
-    Enumeration<AnimatedGif> g = gifs.elements();
-    while (g.hasMoreElements()) {
-      g.nextElement().draw(app);
-    }
 
     // Draw all text
     if (textStr != null) {
@@ -205,9 +206,11 @@ class Channel implements Runnable {
       if (filename.endsWith(".gif")) {
         AnimatedGif gif = new AnimatedGif(filename, posX, posY, h);
         gifs.put(instr.getInt("id"), gif);
+        mapping.put(instr.getInt("id"), ANIMATEDGIF);
       } else {
         Image img = new Image(filename, posX, posY, h);
         images.put(instr.getInt("id"), img);
+        mapping.put(instr.getInt("id"), IMAGE);
       }
     } else {
       println("[error] File "+filename+" does not exist");
@@ -227,6 +230,7 @@ class Channel implements Runnable {
     if (f.exists()) {
       Video vid = new Video(filename, posX, posY, h);
       videos.put(instr.getInt("id"), vid);
+      mapping.put(instr.getInt("id"), VIDEO);
     } else {
       println("[error] File "+filename+" does not exist");
     }
@@ -234,14 +238,17 @@ class Channel implements Runnable {
 
   void deleteImage(JSONObject instr, Integer id) {
     images.remove(id);
+    mapping.remove(id);
   }
 
   void deleteGif(JSONObject instr, Integer id) {
     gifs.remove(id);
+    mapping.remove(id);
   }
   
   void deleteVideo(JSONObject instr, Integer id) {
     videos.remove(id);
+    mapping.remove(id);
   }
 
   void updateImage(JSONObject instr, Integer id) {
