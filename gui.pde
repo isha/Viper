@@ -61,6 +61,10 @@ public void test_file_3_change1(GTextField source, GEvent event) { //_CODE_:test
 
 } //_CODE_:test_file_3:536373:
 
+public void full_screen_clicked1(GCheckbox source, GEvent event) { //_CODE_:full_screen:207666:
+  println("full_screen - GCheckbox >> GEvent." + event + " @ " + millis());
+} //_CODE_:full_screen:207666:
+
 
 
 // Create all the GUI controls. 
@@ -71,7 +75,7 @@ public void createGUI(){
   G4P.setCursor(ARROW);
   if(frame != null)
     frame.setTitle("Viper");
-  run = new GButton(this, 320, 265, 120, 40);
+  run = new GButton(this, 350, 270, 120, 40);
   run.setText("Run");
   run.setTextBold();
   run.addEventHandler(this, "run_click1");
@@ -147,6 +151,12 @@ public void createGUI(){
   test_file_3.setText("demo/instructions3.json");
   test_file_3.setOpaque(true);
   test_file_3.addEventHandler(this, "test_file_3_change1");
+  full_screen = new GCheckbox(this, 240, 240, 140, 20);
+  full_screen.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  full_screen.setText(" Full Screen");
+  full_screen.setOpaque(false);
+  full_screen.addEventHandler(this, "full_screen_clicked1");
+  full_screen.setSelected(true);
 }
 
 // Variable declarations 
@@ -169,4 +179,5 @@ GTextField test_file_1;
 GTextField test_file_2; 
 GLabel test_file_label; 
 GTextField test_file_3; 
+GCheckbox full_screen; 
 
