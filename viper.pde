@@ -7,6 +7,7 @@ import java.util.concurrent.*;
 import processing.video.*;
 import gifAnimation.*;
 import g4p_controls.*;
+import processing.opengl.*;
 
 
 static boolean TESTMODE = false;
@@ -101,7 +102,7 @@ void movieEvent(Movie m) {
 }
 
 void createStageWindow() {
-  p_window = new GWindow(this, "Performance Window", 0, 0, WIDTH, HEIGHT, false, JAVA2D);
+  p_window = new GWindow(this, "Performance Window", 0, 0, WIDTH, HEIGHT, false, OPENGL);
   p_window.setActionOnClose(G4P.CLOSE_WINDOW);
   p_window.addDrawHandler(this, "p_window_draw1");
 }
