@@ -9,7 +9,7 @@
     "text": "Device 3: Creating ship",
     "textPosX": 10,
     "textPosY": 570,
-    "sleep": 12000
+    "sleep": 1000
   },
   {
     "deviceId": "3",
