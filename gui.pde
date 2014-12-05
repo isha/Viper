@@ -62,7 +62,7 @@ public void test_file_3_change1(GTextField source, GEvent event) { //_CODE_:test
 } //_CODE_:test_file_3:536373:
 
 public void full_screen_clicked1(GCheckbox source, GEvent event) { //_CODE_:full_screen:207666:
-  println("full_screen - GCheckbox >> GEvent." + event + " @ " + millis());
+  FULLSCREEN = !FULLSCREEN;
 } //_CODE_:full_screen:207666:
 
 
@@ -156,7 +156,6 @@ public void createGUI(){
   full_screen.setText(" Full Screen");
   full_screen.setOpaque(false);
   full_screen.addEventHandler(this, "full_screen_clicked1");
-  full_screen.setSelected(true);
 }
 
 // Variable declarations 

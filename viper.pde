@@ -16,6 +16,7 @@ static int DEFAULT_WIDTH = 1000;
 static int DEFAULT_HEIGHT = 600;
 static int WIDTH = DEFAULT_WIDTH;
 static int HEIGHT = DEFAULT_HEIGHT;
+static boolean FULLSCREEN = false;
 
 PApplet main_app;
 GWindow p_window;
@@ -29,6 +30,9 @@ OSCServer oscServer;
 
 void setup() {
   size(480, 320);
+  if (frame != null) {
+    frame.setResizable(true);
+  }
   main_app = this;
 
   createGUI();
@@ -102,7 +106,14 @@ void movieEvent(Movie m) {
 }
 
 void createStageWindow() {
-  p_window = new GWindow(this, "Performance Window", 0, 0, WIDTH, HEIGHT, false, OPENGL);
+  int sketchWidth, sketchHeight;
+  if (FULLSCREEN) {
+    sketchHeight = displayHeight; sketchWidth = displayWidth;
+  } else {
+    sketchHeight = HEIGHT; sketchWidth = WIDTH;
+  }
+
+  p_window = new GWindow(this, "Performance Window", 0, 0, sketchWidth, sketchHeight, false, OPENGL);
   p_window.setActionOnClose(G4P.CLOSE_WINDOW);
   p_window.addDrawHandler(this, "p_window_draw1");
 }
