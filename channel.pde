@@ -256,6 +256,10 @@ class Channel implements Runnable {
       img.setHidden(instr.getBoolean("hidden"));
     }
 
+    if (instr.hasKey("reset")) {
+      img.reset();
+    }
+
     if (instr.hasKey("width") && instr.hasKey("height")) {
       img.updateSize(instr.getFloat("width"), instr.getFloat("height"));
     }

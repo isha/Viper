@@ -47,7 +47,8 @@ class Image {
 
   Image(PImage pic) {
     picture = pic;
-    originalPicture = pic;
+    originalPicture = new PImage();
+    originalPicture.copy(pic, 0, 0, pic.width, pic.height, 0, 0, pic.width, pic.height);
 
     numUpdatesLeft = new int[NUM_TRANSITIONS];
     updateMagnitude = new int[NUM_TRANSITIONS];
@@ -522,6 +523,10 @@ class Image {
 
   void setHidden(boolean h) {
     hidden = h;
+  }
+
+  void reset() {
+    picture.copy(originalPicture, 0, 0, originalPicture.width, originalPicture.height, 0, 0, originalPicture.width, originalPicture.height);
   }
 
   void draw(PApplet app) {
