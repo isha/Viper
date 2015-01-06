@@ -12,6 +12,7 @@ import processing.opengl.*;
 
 static boolean TESTMODE = false;
 static boolean RECORD = false;
+static boolean VERBOSE_LOG = false;
 static int DEFAULT_WIDTH = 1000;
 static int DEFAULT_HEIGHT = 600;
 static int WIDTH = DEFAULT_WIDTH;

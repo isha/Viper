@@ -108,6 +108,11 @@ class OSCServer {
     int i;
     boolean goodID = false;
     
+    if(VERBOSE_LOG == true) {
+      // print incoming OSC messages if verbose log is on
+      recvMsg.print(); 
+    }
+    
     if(recvMsg.checkAddrPattern("/rime") == false) {
       //if the OSC message is received without address tag '/rime',
       //consider it a rogue message and discard

@@ -65,6 +65,11 @@ public void full_screen_clicked1(GCheckbox source, GEvent event) { //_CODE_:full
   FULLSCREEN = !FULLSCREEN;
 } //_CODE_:full_screen:207666:
 
+public void verbose_log_clicked1(GCheckbox source, GEvent event) { //_CODE_:verbose_log:692881:
+  //println("verbose_record - GCheckbox >> GEvent." + event + " @ " + millis());
+  VERBOSE_LOG = !VERBOSE_LOG;
+} //_CODE_:verbose_log:692881:
+
 
 
 // Create all the GUI controls. 
@@ -79,7 +84,7 @@ public void createGUI(){
   run.setText("Run");
   run.setTextBold();
   run.addEventHandler(this, "run_click1");
-  test_mode = new GCheckbox(this, 20, 110, 130, 20);
+  test_mode = new GCheckbox(this, 20, 140, 130, 20);
   test_mode.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   test_mode.setText(" Test Mode");
   test_mode.setOpaque(false);
@@ -135,19 +140,19 @@ public void createGUI(){
   ip.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   ip.setText("N/A");
   ip.setOpaque(false);
-  test_file_1 = new GTextField(this, 20, 170, 130, 20, G4P.SCROLLBARS_NONE);
+  test_file_1 = new GTextField(this, 20, 200, 130, 20, G4P.SCROLLBARS_NONE);
   test_file_1.setText("demo/instructions1.json");
   test_file_1.setOpaque(true);
   test_file_1.addEventHandler(this, "test_file_1_change1");
-  test_file_2 = new GTextField(this, 20, 200, 130, 20, G4P.SCROLLBARS_NONE);
+  test_file_2 = new GTextField(this, 20, 230, 130, 20, G4P.SCROLLBARS_NONE);
   test_file_2.setText("demo/instructions2.json");
   test_file_2.setOpaque(true);
   test_file_2.addEventHandler(this, "test_file_2_change1");
-  test_file_label = new GLabel(this, 20, 140, 130, 20);
+  test_file_label = new GLabel(this, 20, 170, 130, 20);
   test_file_label.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   test_file_label.setText(" Enter test files below");
   test_file_label.setOpaque(false);
-  test_file_3 = new GTextField(this, 20, 230, 130, 20, G4P.SCROLLBARS_NONE);
+  test_file_3 = new GTextField(this, 20, 260, 130, 20, G4P.SCROLLBARS_NONE);
   test_file_3.setText("demo/instructions3.json");
   test_file_3.setOpaque(true);
   test_file_3.addEventHandler(this, "test_file_3_change1");
@@ -156,6 +161,11 @@ public void createGUI(){
   full_screen.setText(" Full Screen");
   full_screen.setOpaque(false);
   full_screen.addEventHandler(this, "full_screen_clicked1");
+  verbose_log = new GCheckbox(this, 20, 110, 130, 20);
+  verbose_log.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  verbose_log.setText(" Verbose Log");
+  verbose_log.setOpaque(false);
+  verbose_log.addEventHandler(this, "verbose_log_clicked1");
 }
 
 // Variable declarations 
@@ -179,4 +189,5 @@ GTextField test_file_2;
 GLabel test_file_label; 
 GTextField test_file_3; 
 GCheckbox full_screen; 
+GCheckbox verbose_log; 
 
