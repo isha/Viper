@@ -27,7 +27,7 @@ Hashtable<String, ConcurrentLinkedQueue<JSONObject>> queues;
 Hashtable<String, PrintWriter> recorders;
 ConcurrentLinkedQueue<JSONObject> mainQueue;
 
-OSCServer oscServer;
+OSCServer oscServer = new OSCServer();
 
 void setup() {
   size(480, 320);
@@ -64,8 +64,8 @@ void runViper() {
     delegateInstructions.start();
 
   } else {
-
-    oscServer = new OSCServer();
+    
+    oscServer.runServer();
 
     mainQueue = new ConcurrentLinkedQueue<JSONObject>();
     

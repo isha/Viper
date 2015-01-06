@@ -15,13 +15,20 @@ class OSCServer {
   int numPorts;
   int MAXDEVICES = 200;
   int MAXPORTS = 100;
-
+  
   OSCServer() {
     registeredDevices = new String[MAXDEVICES];
-
+    hostLocation = new NetAddress("127.0.0.1", 11000);
+  }
+  
+  public void runServer() {
+//    closeServer();
     loadServer();
     loadRegisteredDevices();
-    hostLocation = new NetAddress("127.0.0.1", 11000);
+  }
+  
+  public void closeServer() {
+    viperServer.stop();
   }
 
   protected void loadServer() {
