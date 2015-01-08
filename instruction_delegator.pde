@@ -19,7 +19,7 @@ class InstructionDelegator implements Runnable {
             }
 
             if (RECORD) {
-              String message = instr.toString();
+              String message = str(millis()) + "ms " + instr.toString();
               PrintWriter r = recorders.get("master");
               r.println(message);
               r.flush();
@@ -33,7 +33,7 @@ class InstructionDelegator implements Runnable {
               channelQueue.add(instr);
 
               if (RECORD) {
-                String message = instr.toString();
+                String message = str(millis()) + "ms " + instr.toString();
                 PrintWriter r = recorders.get(id);
                 r.println(message);
                 r.flush();
