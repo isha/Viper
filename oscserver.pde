@@ -198,6 +198,10 @@ class OSCServer {
         command.setString(recvMsg.get(i*2).stringValue(), recvMsg.get(i*2+1).stringValue());
       }
     }
+    if(RECORD)
+    {
+      command.setInt("time", millis());
+    }
     mainQueue.add(command);
   }
  
