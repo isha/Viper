@@ -87,7 +87,8 @@ class OSCServer {
     numDevices = lineCount;
   }
   
-  void sendMessage(OscMessage testMessage, NetAddress sendLoc) {
+  void sendMessage(OscMessage testMessage, String deviceAddr, Integer devicePort) {
+    NetAddress sendLoc = new NetAddress(deviceAddr, devicePort);
     viperServer.send(testMessage, sendLoc);
   }
 
@@ -96,8 +97,15 @@ class OSCServer {
     dataList.add(",");
     readDataFolder(dataList);
     
-    NetAddress rimeLocation = new NetAddress(deviceAddr, devicePort);
-    sendMessage(dataList, rimeLocation);
+    sendMessage(dataList, deviceAddr, devicePort);
+  }
+ 
+  void sendConnectAck(String deviceAddr, Integer devicePort) {
+    OscMessage connectAck = new OscMessage("/viper");
+    connectAck.add(",");
+    connectAck.add("ack");
+    
+    sendMessage(connectAck, deviceAddr, devicePort);
   }
 
   /*
@@ -153,6 +161,11 @@ class OSCServer {
       // Send the data list (complete list of all images' and videos' filenames if requested
       delay(5);
       sendDataList(deviceID, recvMsg.netAddress().address(), recvMsg.netAddress().port());
+      return;
+    } else if(recvMsg.get(3).stringValue().equalsIgnoreCase("connect")) {
+      // Send acknowledge message when connecting
+      delay(5);
+      sendConnectAck(recvMsg.netAddress().address(), recvMsg.netAddress().port());
       return;
     }
     
