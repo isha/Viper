@@ -106,12 +106,12 @@ class Image {
           // Make a new color and set pixel in the window
           color c = color(r, g, b, alpha(picture.pixels[loc]));
 
-          //pixels[py*width + px] = c;
           picture.pixels[loc] = c;
-          picture.updatePixels();
         }
       }
     }
+
+    picture.updatePixels();
   }
 
   void startTransparency(int totalMagnitude, int totalUpdateTime, int numUpdates) {
@@ -148,10 +148,11 @@ class Image {
           color c = color(r, g, b, a);
 
           picture.pixels[loc] = c;
-          picture.updatePixels();
+          
         }
       }
     }
+    picture.updatePixels();
   }
 
   void startHue (int totalRedMagnitude, int totalGreenMagnitude, int totalBlueMagnitude, int totalUpdateTime, int numUpdates) {
@@ -208,12 +209,12 @@ class Image {
           // Make a new color and set pixel in the window
           color c = color(r, g, b, alpha(picture.pixels[loc]));
 
-          //pixels[py*width + px] = c;
           picture.pixels[loc] = c;
-          picture.updatePixels();
+          
         }
       }
     }
+    picture.updatePixels();
   }
 
   void adjustGreenHue (int magnitude) {
@@ -243,12 +244,12 @@ class Image {
           // Make a new color and set pixel in the window
           color c = color(r, g, b, alpha(picture.pixels[loc]));
 
-          //pixels[py*width + px] = c;
           picture.pixels[loc] = c;
-          picture.updatePixels();
+          
         }
       }
     }
+    picture.updatePixels();
   }
 
   void adjustBlueHue (int magnitude) {
@@ -278,12 +279,12 @@ class Image {
           // Make a new color and set pixel in the window
           color c = color(r, g, b, alpha(picture.pixels[loc]));
 
-          //pixels[py*width + px] = c;
           picture.pixels[loc] = c;
-          picture.updatePixels();
+          
         }
       }
     }
+    picture.updatePixels();
   }
 
   void setTransparency(int magnitude) {
@@ -309,10 +310,11 @@ class Image {
         color c = color(r, g, b, magnitude);
 
         picture.pixels[loc] = c;
-        picture.updatePixels();
+        
         }
       }
     }
+    picture.updatePixels();
   }
 
   void setRed(int magnitude) {
@@ -338,10 +340,11 @@ class Image {
           color c = color(r, g, b, alpha(picture.pixels[loc]));
 
           picture.pixels[loc] = c;
-          picture.updatePixels();
+          
         }
       }
-    }    
+    }
+    picture.updatePixels();    
   }
 
   void setGreen(int magnitude) {
@@ -367,10 +370,11 @@ class Image {
           color c = color(r, g, b, alpha(picture.pixels[loc]));
 
           picture.pixels[loc] = c;
-          picture.updatePixels();
+          
         }
       }
-    }    
+    }
+    picture.updatePixels();    
   }
 
   void setBlue(int magnitude) {
@@ -396,10 +400,11 @@ class Image {
           color c = color(r, g, b, alpha(picture.pixels[loc]));
 
           picture.pixels[loc] = c;
-          picture.updatePixels();
+          
         }
       }
-    }    
+    }
+    picture.updatePixels();    
   }
 
   void setBrightness(int magnitude) {
@@ -427,10 +432,11 @@ class Image {
           color c = color(r, g, b, alpha(picture.pixels[loc]));
 
           picture.pixels[loc] = c;
-          picture.updatePixels();
+          
         }
       }
-    }    
+    }
+    picture.updatePixels();    
   }  
 
   void blur(int magnitude) {
