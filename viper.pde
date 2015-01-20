@@ -118,14 +118,8 @@ void createStageWindow() {
 synchronized public void p_window_draw1(GWinApplet appc, GWinData data) {
   appc.background(230);
 
-  // Draw all channels background
-  Enumeration<Channel> channel = channels.elements();
-  while (channel.hasMoreElements ()) {
-    channel.nextElement().drawBackground(appc);
-  }
-
   // Draw all channels
-  channel = channels.elements();
+  Enumeration<Channel> channel = channels.elements();
   while (channel.hasMoreElements ()) {
     channel.nextElement().drawAll(appc);
   }
