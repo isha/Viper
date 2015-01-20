@@ -1,5 +1,4 @@
 import java.util.Map;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.io.*;
 import java.util.*;
@@ -22,9 +21,9 @@ static boolean FULLSCREEN = false;
 PApplet main_app;
 GWindow p_window;
 
-Hashtable<String, Channel> channels;
-Hashtable<String, ConcurrentLinkedQueue<JSONObject>> queues;
-Hashtable<String, PrintWriter> recorders;
+HashMap<String, Channel> channels;
+HashMap<String, ConcurrentLinkedQueue<JSONObject>> queues;
+HashMap<String, PrintWriter> recorders;
 ConcurrentLinkedQueue<JSONObject> mainQueue;
 
 OSCServer oscServer = new OSCServer();
@@ -40,8 +39,8 @@ void setup() {
   String myWAN = NetInfo.wan();
   ip.setText(myWAN);
 
-  channels = new Hashtable<String, Channel>();
-  queues = new Hashtable<String, ConcurrentLinkedQueue<JSONObject>>();
+  channels = new HashMap<String, Channel>();
+  queues = new HashMap<String, ConcurrentLinkedQueue<JSONObject>>();
 }
 
 void draw() {}
@@ -51,7 +50,7 @@ void runViper() {
   createStageWindow();
 
   if (RECORD) {
-    recorders = new Hashtable<String, PrintWriter>();
+    recorders = new HashMap<String, PrintWriter>();
     
     PrintWriter recorder = createWriter("logs/master/messages.json");
     recorders.put("master", recorder);
@@ -119,9 +118,8 @@ synchronized public void p_window_draw1(GWinApplet appc, GWinData data) {
   appc.background(230);
 
   // Draw all channels
-  Enumeration<Channel> channel = channels.elements();
-  while (channel.hasMoreElements ()) {
-    channel.nextElement().drawAll(appc);
+  for (Channel channel : channels.values()) {
+    channel.drawAll(appc);
   }
 
 }

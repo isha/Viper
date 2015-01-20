@@ -1,7 +1,7 @@
 class Channel implements Runnable {
-  Hashtable<Integer, Image> images;
-  Hashtable<Integer, Video> videos;
-  Hashtable<Integer, AnimatedGif> gifs;
+  HashMap<Integer, Image> images;
+  HashMap<Integer, Video> videos;
+  HashMap<Integer, AnimatedGif> gifs;
 
   String textStr;
   int textPosX;
@@ -14,9 +14,9 @@ class Channel implements Runnable {
   ConcurrentLinkedQueue<JSONObject> queue;
   
   Channel(ConcurrentLinkedQueue<JSONObject> queue) {
-    images = new Hashtable<Integer, Image>();
-    videos = new Hashtable<Integer, Video>();
-    gifs = new Hashtable<Integer, AnimatedGif>();
+    images = new HashMap<Integer, Image>();
+    videos = new HashMap<Integer, Video>();
+    gifs = new HashMap<Integer, AnimatedGif>();
 
     this.queue = queue;
   }
@@ -35,17 +35,14 @@ class Channel implements Runnable {
 
       if (instr != null) {
         if (instr.hasKey("master")) {
-          Enumeration<Integer> v = videos.keys();
-          while (v.hasMoreElements()) {
-            applyInstrToId(instr, v.nextElement());
+          for (Integer key : videos.keySet()) {
+            applyInstrToId(instr, key);
           }
-          Enumeration<Integer> g = gifs.keys();
-          while (g.hasMoreElements()) {
-            applyInstrToId(instr, g.nextElement());
+          for (Integer key : images.keySet()) {
+            applyInstrToId(instr, key);
           }
-          Enumeration<Integer> i = images.keys();
-          while (i.hasMoreElements()) {
-            applyInstrToId(instr, i.nextElement());
+          for (Integer key : gifs.keySet()) {
+            applyInstrToId(instr, key);
           }
         } 
         else if (!instr.hasKey("id")) {
@@ -71,21 +68,18 @@ class Channel implements Runnable {
 
   void drawAll(PApplet app) {
     // Draw all videos
-    Enumeration<Video> v = videos.elements();
-    while (v.hasMoreElements()) {
-      v.nextElement().draw(app);
+    for (Video value : videos.values()) {
+      value.draw(app);
     }
 
     // Draw all images
-    Enumeration<Image> i = images.elements();
-    while (i.hasMoreElements()) {
-      i.nextElement().draw(app);
+    for (Image value : images.values()) {
+      value.draw(app);
     }
 
     // Draw all gifs
-    Enumeration<AnimatedGif> g = gifs.elements();
-    while (g.hasMoreElements()) {
-      g.nextElement().draw(app);
+    for (AnimatedGif value : gifs.values()) {
+      value.draw(app);
     }
 
     // Draw all text
