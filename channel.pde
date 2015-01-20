@@ -1,6 +1,6 @@
 class Channel implements Runnable {
-  Hashtable<Integer, MediaObject> images;
-  Hashtable<Integer, MediaObject> videos;
+  Hashtable<Integer, Image> images;
+  Hashtable<Integer, Video> videos;
   Hashtable<Integer, AnimatedGif> gifs;
 
   Image backImage;
@@ -23,8 +23,8 @@ class Channel implements Runnable {
   ConcurrentLinkedQueue<JSONObject> queue;
   
   Channel(ConcurrentLinkedQueue<JSONObject> queue) {
-    images = new Hashtable<Integer, MediaObject>();
-    videos = new Hashtable<Integer, MediaObject>();
+    images = new Hashtable<Integer, Image>();
+    videos = new Hashtable<Integer, Video>();
     gifs = new Hashtable<Integer, AnimatedGif>();
     backGifId = backImageId = backVideoId = -1;
 
@@ -91,13 +91,13 @@ class Channel implements Runnable {
 
   void drawAll(PApplet app) {
     // Draw all videos
-    Enumeration<MediaObject> v = videos.elements();
+    Enumeration<Video> v = videos.elements();
     while (v.hasMoreElements()) {
       v.nextElement().draw(app);
     }
 
     // Draw all images
-    Enumeration<MediaObject> i = images.elements();
+    Enumeration<Image> i = images.elements();
     while (i.hasMoreElements()) {
       i.nextElement().draw(app);
     }

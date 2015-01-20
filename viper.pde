@@ -46,6 +46,7 @@ void setup() {
 
 void draw() {}
 
+// Called by Run button in GUI
 void runViper() {
   createStageWindow();
 
@@ -56,22 +57,16 @@ void runViper() {
     recorders.put("master", recorder);
   }
 
+  mainQueue = new ConcurrentLinkedQueue<JSONObject>();
+
   if (TESTMODE) {
-    mainQueue = new ConcurrentLinkedQueue<JSONObject>();
     addTestChannels();
-
-    Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
-    delegateInstructions.start();
-
   } else {
-    
     oscServer.runServer();
-
-    mainQueue = new ConcurrentLinkedQueue<JSONObject>();
-    
-    Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
-    delegateInstructions.start();
   }
+
+  Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
+  delegateInstructions.start();
 }
 
 ConcurrentLinkedQueue<JSONObject> addChannel(String deviceID) {
@@ -99,6 +94,7 @@ ConcurrentLinkedQueue<JSONObject> addChannel(String deviceID) {
 void removeChannel(String deviceID) {
   queues.remove(deviceID);
   channels.remove(deviceID);
+  recorders.remove(deviceID);
 }
 
 // Called every time a new frame is available to read
