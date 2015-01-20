@@ -3,6 +3,8 @@ class Channel implements Runnable {
   LinkedHashMap<Integer, Video> videos;
   LinkedHashMap<Integer, AnimatedGif> gifs;
 
+  LinkedHashMap<Integer, MediaType> mapping;
+
   String textStr;
   int textPosX;
   int textPosY;
@@ -17,6 +19,7 @@ class Channel implements Runnable {
     images = new LinkedHashMap<Integer, Image>();
     videos = new LinkedHashMap<Integer, Video>();
     gifs = new LinkedHashMap<Integer, AnimatedGif>();
+    mapping = new LinkedHashMap<Integer, MediaType>();
 
     this.queue = queue;
   }
@@ -67,19 +70,15 @@ class Channel implements Runnable {
   }
 
   void drawAll(PApplet app) {
-    // Draw all videos
-    for (Video value : videos.values()) {
-      value.draw(app);
-    }
+    // Draw all objects
+    for (Integer id : mapping.keySet()) {
+      MediaType type = mapping.get(id);
 
-    // Draw all images
-    for (Image value : images.values()) {
-      value.draw(app);
-    }
-
-    // Draw all gifs
-    for (AnimatedGif value : gifs.values()) {
-      value.draw(app);
+      switch (type) {
+        case IMAGE: Image img = images.get(id); img.draw(app); break;
+        case ANIMATEDGIF: AnimatedGif gif = gifs.get(id); gif.draw(app); break;
+        case VIDEO: Video vid = videos.get(id); vid.draw(app); break;
+      }
     }
 
     // Draw all text
@@ -142,9 +141,11 @@ class Channel implements Runnable {
       if (filename.endsWith(".gif")) {
         AnimatedGif gif = new AnimatedGif(filename, posX, posY, h);
         gifs.put(instr.getInt("id"), gif);
+        mapping.put(instr.getInt("id"), MediaType.ANIMATEDGIF);
       } else {
         Image img = new Image(filename, posX, posY, h);
         images.put(instr.getInt("id"), img);
+        mapping.put(instr.getInt("id"), MediaType.IMAGE);
       }
     } else {
       println("[error] File "+filename+" does not exist");
@@ -164,6 +165,7 @@ class Channel implements Runnable {
     if (f.exists()) {
       Video vid = new Video(filename, posX, posY, h);
       videos.put(instr.getInt("id"), vid);
+      mapping.put(instr.getInt("id"), MediaType.VIDEO);
     } else {
       println("[error] File "+filename+" does not exist");
     }
@@ -171,14 +173,17 @@ class Channel implements Runnable {
 
   void deleteImage(JSONObject instr, Integer id) {
     images.remove(id);
+    mapping.remove(id);
   }
 
   void deleteGif(JSONObject instr, Integer id) {
     gifs.remove(id);
+    mapping.remove(id);
   }
   
   void deleteVideo(JSONObject instr, Integer id) {
     videos.remove(id);
+    mapping.remove(id);
   }
 
   void updateImage(JSONObject instr, Integer id) {
