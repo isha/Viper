@@ -1,12 +1,4 @@
-class Video {
-  int x, y;
-  int targetX, targetY;
-  float easing = 0.1;
-  float speed;
-  float currentScale = 1.0;
-  float width, height;
-  boolean hidden;
-
+class Video extends MediaObject {
   Movie video;
 
   Video(String filename, int posX, int posY, boolean h) {
@@ -17,10 +9,6 @@ class Video {
     width = video.width;
     height = video.height;
     hidden = h;
-  }
-
-  void setEasing(float e) {
-    easing = e;
   }
 
   void setPlaybackSpeed(float s) {
@@ -35,28 +23,11 @@ class Video {
     video.speed(speed);
   }
 
-  void updateTargetPostion(int posX, int posY) {
-    targetX = posX;
-    targetY = posY;
-  }
-
   Movie getMovie() {
     return video;
   }
-
-  void setScale(int s) {
-    currentScale = (float) s/100.0;
-  }
-
-  void updateSize(float w, float h) {
-    width = w;
-    height = h;
-  }
-
-  void setHidden(boolean h) {
-    hidden = h;
-  }
-
+  
+  @Override
   void draw(PApplet app) {
     int dx = targetX - x;
     if(abs(dx) > 1) {

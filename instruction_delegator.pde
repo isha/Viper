@@ -13,9 +13,8 @@ class InstructionDelegator implements Runnable {
 
         if (instr != null) {
           if (instr.hasKey("master")) {
-            Enumeration<ConcurrentLinkedQueue<JSONObject>> channelQueue = queues.elements();
-            while (channelQueue.hasMoreElements()) {
-              channelQueue.nextElement().add(instr);
+            for (ConcurrentLinkedQueue<JSONObject> channelQueue : queues.values()) {
+              channelQueue.add(instr);
             }
 
             if (RECORD) {

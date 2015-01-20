@@ -1,5 +1,4 @@
 import java.util.Map;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.io.*;
 import java.util.*;
@@ -8,7 +7,6 @@ import processing.video.*;
 import gifAnimation.*;
 import g4p_controls.*;
 import processing.opengl.*;
-
 
 static boolean TESTMODE = false;
 static boolean RECORD = false;
@@ -22,9 +20,9 @@ static boolean FULLSCREEN = false;
 PApplet main_app;
 GWindow p_window;
 
-Hashtable<String, Channel> channels;
-Hashtable<String, ConcurrentLinkedQueue<JSONObject>> queues;
-Hashtable<String, PrintWriter> recorders;
+LinkedHashMap<String, Channel> channels;
+LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>> queues;
+LinkedHashMap<String, PrintWriter> recorders;
 ConcurrentLinkedQueue<JSONObject> mainQueue;
 
 OSCServer oscServer = new OSCServer();
@@ -40,38 +38,33 @@ void setup() {
   String myWAN = NetInfo.wan();
   ip.setText(myWAN);
 
-  channels = new Hashtable<String, Channel>();
-  queues = new Hashtable<String, ConcurrentLinkedQueue<JSONObject>>();
+  channels = new LinkedHashMap<String, Channel>();
+  queues = new LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>>();
 }
 
 void draw() {}
 
+// Called by Run button in GUI
 void runViper() {
   createStageWindow();
 
   if (RECORD) {
-    recorders = new Hashtable<String, PrintWriter>();
+    recorders = new LinkedHashMap<String, PrintWriter>();
     
     PrintWriter recorder = createWriter("logs/master/messages.json");
     recorders.put("master", recorder);
   }
 
+  mainQueue = new ConcurrentLinkedQueue<JSONObject>();
+
   if (TESTMODE) {
-    mainQueue = new ConcurrentLinkedQueue<JSONObject>();
     addTestChannels();
-
-    Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
-    delegateInstructions.start();
-
   } else {
-    
     oscServer.runServer();
-
-    mainQueue = new ConcurrentLinkedQueue<JSONObject>();
-    
-    Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
-    delegateInstructions.start();
   }
+
+  Thread delegateInstructions = new Thread(new InstructionDelegator(mainQueue));
+  delegateInstructions.start();
 }
 
 ConcurrentLinkedQueue<JSONObject> addChannel(String deviceID) {
@@ -99,6 +92,7 @@ ConcurrentLinkedQueue<JSONObject> addChannel(String deviceID) {
 void removeChannel(String deviceID) {
   queues.remove(deviceID);
   channels.remove(deviceID);
+  recorders.remove(deviceID);
 }
 
 // Called every time a new frame is available to read
@@ -114,7 +108,7 @@ void createStageWindow() {
     sketchHeight = HEIGHT; sketchWidth = WIDTH;
   }
 
-  p_window = new GWindow(this, "Performance Window", 0, 0, sketchWidth, sketchHeight, true, OPENGL);
+  p_window = new GWindow(this, "Performance Window", 0, 0, sketchWidth, sketchHeight, false, OPENGL);
   p_window.setActionOnClose(G4P.CLOSE_WINDOW);
   p_window.addDrawHandler(this, "p_window_draw1");
 }
@@ -122,16 +116,9 @@ void createStageWindow() {
 synchronized public void p_window_draw1(GWinApplet appc, GWinData data) {
   appc.background(230);
 
-  // Draw all channels background
-  Enumeration<Channel> channel = channels.elements();
-  while (channel.hasMoreElements ()) {
-    channel.nextElement().drawBackground(appc);
-  }
-
   // Draw all channels
-  channel = channels.elements();
-  while (channel.hasMoreElements ()) {
-    channel.nextElement().drawAll(appc);
+  for (Channel channel : channels.values()) {
+    channel.drawAll(appc);
   }
 
 }
