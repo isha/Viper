@@ -21,9 +21,9 @@ static boolean FULLSCREEN = false;
 PApplet main_app;
 GWindow p_window;
 
-HashMap<String, Channel> channels;
-HashMap<String, ConcurrentLinkedQueue<JSONObject>> queues;
-HashMap<String, PrintWriter> recorders;
+LinkedHashMap<String, Channel> channels;
+LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>> queues;
+LinkedHashMap<String, PrintWriter> recorders;
 ConcurrentLinkedQueue<JSONObject> mainQueue;
 
 OSCServer oscServer = new OSCServer();
@@ -39,8 +39,8 @@ void setup() {
   String myWAN = NetInfo.wan();
   ip.setText(myWAN);
 
-  channels = new HashMap<String, Channel>();
-  queues = new HashMap<String, ConcurrentLinkedQueue<JSONObject>>();
+  channels = new LinkedHashMap<String, Channel>();
+  queues = new LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>>();
 }
 
 void draw() {}
@@ -50,7 +50,7 @@ void runViper() {
   createStageWindow();
 
   if (RECORD) {
-    recorders = new HashMap<String, PrintWriter>();
+    recorders = new LinkedHashMap<String, PrintWriter>();
     
     PrintWriter recorder = createWriter("logs/master/messages.json");
     recorders.put("master", recorder);

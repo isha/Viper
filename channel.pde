@@ -1,7 +1,7 @@
 class Channel implements Runnable {
-  HashMap<Integer, Image> images;
-  HashMap<Integer, Video> videos;
-  HashMap<Integer, AnimatedGif> gifs;
+  LinkedHashMap<Integer, Image> images;
+  LinkedHashMap<Integer, Video> videos;
+  LinkedHashMap<Integer, AnimatedGif> gifs;
 
   String textStr;
   int textPosX;
@@ -14,9 +14,9 @@ class Channel implements Runnable {
   ConcurrentLinkedQueue<JSONObject> queue;
   
   Channel(ConcurrentLinkedQueue<JSONObject> queue) {
-    images = new HashMap<Integer, Image>();
-    videos = new HashMap<Integer, Video>();
-    gifs = new HashMap<Integer, AnimatedGif>();
+    images = new LinkedHashMap<Integer, Image>();
+    videos = new LinkedHashMap<Integer, Video>();
+    gifs = new LinkedHashMap<Integer, AnimatedGif>();
 
     this.queue = queue;
   }
