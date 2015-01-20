@@ -1,11 +1,5 @@
-class Image {
-  int x, y;
-  int targetX, targetY;
-  float easing = 0.1;
-  float currentScale = 1.0;
-  float width, height;
+class Image extends MediaObject {
   int degsToRotate;
-  boolean hidden = false;
 
   // image effect transition variables
   private static final int BRIGHTNESS_VALUE = 0;
@@ -57,15 +51,6 @@ class Image {
     updateFlag = new boolean[NUM_TRANSITIONS];
     degsToRotate = 0;
 
-  }
-
-  void setEasing(float e) {
-    easing = e;
-  }
-
-  void updateTargetPostion(int posX, int posY) {
-    targetX = posX;
-    targetY = posY;
   }
 
   void startBrightness(int totalMagnitude, int totalUpdateTime, int numUpdates) {
@@ -464,15 +449,6 @@ class Image {
     picture.filter(THRESHOLD, constrainedValue);
   }
 
-  void updateSize(float w, float h) {
-    width = w;
-    height = h;
-  }
-
-  void setScale(int s) {
-    currentScale = (float) s/100.0;
-  }
-
   void setRotation(int degs) {
     degsToRotate = degs;
   }
@@ -521,14 +497,11 @@ class Image {
     return picture;
   }
 
-  void setHidden(boolean h) {
-    hidden = h;
-  }
-
   void reset() {
     picture.copy(originalPicture, 0, 0, originalPicture.width, originalPicture.height, 0, 0, originalPicture.width, originalPicture.height);
   }
 
+  @Override
   void draw(PApplet app) {
     int dx = targetX - x;
     if(abs(dx) > 1) {

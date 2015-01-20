@@ -1,6 +1,6 @@
 class Channel implements Runnable {
-  Hashtable<Integer, Image> images;
-  Hashtable<Integer, Video> videos;
+  Hashtable<Integer, MediaObject> images;
+  Hashtable<Integer, MediaObject> videos;
   Hashtable<Integer, AnimatedGif> gifs;
 
   Image backImage;
@@ -23,8 +23,8 @@ class Channel implements Runnable {
   ConcurrentLinkedQueue<JSONObject> queue;
   
   Channel(ConcurrentLinkedQueue<JSONObject> queue) {
-    images = new Hashtable<Integer, Image>();
-    videos = new Hashtable<Integer, Video>();
+    images = new Hashtable<Integer, MediaObject>();
+    videos = new Hashtable<Integer, MediaObject>();
     gifs = new Hashtable<Integer, AnimatedGif>();
     backGifId = backImageId = backVideoId = -1;
 
@@ -48,6 +48,10 @@ class Channel implements Runnable {
           Enumeration<Integer> v = videos.keys();
           while (v.hasMoreElements()) {
             applyInstrToId(instr, v.nextElement());
+          }
+          Enumeration<Integer> g = gifs.keys();
+          while (g.hasMoreElements()) {
+            applyInstrToId(instr, g.nextElement());
           }
           Enumeration<Integer> i = images.keys();
           while (i.hasMoreElements()) {
@@ -87,13 +91,13 @@ class Channel implements Runnable {
 
   void drawAll(PApplet app) {
     // Draw all videos
-    Enumeration<Video> v = videos.elements();
+    Enumeration<MediaObject> v = videos.elements();
     while (v.hasMoreElements()) {
       v.nextElement().draw(app);
     }
 
     // Draw all images
-    Enumeration<Image> i = images.elements();
+    Enumeration<MediaObject> i = images.elements();
     while (i.hasMoreElements()) {
       i.nextElement().draw(app);
     }
@@ -249,7 +253,7 @@ class Channel implements Runnable {
     if (backImageId ==  id) {
       img = backImage;
     } else {
-      img = images.get(id);
+      img = (Image) images.get(id);
     }
 
     if (instr.hasKey("hidden")) {
@@ -477,7 +481,7 @@ class Channel implements Runnable {
     if (backVideoId ==  id) {
       vid = backVideo;
     } else {
-      vid = videos.get(id);
+      vid = (Video) videos.get(id);
     }
 
     if (instr.hasKey("hidden")) {
