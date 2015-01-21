@@ -8,7 +8,7 @@ import gifAnimation.*;
 import g4p_controls.*;
 import processing.opengl.*;
 
-static boolean TESTMODE = false;
+static boolean TESTMODE = true;
 static boolean RECORD = false;
 static boolean VERBOSE_LOG = false;
 static int DEFAULT_WIDTH = 1000;
