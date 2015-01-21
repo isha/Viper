@@ -8,7 +8,7 @@ import gifAnimation.*;
 import g4p_controls.*;
 import processing.opengl.*;
 
-static boolean TESTMODE = true;
+static boolean TESTMODE = false;
 static boolean RECORD = false;
 static boolean VERBOSE_LOG = false;
 static int DEFAULT_WIDTH = 1000;
@@ -28,15 +28,18 @@ ConcurrentLinkedQueue<JSONObject> mainQueue;
 ServerManagement oscServer = new ServerManagement();
 
 void setup() {
-  size(480, 320);
+  size(480, 320, OPENGL);
   if (frame != null) {
     frame.setResizable(true);
   }
   main_app = this;
 
   createGUI();
-  String myWAN = NetInfo.wan();
-  ip.setText(myWAN);
+
+  if (!TESTMODE) {
+    String myWAN = NetInfo.wan();
+    ip.setText(myWAN);
+  }
 
   channels = new LinkedHashMap<String, Channel>();
   queues = new LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>>();

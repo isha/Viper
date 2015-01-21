@@ -141,11 +141,11 @@ public void createGUI(){
   ip.setText("N/A");
   ip.setOpaque(false);
   test_file_1 = new GTextField(this, 20, 200, 130, 20, G4P.SCROLLBARS_NONE);
-  test_file_1.setText("glitchy.json");
+  test_file_1.setText("demo/instructions1.json");
   test_file_1.setOpaque(true);
   test_file_1.addEventHandler(this, "test_file_1_change1");
   test_file_2 = new GTextField(this, 20, 230, 130, 20, G4P.SCROLLBARS_NONE);
-  // test_file_2.setText("demo/instructions2.json");
+  test_file_2.setText("demo/instructions2.json");
   test_file_2.setOpaque(true);
   test_file_2.addEventHandler(this, "test_file_2_change1");
   test_file_label = new GLabel(this, 20, 170, 130, 20);
@@ -153,7 +153,7 @@ public void createGUI(){
   test_file_label.setText(" Enter test files below");
   test_file_label.setOpaque(false);
   test_file_3 = new GTextField(this, 20, 260, 130, 20, G4P.SCROLLBARS_NONE);
-  // test_file_3.setText("demo/instructions3.json");
+  test_file_3.setText("demo/instructions3.json");
   test_file_3.setOpaque(true);
   test_file_3.addEventHandler(this, "test_file_3_change1");
   full_screen = new GCheckbox(this, 240, 240, 140, 20);
