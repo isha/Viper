@@ -94,7 +94,6 @@ class OSCServer {
 
   void sendDataList(String deviceID, String deviceAddr, Integer devicePort) {
     OscMessage dataList = new OscMessage("/viper");
-    dataList.add(",");
     readDataFolder(dataList);
     
     sendMessage(dataList, deviceAddr, devicePort);
@@ -102,7 +101,6 @@ class OSCServer {
  
   void sendConnectAck(String deviceAddr, Integer devicePort) {
     OscMessage connectAck = new OscMessage("/viper");
-    connectAck.add(",");
     connectAck.add("ack");
     
     sendMessage(connectAck, deviceAddr, devicePort);
@@ -253,14 +251,14 @@ class OSCServer {
     if(filename.length() > 5) {
       if(!(filename.substring(filename.length()-5, filename.length()).equalsIgnoreCase(".json")) &&
           !(filename.substring(filename.length()-4, filename.length()).equalsIgnoreCase(".txt"))) {
-        dataList.add(filename + ",");
+        dataList.add(filename);
       }
     } else if(filename.length() > 4) {
       if(!(filename.substring(filename.length()-4, filename.length()).equalsIgnoreCase(".txt"))) {
-        dataList.add(filename + ",");
+        dataList.add(filename);
       }
     } else {
-      dataList.add(filename + ",");
+      dataList.add(filename);
     }
   }
 
