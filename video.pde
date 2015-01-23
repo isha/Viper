@@ -1,11 +1,11 @@
 class Video extends MediaObject {
   Movie video;
 
-  Video(String filename, int posX, int posY, boolean h) {
+  Video(String filename, float posX, float posY, boolean h) {
     video = new Movie(main_app, filename);
     video.loop();
-    targetX = x = posX;
-    targetY = y = posY;
+    targetX = x = constrain(posX, 0, 1); 
+    targetY = y = constrain(posY, 0, 1);
     width = video.width;
     height = video.height;
     hidden = h;
@@ -29,12 +29,12 @@ class Video extends MediaObject {
   
   @Override
   void draw(PApplet app) {
-    int dx = targetX - x;
+    float dx = targetX - x;
     if(abs(dx) > 1) {
       x += dx * easing;
     }
 
-    int dy = targetY - y;
+    float dy = targetY - y;
     if(abs(dy) > 1) {
       y += dy * easing;
     }

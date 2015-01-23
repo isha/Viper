@@ -22,12 +22,12 @@ class Image extends MediaObject {
   PImage picture;
   PImage originalPicture;
 
-  Image(String filename, int posX, int posY, boolean h) {
+  Image(String filename, float posX, float posY, boolean h) {
     picture = loadImage(filename);
     originalPicture = loadImage(filename);
     
-    targetX = x = posX;
-    targetY = y = posY;
+    targetX = x = WIDTH*constrain(posX, 0, 1); 
+    targetY = y = HEIGHT*constrain(posY, 0, 1);
     hidden = h;
 
     numUpdatesLeft = new int[NUM_TRANSITIONS];
@@ -535,12 +535,12 @@ class Image extends MediaObject {
 
   @Override
   void draw(PApplet app) {
-    int dx = targetX - x;
+    float dx = targetX - x;
     if(abs(dx) > 1) {
       x += dx * easing;
     }
 
-    int dy = targetY - y;
+    float dy = targetY - y;
     if(abs(dy) > 1) {
       y += dy * easing;
     }

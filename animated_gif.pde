@@ -1,6 +1,6 @@
 class AnimatedGif {
-  int x, y;
-  int targetX, targetY;
+  float x, y;
+  float targetX, targetY;
   float easing = 0.1;
   float currentScale = 1.0;
   float width, height;
@@ -9,13 +9,13 @@ class AnimatedGif {
   Gif picture;
   Image[] frames; 
 
-  AnimatedGif(String filename, int posX, int posY, boolean h) {
+  AnimatedGif(String filename, float posX, float posY, boolean h) {
     Gif myAnimation = new Gif(main_app, filename);
     myAnimation.play();
     picture = myAnimation;
 
-    targetX = x = posX;
-    targetY = y = posY;
+    targetX = x = constrain(posX, 0, 1); 
+    targetY = y = constrain(posY, 0, 1);
     hidden = h;
 
     PImage[] images = picture.getPImages();
@@ -33,9 +33,9 @@ class AnimatedGif {
     easing = e;
   }
 
-  void updateTargetPostion(int posX, int posY) {
-    targetX = posX;
-    targetY = posY;
+  void updateTargetPostion(float posX, float posY) {
+    targetX = WIDTH*constrain(posX, 0, 1);
+    targetY = HEIGHT*constrain(posY, 0, 1);
   }
 
   void startBrightness(int magnitude, int totaltime, int numupdates) {
@@ -137,8 +137,8 @@ class AnimatedGif {
   }
 
   void updateSize(float w, float h) {
-    width = w;
-    height = h;
+    width = WIDTH*constrain(w, 0, 1);
+    height = HEIGHT*constrain(h, 0, 1);
   }
 
   void setHidden(boolean h) {
@@ -146,12 +146,12 @@ class AnimatedGif {
   }
 
   void draw(PApplet app) {
-    int dx = targetX - x;
+    float dx = targetX - x;
     if(abs(dx) > 1) {
       x += dx * easing;
     }
 
-    int dy = targetY - y;
+    float dy = targetY - y;
     if(abs(dy) > 1) {
       y += dy * easing;
     }
