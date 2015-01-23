@@ -14,8 +14,8 @@ class AnimatedGif {
     myAnimation.play();
     picture = myAnimation;
 
-    targetX = x = constrain(posX, 0, 1); 
-    targetY = y = constrain(posY, 0, 1);
+    targetX = x = WIDTH*constrain(posX, 0, 1); 
+    targetY = y = HEIGHT*constrain(posY, 0, 1);
     hidden = h;
 
     PImage[] images = picture.getPImages();

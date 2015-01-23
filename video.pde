@@ -4,8 +4,8 @@ class Video extends MediaObject {
   Video(String filename, float posX, float posY, boolean h) {
     video = new Movie(main_app, filename);
     video.loop();
-    targetX = x = constrain(posX, 0, 1); 
-    targetY = y = constrain(posY, 0, 1);
+    targetX = x = WIDTH*constrain(posX, 0, 1); 
+    targetY = y = HEIGHT*constrain(posY, 0, 1);
     width = video.width;
     height = video.height;
     hidden = h;
