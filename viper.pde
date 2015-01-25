@@ -107,6 +107,7 @@ void createStageWindow() {
   int sketchWidth, sketchHeight;
   sketchWidth = WIDTH; 
   sketchHeight = ((int) (WIDTH*((float) ASPECT_RATIO_H/ASPECT_RATIO_W))); 
+  HEIGHT = sketchHeight;
 
   p_window = new GWindow(this, "Performance Window", 0, 0, sketchWidth, sketchHeight, false, OPENGL);
   p_window.setActionOnClose(G4P.CLOSE_WINDOW);

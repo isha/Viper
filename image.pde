@@ -26,8 +26,10 @@ class Image extends MediaObject {
     picture = loadImage(filename);
     originalPicture = loadImage(filename);
     
-    targetX = x = WIDTH*constrain(posX, 0, 1); 
-    targetY = y = HEIGHT*constrain(posY, 0, 1);
+    targetX = constrain(posX, 0, 1); 
+    targetY = constrain(posY, 0, 1);
+    x = targetX*WIDTH;
+    y = targetY*HEIGHT;
     hidden = h;
 
     numUpdatesLeft = new int[NUM_TRANSITIONS];
@@ -40,9 +42,8 @@ class Image extends MediaObject {
 
     degsToRotate = 0;
 
-
-    width = picture.width;
-    height = picture.height;
+    width = (float) picture.width/WIDTH;
+    height = (float) picture.height/HEIGHT;
   }
 
   Image(PImage pic) {
@@ -535,12 +536,12 @@ class Image extends MediaObject {
 
   @Override
   void draw(PApplet app) {
-    float dx = targetX - x;
+    float dx = targetX*WIDTH - x;
     if(abs(dx) > 1) {
       x += dx * easing;
     }
 
-    float dy = targetY - y;
+    float dy = targetY*HEIGHT - y;
     if(abs(dy) > 1) {
       y += dy * easing;
     }
@@ -551,7 +552,7 @@ class Image extends MediaObject {
     applyRotate(app);  
     
     if (!hidden) {
-      app.image(picture, x, y, width*currentScale, height*currentScale);
+      app.image(picture, x, y, width*WIDTH*currentScale, height*HEIGHT*currentScale);
     }
     
     app.popMatrix();    

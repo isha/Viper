@@ -12,13 +12,13 @@ class MediaObject {
   }
 
   void updateTargetPostion(float posX, float posY) {
-    targetX = WIDTH*constrain(posX, 0, 1);
-    targetY = HEIGHT*constrain(posY, 0, 1);
+    targetX = constrain(posX, 0, 1);
+    targetY = constrain(posY, 0, 1);
   }
 
   void updateSize(float w, float h) {
-    width = WIDTH*constrain(w, 0, 1);
-    height = HEIGHT*constrain(h, 0, 1);
+    width = constrain(w, 0, 1);
+    height = constrain(h, 0, 1);
   }
 
   void setScale(int s) {

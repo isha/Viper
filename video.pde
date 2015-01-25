@@ -4,10 +4,12 @@ class Video extends MediaObject {
   Video(String filename, float posX, float posY, boolean h) {
     video = new Movie(main_app, filename);
     video.loop();
-    targetX = x = WIDTH*constrain(posX, 0, 1); 
-    targetY = y = HEIGHT*constrain(posY, 0, 1);
-    width = video.width;
-    height = video.height;
+    targetX = constrain(posX, 0, 1); 
+    targetY = constrain(posY, 0, 1);
+    x = targetX*WIDTH;
+    y = targetY*HEIGHT;
+    width = (float) video.width/WIDTH;
+    height = (float) video.height/HEIGHT;
     hidden = h;
   }
 
@@ -29,18 +31,18 @@ class Video extends MediaObject {
   
   @Override
   void draw(PApplet app) {
-    float dx = targetX - x;
+    float dx = targetX*WIDTH - x;
     if(abs(dx) > 1) {
       x += dx * easing;
     }
 
-    float dy = targetY - y;
+    float dy = targetY*HEIGHT - y;
     if(abs(dy) > 1) {
       y += dy * easing;
     }
 
     if (!hidden) {
-      app.image(video, x, y, width*currentScale, height*currentScale);
+      app.image(video, x, y, width*WIDTH*currentScale, height*HEIGHT*currentScale);
     }
   }
 };
