@@ -65,6 +65,11 @@ public void aspectRatioList1_click1(GDropList source, GEvent event) { //_CODE_:a
   }
 } //_CODE_:aspectRatioList1:411951:
 
+public void widthfield1_change1(GTextField source, GEvent event) { //_CODE_:widthfield1:228917:
+  WIDTH = Integer.parseInt(widthfield1.getText().trim());
+  System.out.println("width is: "+WIDTH);
+} //_CODE_:widthfield1:228917:
+
 
 
 // Create all the GUI controls. 
@@ -138,13 +143,21 @@ public void createGUI(){
   verbose_log.setText(" Verbose Log");
   verbose_log.setOpaque(false);
   verbose_log.addEventHandler(this, "verbose_log_clicked1");
-  aspectRatioList1 = new GDropList(this, 300, 170, 90, 100, 4);
+  aspectRatioList1 = new GDropList(this, 300, 200, 90, 100, 4);
   aspectRatioList1.setItems(loadStrings("list_411951"), 0);
   aspectRatioList1.addEventHandler(this, "aspectRatioList1_click1");
-  aspect_ratio_label = new GLabel(this, 210, 170, 80, 20);
+  aspect_ratio_label = new GLabel(this, 210, 200, 80, 20);
   aspect_ratio_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   aspect_ratio_label.setText("Aspect Ratio");
   aspect_ratio_label.setOpaque(false);
+  width_label = new GLabel(this, 210, 170, 80, 20);
+  width_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  width_label.setText("Width");
+  width_label.setOpaque(false);
+  widthfield1 = new GTextField(this, 300, 170, 140, 20, G4P.SCROLLBARS_NONE);
+  widthfield1.setText("1000");
+  widthfield1.setOpaque(true);
+  widthfield1.addEventHandler(this, "widthfield1_change1");
 }
 
 // Variable declarations 
@@ -166,4 +179,6 @@ GTextField test_file_3;
 GCheckbox verbose_log; 
 GDropList aspectRatioList1; 
 GLabel aspect_ratio_label; 
+GLabel width_label; 
+GTextField widthfield1; 
 

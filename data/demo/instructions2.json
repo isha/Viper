@@ -111,7 +111,7 @@
   {
     "deviceId": "2",
     "method": "create",
-    "image": "fish5.png",
+    "image": "demo/fish5.png",
     "posX": 0.9,
     "posY": 0.05,
     "id": 3,
