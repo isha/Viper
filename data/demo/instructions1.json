@@ -1,0 +1,76 @@
+[
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "demo/Blue.png",
+    "id": 0,
+
+  },
+
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "demo/Fading Blue.jpeg",
+    "id": 1,
+  },
+
+  {
+    "deviceId": "1",
+    "method": "update",
+    "id": 1,
+    "gray": 1,
+    "width": 1,
+    "height": 1,
+    "text": "Device 1: Graying current background image",
+    "textPosX": 10,
+    "textPosY": 550,
+  },
+
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "demo/Dark Blue.jpg",
+    "id": 2,
+    "text": "Device 1: Background image #3",
+    "textPosX": 10,
+    "textPosY": 550,
+  },
+  {
+    "deviceId": "1",
+    "text": "",
+    "textPosX": 10,
+    "textPosY": 550,
+    "sleep": 4000,
+  },
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "demo/Black.jpeg",
+    "id": 2,
+  },
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "demo/Black.jpeg",
+    "id": 2,
+    "text": "Device 1: Background image #4",
+    "textPosX": 10,
+    "textPosY": 550,    
+    "sleep": 6000,
+    },
+  {
+    "deviceId": "1",
+    "method": "create",
+    "background": 0,
+    "image": "ocean.jpg",
+    "id": 2,
+    "text": "Device 1: Background image #5",
+    "textPosX": 10,
+    "textPosY": 550,        
+  }
+]

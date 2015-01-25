@@ -4,5 +4,5 @@ data/.DS_Store
 logs/*
 data/*
 
-!data/demo/*
+!data/demo
 !data/list_411951
