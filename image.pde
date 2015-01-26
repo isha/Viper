@@ -14,6 +14,8 @@ class Image extends MediaObject {
   long[] timeOfLastUpdate;
   long[] intervalTime;
   boolean[] updateFlag;
+  long[] totalTransitionTime;
+  long[] startTransitionTime;
 
   boolean rotateFlag;
 
@@ -33,7 +35,11 @@ class Image extends MediaObject {
     timeOfLastUpdate = new long[NUM_TRANSITIONS];
     intervalTime = new long[NUM_TRANSITIONS];
     updateFlag = new boolean[NUM_TRANSITIONS];
+    totalTransitionTime = new long[NUM_TRANSITIONS];
+    startTransitionTime = new long[NUM_TRANSITIONS];
+
     degsToRotate = 0;
+
 
     width = picture.width;
     height = picture.height;
@@ -49,8 +55,10 @@ class Image extends MediaObject {
     timeOfLastUpdate = new long[NUM_TRANSITIONS];
     intervalTime = new long[NUM_TRANSITIONS];
     updateFlag = new boolean[NUM_TRANSITIONS];
-    degsToRotate = 0;
+    totalTransitionTime = new long[NUM_TRANSITIONS];
+    startTransitionTime = new long[NUM_TRANSITIONS];
 
+    degsToRotate = 0;
   }
 
   void startBrightness(int totalMagnitude, int totalUpdateTime, int numUpdates) {
@@ -59,6 +67,8 @@ class Image extends MediaObject {
     intervalTime[BRIGHTNESS_VALUE] = totalUpdateTime/numUpdates;
     updateMagnitude[BRIGHTNESS_VALUE] = totalMagnitude/numUpdates;
     updateFlag[BRIGHTNESS_VALUE] = true;
+    totalTransitionTime[BRIGHTNESS_VALUE] = totalUpdateTime;
+    startTransitionTime[BRIGHTNESS_VALUE] = System.currentTimeMillis();
   }
 
   void adjustBrightness(int magnitude) {
@@ -104,6 +114,8 @@ class Image extends MediaObject {
     intervalTime[TRANSPARENCY_VALUE] = totalUpdateTime/numUpdates;
     updateMagnitude[TRANSPARENCY_VALUE] = totalMagnitude/numUpdates;
     updateFlag[TRANSPARENCY_VALUE] = true;
+    totalTransitionTime[TRANSPARENCY_VALUE] = totalUpdateTime;
+    startTransitionTime[TRANSPARENCY_VALUE] = System.currentTimeMillis();
   }
 
   void adjustTransparency(int magnitude) {
@@ -133,7 +145,6 @@ class Image extends MediaObject {
           color c = color(r, g, b, a);
 
           picture.pixels[loc] = c;
-          
         }
       }
     }
@@ -141,9 +152,9 @@ class Image extends MediaObject {
   }
 
   void startHue (int totalRedMagnitude, int totalGreenMagnitude, int totalBlueMagnitude, int totalUpdateTime, int numUpdates) {
-    startRedHue(totalRedMagnitude, totalUpdateTime, numUpdates);
-    startGreenHue(totalGreenMagnitude, totalUpdateTime, numUpdates);
-    startBlueHue(totalBlueMagnitude, totalUpdateTime, numUpdates);
+    if (totalRedMagnitude != 0) { startRedHue(totalRedMagnitude, totalUpdateTime, numUpdates); }
+    if (totalGreenMagnitude != 0) { startGreenHue(totalGreenMagnitude, totalUpdateTime, numUpdates); }
+    if (totalBlueMagnitude != 0) { startBlueHue(totalBlueMagnitude, totalUpdateTime, numUpdates); }
   }
 
   void startRedHue (int totalRedMagnitude, int totalUpdateTime, int numUpdates) {
@@ -151,6 +162,8 @@ class Image extends MediaObject {
     intervalTime[RED_VALUE] = totalUpdateTime/numUpdates;
     updateMagnitude[RED_VALUE] = totalRedMagnitude/numUpdates;
     updateFlag[RED_VALUE] = true;
+    totalTransitionTime[RED_VALUE] = totalUpdateTime;
+    startTransitionTime[RED_VALUE] = System.currentTimeMillis();
   }
 
   void startGreenHue (int totalGreenMagnitude, int totalUpdateTime, int numUpdates) {
@@ -158,6 +171,8 @@ class Image extends MediaObject {
     intervalTime[GREEN_VALUE] = totalUpdateTime/numUpdates;
     updateMagnitude[GREEN_VALUE] = totalGreenMagnitude/numUpdates;
     updateFlag[GREEN_VALUE] = true;
+    totalTransitionTime[GREEN_VALUE] = totalUpdateTime;
+    startTransitionTime[GREEN_VALUE] = System.currentTimeMillis();
   }
 
   void startBlueHue (int totalBlueMagnitude, int totalUpdateTime, int numUpdates) {
@@ -165,6 +180,8 @@ class Image extends MediaObject {
     intervalTime[BLUE_VALUE] = totalUpdateTime/numUpdates;
     updateMagnitude[BLUE_VALUE] = totalBlueMagnitude/numUpdates;
     updateFlag[BLUE_VALUE] = true;
+    totalTransitionTime[BLUE_VALUE] = totalUpdateTime;
+    startTransitionTime[BLUE_VALUE] = System.currentTimeMillis();
   }  
 
   void adjustRedHue (int magnitude) {
@@ -463,8 +480,11 @@ class Image extends MediaObject {
     // iterate through all possible effects 
     for (int i = 0; i < NUM_TRANSITIONS; i++) {
 
+      long transitionTimeElapsed = System.currentTimeMillis() - startTransitionTime[i];
+      long timeSinceLastUpdate = System.currentTimeMillis() - timeOfLastUpdate[i];
+
       if (updateFlag[i] == true) {
-        if ((System.currentTimeMillis() - timeOfLastUpdate[i] > intervalTime[i]) && (numUpdatesLeft[i] > 0) ) {
+        if ( timeSinceLastUpdate > intervalTime[i] && numUpdatesLeft[i] > 0 && transitionTimeElapsed < totalTransitionTime[i]) {
 
           if (i == BRIGHTNESS_VALUE) 
             { adjustBrightness(updateMagnitude[i]); }
@@ -481,8 +501,14 @@ class Image extends MediaObject {
           numUpdatesLeft[i]--;
         }
       }
-      else if (numUpdatesLeft[i] == 0) {
+      if ( (numUpdatesLeft[i] == 0 || transitionTimeElapsed >= totalTransitionTime[i] ) && updateFlag[i] == true) {
         updateFlag[i] = false;
+        updateMagnitude[i] = 0;
+        numUpdatesLeft[i] = 0;
+        intervalTime[i] = 0;
+        totalTransitionTime[i] = 0;
+        startTransitionTime[i] = 0;
+        System.out.println(transitionTimeElapsed);
       }
 
     }
