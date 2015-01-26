@@ -6,9 +6,8 @@ int DEFAULT_NUM_PORTS = 1;
 int NUM_PORTS = DEFAULT_NUM_PORTS;
 int PORT = DEFAULT_PORT;
 
-class OSCServer {
-  OscP5 viperServer;
-  NetAddress hostLocation;
+class ServerManagement{
+  OSCServer[] viperServers;
   
   String[] registeredDevices;
   int numDevices;
@@ -16,9 +15,8 @@ class OSCServer {
   int MAXDEVICES = 200;
   int MAXPORTS = 100;
   
-  OSCServer() {
+  ServerManagement() {
     registeredDevices = new String[MAXDEVICES];
-    hostLocation = new NetAddress("127.0.0.1", 11000);
   }
   
   public void runServer() {
@@ -27,10 +25,11 @@ class OSCServer {
     loadRegisteredDevices();
   }
   
+  /*
   public void closeServer() {
     viperServer.stop();
   }
-
+  */
   protected void loadServer() {
     int[] ports;
     int startPort;
@@ -57,9 +56,10 @@ class OSCServer {
       ports[i] = startPort + i;
     }
     
-    viperServer = new OscP5(this, ports[0]);
-    for(i=1;i<numPorts;i++) {
-      new OscP5(this, ports[i]);
+    viperServers = new OSCServer[numPorts];
+   
+    for(i=0;i<numPorts;i++) {
+      viperServers[i] = new OSCServer(ports[i], this);
     }
   }
   
@@ -87,11 +87,48 @@ class OSCServer {
     numDevices = lineCount;
   }
   
+  public boolean checkID(String deviceID) {
+    for(int i=0;i<numDevices;i++) {
+      if(registeredDevices[i].equals(deviceID)) {
+         return true;
+      }
+    }
+    return false;
+  } 
+  
+  int getNumDevices() {
+    return numDevices;
+  }
+  
+  int getNumPorts() {
+    return numPorts;
+  }
+  
+  String[] getRegisteredDeviceIDs() {
+    return registeredDevices;
+  }
+};
+
+class OSCServer {
+  OscP5 server;
+  ServerManagement _serverMng;
+  
+  
+  OSCServer(int port, ServerManagement serverMng) {
+    OscProperties _serverProperties = new OscProperties();
+    _serverProperties.setSRSP(true);
+    _serverProperties.setListeningPort(port);
+    _serverProperties.setEventMethod("onMessageReceive");
+    server = new OscP5(this, _serverProperties);
+    
+    _serverMng = serverMng;
+  }
+  
   void sendMessage(OscMessage testMessage, String deviceAddr, Integer devicePort) {
     NetAddress sendLoc = new NetAddress(deviceAddr, devicePort);
-    viperServer.send(testMessage, sendLoc);
+    server.send(testMessage, sendLoc);
   }
-
+  
   void sendDataList(String deviceID, String deviceAddr, Integer devicePort) {
     OscMessage dataList = new OscMessage("/viper");
     readDataFolder(dataList);
@@ -110,7 +147,7 @@ class OSCServer {
     Event
     Triggers when the server receives an OSC message
    */ 
-  void oscEvent(OscMessage recvMsg) {
+  void onMessageReceive(OscMessage recvMsg) {
     JSONObject command;
     String recvMsgType;
     String messagePair;
@@ -138,11 +175,8 @@ class OSCServer {
     
     if(recvMsg.get(0).stringValue().equalsIgnoreCase("deviceId")) {
       deviceID = recvMsg.get(1).stringValue();
-      for(i=0;i<numDevices;i++) {
-        if(registeredDevices[i].equals(deviceID)) {
-          goodID = true;
-          break;
-        }
+      if(_serverMng.checkID(deviceID)) {
+        goodID = true;
       }
       if(goodID==false) {
         //if the device ID we got from message does not match any of the registered devices' ID
@@ -201,18 +235,6 @@ class OSCServer {
       command.setInt("time", millis());
     }
     mainQueue.add(command);
-  }
- 
-  int getNumDevices() {
-    return numDevices;
-  }
-  
-  int getNumPorts() {
-    return numPorts;
-  }
-  
-  String[] getRegisteredDeviceIDs() {
-    return registeredDevices;
   }
   
   void readDataFolder(OscMessage dataList) {

@@ -25,7 +25,7 @@ LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>> queues;
 LinkedHashMap<String, PrintWriter> recorders;
 ConcurrentLinkedQueue<JSONObject> mainQueue;
 
-OSCServer oscServer = new OSCServer();
+ServerManagement oscServer = new ServerManagement();
 
 void setup() {
   size(480, 320);
