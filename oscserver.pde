@@ -11,7 +11,7 @@ class ServerManagement{
   
   String[] registeredDevices;
   int numDevices;
-  int numPorts;
+  int numPorts = 0;
   int MAXDEVICES = 200;
   int MAXPORTS = 100;
   
@@ -20,16 +20,17 @@ class ServerManagement{
   }
   
   public void runServer() {
-//    closeServer();
     loadServer();
     loadRegisteredDevices();
   }
   
-  /*
+  
   public void closeServer() {
-    viperServer.stop();
+    for(int i=0;i<numPorts;i++) {
+      viperServers[i].stopServer();
+    }
   }
-  */
+  
   protected void loadServer() {
     int[] ports;
     int startPort;
@@ -122,6 +123,10 @@ class OSCServer {
     server = new OscP5(this, _serverProperties);
     
     _serverMng = serverMng;
+  }
+  
+  void stopServer() {
+    server.stop();
   }
   
   void sendMessage(OscMessage testMessage, String deviceAddr, Integer devicePort) {
