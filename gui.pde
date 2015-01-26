@@ -67,7 +67,6 @@ public void aspectRatioList1_click1(GDropList source, GEvent event) { //_CODE_:a
 
 public void widthfield1_change1(GTextField source, GEvent event) { //_CODE_:widthfield1:228917:
   WIDTH = Integer.parseInt(widthfield1.getText().trim());
-  System.out.println("width is: "+WIDTH);
 } //_CODE_:widthfield1:228917:
 
 
