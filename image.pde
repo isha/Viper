@@ -509,7 +509,6 @@ class Image extends MediaObject {
         intervalTime[i] = 0;
         totalTransitionTime[i] = 0;
         startTransitionTime[i] = 0;
-        System.out.println(transitionTimeElapsed);
       }
 
     }

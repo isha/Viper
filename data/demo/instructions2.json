@@ -5,10 +5,7 @@
     "image": "demo/ship2.png",
     "posX": 0,
     "posY": 0,
-    "id": 0,
-    "text": "Device 2: Creating ship",
-    "textPosX": 10,
-    "textPosY": 560,
+    "id": 0, 
     "sleep": 1000 
   },
   {
@@ -18,9 +15,6 @@
     "endY": 0.30,
     "easing": 0.01,
     "id": 0,
-    "text": "Device 2: Moving ship",
-    "textPosX": 10,
-    "textPosY": 560,
     "sleep": 4000,
   },
   {
@@ -33,9 +27,6 @@
     "totaltime": 3000,
     "numupdates": 100, 
     "id": 0,
-    "text": "Device 2: Moving ship",
-    "textPosX": 10,
-    "textPosY": 560,
     "sleep": 3000,
   },
   {
@@ -45,9 +36,6 @@
     "posX": 0.7,
     "posY": 0.36,
     "id": 1,
-    "text": "Device 2: Fire",
-    "textPosX": 10,
-    "textPosY": 560,
     "sleep": 2000,
   },
   {
@@ -58,9 +46,6 @@
   },
   {
     "deviceId": "2",
-    "text": "Device 2: Ship is fading away :(",
-    "textPosX": 10,
-    "textPosY": 560,
     "id": 0,
     "method": "update",
     "transparency": -150,
@@ -75,17 +60,7 @@
     "endY": 0.5,
     "easing": 0.01,
     "id": 0,
-    "text": "Device 2: Moving ship",
-    "textPosX": 10,
-    "textPosY": 560,
     "sleep": 1500,
-  },
-  {
-    "deviceId": "2",
-    "text": "",
-    "textPosX": 10,
-    "textPosY": 560,
-    "sleep": 2000
   },
   {
     "deviceId": "2",
@@ -94,18 +69,12 @@
     "posX": 0.5,
     "posY": 0.30,
     "id": 2,
-    "text": "Device 2: Thunder",
-    "textPosX": 10,
-    "textPosY": 560,
     "sleep": 1000,
   },
   {
     "deviceId": "2",
     "method": "delete",
     "id": 2,
-    "text": "Device 2: Stop the thunder!",
-    "textPosX": 10,
-    "textPosY": 560,
     "sleep": 2000
   },
   {
@@ -115,9 +84,6 @@
     "posX": 0.9,
     "posY": 0.05,
     "id": 3,
-    "text": "Device 2: Creating shark",
-    "textPosX": 10,
-    "textPosY": 560,
     "sleep": 100,    
   },
   {
@@ -127,9 +93,6 @@
     "endY": 0.8,
     "easing": 0.01,
     "id": 3,
-    "text": "Device 2: Moving shark",
-    "textPosX": 10,
-    "textPosY": 50,
     "sleep": 1000,
   },
   {
@@ -139,9 +102,6 @@
     "endY": 0.4,
     "easing": 0.01,
     "id": 3,
-    "text": "Device 2: Moving shark",
-    "textPosX": 10,
-    "textPosY": 50,
     "sleep": 1000,
   },  
   {
@@ -151,9 +111,6 @@
     "brightness": 100,
     "totaltime": 3000,
     "numupdates": 30,
-    "text": "Device 2: Increasing brightness of shark",
-    "textPosX": 10,
-    "textPosY": 50,
     "sleep": 3000,
   },
   {
@@ -161,9 +118,6 @@
     "method": "update", 
     "id": 3,
     "posterize": 4,
-    "text": "Device 2: Posterize shark",
-    "textPosX": 10,
-    "textPosY": 50,
     "sleep": 3000,
   },
   {
@@ -171,9 +125,6 @@
     "method": "update",
     "id": 3,
     "blur": 5,
-    "text": "Device 2: Blurry shark",
-    "textPosX": 10,
-    "textPosY": 50,
     "sleep": 3000,
   },
   {
@@ -186,9 +137,6 @@
   {
     "deviceId": "2",
     "method": "update",
-    "text": "Device 2: Resetting shark",
-    "textPosX": 10,
-    "textPosY": 50,
     "id": 3,
     "reset": 1,
     "sleep": 4000,
@@ -198,9 +146,6 @@
     "method": "update",
     "id": 3,
     "blur": 5,
-    "text": "Device 2: Blurry shark",
-    "textPosX": 10,
-    "textPosY": 50,
     "sleep": 3000,
   },
   {
@@ -213,9 +158,6 @@
   {
     "deviceId": "2",
     "method": "update",
-    "text": "Device 2: Resetting shark",
-    "textPosX": 10,
-    "textPosY": 50,
     "id": 3,
     "reset": 1,
     "sleep": 4000,
