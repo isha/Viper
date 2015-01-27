@@ -1,5 +1,6 @@
 class Video extends MediaObject {
   Movie video;
+  float speed;
 
   Video(String filename, float posX, float posY, boolean h) {
     video = new Movie(main_app, filename);

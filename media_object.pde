@@ -2,7 +2,7 @@ class MediaObject {
   float x, y;
   float targetX, targetY;
   float easing = 0.1;
-  float speed;
+
   float currentScale = 1.0;
   float width, height;
   boolean hidden;
