@@ -142,10 +142,12 @@ class Channel implements Runnable {
         AnimatedGif gif = new AnimatedGif(filename, posX, posY, h);
         gifs.put(instr.getInt("id"), gif);
         mapping.put(instr.getInt("id"), MediaType.ANIMATEDGIF);
+        updateGif(instr, instr.getInt("id"));
       } else {
         Image img = new Image(filename, posX, posY, h);
         images.put(instr.getInt("id"), img);
         mapping.put(instr.getInt("id"), MediaType.IMAGE);
+        updateImage(instr, instr.getInt("id"));
       }
     } else {
       println("[error] File "+filename+" does not exist");
@@ -166,6 +168,7 @@ class Channel implements Runnable {
       Video vid = new Video(filename, posX, posY, h);
       videos.put(instr.getInt("id"), vid);
       mapping.put(instr.getInt("id"), MediaType.VIDEO);
+      updateVideo(instr, instr.getInt("id"));
     } else {
       println("[error] File "+filename+" does not exist");
     }
