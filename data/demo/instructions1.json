@@ -5,9 +5,7 @@
     "background": 0,
     "image": "demo/Blue.png",
     "id": 0,
-    "text": "Device 1: Background image #1",
-    "textPosX": 10,
-    "textPosY": 550,
+
   },
 
   {
@@ -16,9 +14,6 @@
     "background": 0,
     "image": "demo/Fading Blue.jpeg",
     "id": 1,
-    "text": "Device 1: Background image #2",
-    "textPosX": 10,
-    "textPosY": 550,
   },
 
   {
@@ -26,6 +21,8 @@
     "method": "update",
     "id": 1,
     "gray": 1,
+    "width": 1,
+    "height": 1,
     "text": "Device 1: Graying current background image",
     "textPosX": 10,
     "textPosY": 550,
@@ -54,9 +51,6 @@
     "background": 0,
     "image": "demo/Black.jpeg",
     "id": 2,
-    "text": "Device 1: Background image #4",
-    "textPosX": 10,
-    "textPosY": 550,
   },
   {
     "deviceId": "1",

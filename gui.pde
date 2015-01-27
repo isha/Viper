@@ -15,8 +15,6 @@
  */
 
 public void run_click1(GButton source, GEvent event) { //_CODE_:run:570473:
-  HEIGHT = Integer.parseInt(p_win_height.getText().trim());
-  WIDTH = Integer.parseInt(p_win_width.getText().trim());
   PORT = Integer.parseInt(port.getText().trim());
   NUM_PORTS = Integer.parseInt(num_ports.getText().trim());
 
@@ -32,14 +30,6 @@ public void record_clicked1(GCheckbox source, GEvent event) { //_CODE_:record:41
 
   RECORD = !RECORD;
 } //_CODE_:record:415747:
-
-public void p_win_height_change1(GTextField source, GEvent event) { //_CODE_:p_win_height:586132:
-
-} //_CODE_:p_win_height:586132:
-
-public void p_win_width_change1(GTextField source, GEvent event) { //_CODE_:p_win_width:577060:
-
-} //_CODE_:p_win_width:577060:
 
 public void num_ports_change1(GTextField source, GEvent event) { //_CODE_:num_ports:992607:
 
@@ -61,14 +51,23 @@ public void test_file_3_change1(GTextField source, GEvent event) { //_CODE_:test
 
 } //_CODE_:test_file_3:536373:
 
-public void full_screen_clicked1(GCheckbox source, GEvent event) { //_CODE_:full_screen:207666:
-  FULLSCREEN = !FULLSCREEN;
-} //_CODE_:full_screen:207666:
-
 public void verbose_log_clicked1(GCheckbox source, GEvent event) { //_CODE_:verbose_log:692881:
   //println("verbose_record - GCheckbox >> GEvent." + event + " @ " + millis());
   VERBOSE_LOG = !VERBOSE_LOG;
 } //_CODE_:verbose_log:692881:
+
+public void aspectRatioList1_click1(GDropList source, GEvent event) { //_CODE_:aspectRatioList1:411951:
+  switch(aspectRatioList1.getSelectedIndex()) {
+    case 0: ASPECT_RATIO_W = 1; ASPECT_RATIO_H = 1; break;
+    case 1: ASPECT_RATIO_W = 4; ASPECT_RATIO_H = 3; break;
+    case 2: ASPECT_RATIO_W = 16; ASPECT_RATIO_H = 9; break;
+    case 3: ASPECT_RATIO_W = 16; ASPECT_RATIO_H = 10; break;
+  }
+} //_CODE_:aspectRatioList1:411951:
+
+public void widthfield1_change1(GTextField source, GEvent event) { //_CODE_:widthfield1:228917:
+  WIDTH = Integer.parseInt(widthfield1.getText().trim());
+} //_CODE_:widthfield1:228917:
 
 
 
@@ -98,24 +97,6 @@ public void createGUI(){
   label1.setText("Viper");
   label1.setTextBold();
   label1.setOpaque(false);
-  p_win_height = new GTextField(this, 300, 210, 80, 20, G4P.SCROLLBARS_NONE);
-  p_win_height.setText("600");
-  p_win_height.setPromptText("100");
-  p_win_height.setOpaque(true);
-  p_win_height.addEventHandler(this, "p_win_height_change1");
-  p_win_width = new GTextField(this, 300, 180, 80, 20, G4P.SCROLLBARS_NONE);
-  p_win_width.setText("1000");
-  p_win_width.setPromptText("100");
-  p_win_width.setOpaque(true);
-  p_win_width.addEventHandler(this, "p_win_width_change1");
-  p_win_width_label = new GLabel(this, 240, 180, 50, 20);
-  p_win_width_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
-  p_win_width_label.setText(" Width");
-  p_win_width_label.setOpaque(false);
-  p_win_height_label = new GLabel(this, 240, 210, 50, 20);
-  p_win_height_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
-  p_win_height_label.setText(" Height");
-  p_win_height_label.setOpaque(false);
   ip_label = new GLabel(this, 160, 80, 130, 20);
   ip_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   ip_label.setText("IP Address");
@@ -156,16 +137,26 @@ public void createGUI(){
   test_file_3.setText("demo/instructions3.json");
   test_file_3.setOpaque(true);
   test_file_3.addEventHandler(this, "test_file_3_change1");
-  full_screen = new GCheckbox(this, 240, 240, 140, 20);
-  full_screen.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
-  full_screen.setText(" Full Screen");
-  full_screen.setOpaque(false);
-  full_screen.addEventHandler(this, "full_screen_clicked1");
   verbose_log = new GCheckbox(this, 20, 110, 130, 20);
   verbose_log.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   verbose_log.setText(" Verbose Log");
   verbose_log.setOpaque(false);
   verbose_log.addEventHandler(this, "verbose_log_clicked1");
+  aspectRatioList1 = new GDropList(this, 300, 200, 90, 100, 4);
+  aspectRatioList1.setItems(loadStrings("list_411951"), 0);
+  aspectRatioList1.addEventHandler(this, "aspectRatioList1_click1");
+  aspect_ratio_label = new GLabel(this, 210, 200, 80, 20);
+  aspect_ratio_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  aspect_ratio_label.setText("Aspect Ratio");
+  aspect_ratio_label.setOpaque(false);
+  width_label = new GLabel(this, 210, 170, 80, 20);
+  width_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  width_label.setText("Width");
+  width_label.setOpaque(false);
+  widthfield1 = new GTextField(this, 300, 170, 140, 20, G4P.SCROLLBARS_NONE);
+  widthfield1.setText("1000");
+  widthfield1.setOpaque(true);
+  widthfield1.addEventHandler(this, "widthfield1_change1");
 }
 
 // Variable declarations 
@@ -174,10 +165,6 @@ GButton run;
 GCheckbox test_mode; 
 GCheckbox record; 
 GLabel label1; 
-GTextField p_win_height; 
-GTextField p_win_width; 
-GLabel p_win_width_label; 
-GLabel p_win_height_label; 
 GLabel ip_label; 
 GLabel port_label; 
 GLabel num_port_label; 
@@ -188,6 +175,9 @@ GTextField test_file_1;
 GTextField test_file_2; 
 GLabel test_file_label; 
 GTextField test_file_3; 
-GCheckbox full_screen; 
 GCheckbox verbose_log; 
+GDropList aspectRatioList1; 
+GLabel aspect_ratio_label; 
+GLabel width_label; 
+GTextField widthfield1; 
 

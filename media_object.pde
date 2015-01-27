@@ -1,6 +1,6 @@
 class MediaObject {
-  int x, y;
-  int targetX, targetY;
+  float x, y;
+  float targetX, targetY;
   float easing = 0.1;
   float speed;
   float currentScale = 1.0;
@@ -11,14 +11,14 @@ class MediaObject {
     easing = e;
   }
 
-  void updateTargetPostion(int posX, int posY) {
-    targetX = posX;
-    targetY = posY;
+  void updateTargetPostion(float posX, float posY) {
+    targetX = constrain(posX, 0, 1);
+    targetY = constrain(posY, 0, 1);
   }
 
   void updateSize(float w, float h) {
-    width = w;
-    height = h;
+    width = constrain(w, 0, 1);
+    height = constrain(h, 0, 1);
   }
 
   void setScale(int s) {

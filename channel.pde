@@ -128,8 +128,8 @@ class Channel implements Runnable {
   }
 
   void createImage(JSONObject instr) {
-    int posX = instr.hasKey("posX") ? instr.getInt("posX") : 0;
-    int posY = instr.hasKey("posY") ? instr.getInt("posY") : 0;
+    float posX = instr.hasKey("posX") ? instr.getFloat("posX") : 0;
+    float posY = instr.hasKey("posY") ? instr.getFloat("posY") : 0;
     String filename = instr.getString("image");
     boolean h = false;
     if (instr.hasKey("hidden")) {
@@ -153,8 +153,8 @@ class Channel implements Runnable {
   }
 
   void createVideo(JSONObject instr) {
-    int posX = instr.hasKey("posX") ? instr.getInt("posX") : 0;
-    int posY = instr.hasKey("posY") ? instr.getInt("posY") : 0;
+    float posX = instr.hasKey("posX") ? instr.getFloat("posX") : 0;
+    float posY = instr.hasKey("posY") ? instr.getFloat("posY") : 0;
     String filename = instr.getString("video");
     boolean h = false;
     if (instr.hasKey("hidden")) {
@@ -257,13 +257,11 @@ class Channel implements Runnable {
     }
 
     if (instr.hasKey("easing")) {
-      if (instr.hasKey("endX") && instr.hasKey("endY")) {
-        img.setEasing(instr.getFloat("easing"));
-        img.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));        
-      }
-      else {
-        println("[error] Missing or incorrect parameters in easing instruction");
-      }
+      img.setEasing(instr.getFloat("easing"));       
+    }
+
+    if (instr.hasKey("endX") && instr.hasKey("endY")) {
+      img.updateTargetPostion(instr.getFloat("endX"), instr.getFloat("endY"));
     }
 
     if (instr.hasKey("blur")) {
@@ -366,13 +364,11 @@ class Channel implements Runnable {
     }
 
     if (instr.hasKey("easing")) {
-      if (instr.hasKey("endX") && instr.hasKey("endY")) {
-        gif.setEasing(instr.getFloat("easing"));
-        gif.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
-      }
-      else {
-        println("[error] Missing or incorrect parameters in easing instruction");
-      }
+      gif.setEasing(instr.getFloat("easing"));
+    }
+
+    if (instr.hasKey("endX") && instr.hasKey("endY")) {
+      gif.updateTargetPostion(instr.getFloat("endX"), instr.getFloat("endY"));
     }
 
     if (instr.hasKey("blur")) {
@@ -421,6 +417,9 @@ class Channel implements Runnable {
 
     if (instr.hasKey("easing")) {
       vid.setEasing(instr.getFloat("easing"));
+    }
+
+    if (instr.hasKey("endX") && instr.hasKey("endY")) {
       vid.updateTargetPostion(instr.getInt("endX"), instr.getInt("endY"));
     }
 

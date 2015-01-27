@@ -11,11 +11,11 @@ import processing.opengl.*;
 static boolean TESTMODE = false;
 static boolean RECORD = false;
 static boolean VERBOSE_LOG = false;
-static int DEFAULT_WIDTH = 1000;
-static int DEFAULT_HEIGHT = 600;
-static int WIDTH = DEFAULT_WIDTH;
-static int HEIGHT = DEFAULT_HEIGHT;
-static boolean FULLSCREEN = false;
+
+static int ASPECT_RATIO_W = 1;
+static int ASPECT_RATIO_H = 1;
+static int WIDTH = 1000;
+static int HEIGHT = 1000;
 
 PApplet main_app;
 GWindow p_window;
@@ -28,15 +28,18 @@ ConcurrentLinkedQueue<JSONObject> mainQueue;
 ServerManagement oscServer = new ServerManagement();
 
 void setup() {
-  size(480, 320);
+  size(480, 320, OPENGL);
   if (frame != null) {
     frame.setResizable(true);
   }
   main_app = this;
 
   createGUI();
-  String myWAN = NetInfo.wan();
-  ip.setText(myWAN);
+
+  if (!TESTMODE) {
+    String myWAN = NetInfo.wan();
+    ip.setText(myWAN);
+  }
 
   channels = new LinkedHashMap<String, Channel>();
   queues = new LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>>();
@@ -102,11 +105,9 @@ void movieEvent(Movie m) {
 
 void createStageWindow() {
   int sketchWidth, sketchHeight;
-  if (FULLSCREEN) {
-    sketchHeight = displayHeight; sketchWidth = displayWidth;
-  } else {
-    sketchHeight = HEIGHT; sketchWidth = WIDTH;
-  }
+  sketchWidth = WIDTH; 
+  sketchHeight = ((int) (WIDTH*((float) ASPECT_RATIO_H/ASPECT_RATIO_W))); 
+  HEIGHT = sketchHeight;
 
   p_window = new GWindow(this, "Performance Window", 0, 0, sketchWidth, sketchHeight, false, OPENGL);
   p_window.setActionOnClose(G4P.CLOSE_WINDOW);
