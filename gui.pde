@@ -97,7 +97,7 @@ public void createGUI(){
   record.setText(" Record");
   record.setOpaque(false);
   record.addEventHandler(this, "record_clicked1");
-  label1 = new GLabel(this, 10, 10, 120, 40);
+  label1 = new GLabel(this, 10, 10, 100, 40);
   label1.setText("Viper");
   label1.setTextBold();
   label1.setOpaque(false);
@@ -168,6 +168,9 @@ public void createGUI(){
   rdevice_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   rdevice_label.setText("Comma separated Registered device IDs");
   rdevice_label.setOpaque(false);
+  version_label = new GLabel(this, 120, 20, 130, 20);
+  version_label.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  version_label.setOpaque(false);
 }
 
 // Variable declarations 
@@ -193,4 +196,5 @@ GLabel width_label;
 GTextField widthfield1; 
 GTextArea rdevices; 
 GLabel rdevice_label; 
+GLabel version_label; 
 

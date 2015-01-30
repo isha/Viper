@@ -8,6 +8,8 @@ import gifAnimation.*;
 import g4p_controls.*;
 import processing.opengl.*;
 
+static String VERSION = "1.0.1";
+
 static boolean TESTMODE = false;
 static boolean RECORD = false;
 static boolean VERBOSE_LOG = false;
@@ -35,6 +37,7 @@ void setup() {
   main_app = this;
 
   createGUI();
+  version_label.setText("Version: "+VERSION);
 
   if (!TESTMODE) {
     String myWAN = NetInfo.wan();
