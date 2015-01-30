@@ -69,6 +69,10 @@ public void widthfield1_change1(GTextField source, GEvent event) { //_CODE_:widt
   WIDTH = Integer.parseInt(widthfield1.getText().trim());
 } //_CODE_:widthfield1:228917:
 
+public void rdevices_change1(GTextArea source, GEvent event) { //_CODE_:rdevices:779202:
+  REGISTERED_DEVICES = rdevices.getText().trim().split("\\s*,\\s*");
+} //_CODE_:rdevices:779202:
+
 
 
 // Create all the GUI controls. 
@@ -79,7 +83,7 @@ public void createGUI(){
   G4P.setCursor(ARROW);
   if(frame != null)
     frame.setTitle("Viper");
-  run = new GButton(this, 350, 270, 120, 40);
+  run = new GButton(this, 20, 340, 120, 40);
   run.setText("Run");
   run.setTextBold();
   run.addEventHandler(this, "run_click1");
@@ -157,6 +161,13 @@ public void createGUI(){
   widthfield1.setText("1000");
   widthfield1.setOpaque(true);
   widthfield1.addEventHandler(this, "widthfield1_change1");
+  rdevices = new GTextArea(this, 300, 260, 140, 110, G4P.SCROLLBARS_NONE);
+  rdevices.setOpaque(true);
+  rdevices.addEventHandler(this, "rdevices_change1");
+  rdevice_label = new GLabel(this, 170, 258, 120, 45);
+  rdevice_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
+  rdevice_label.setText("Comma separated Registered device IDs");
+  rdevice_label.setOpaque(false);
 }
 
 // Variable declarations 
@@ -180,4 +191,6 @@ GDropList aspectRatioList1;
 GLabel aspect_ratio_label; 
 GLabel width_label; 
 GTextField widthfield1; 
+GTextArea rdevices; 
+GLabel rdevice_label; 
 
