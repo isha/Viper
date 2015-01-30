@@ -14,18 +14,14 @@ class ServerManagement{
   
   ServerManagement() {}
   
-  public void runServer() {
-    loadServer();
-  }
-  
-  
+
   public void closeServer() {
     for(int i=0;i<NUM_PORTS;i++) {
       viperServers[i].stopServer();
     }
   }
   
-  protected void loadServer() {
+  protected void runServer() {
     int[] ports;
     int startPort;
     int i;
@@ -118,8 +114,7 @@ class OSCServer {
     int recvMsgLength;
     int commandCount;
     int i;
-    boolean goodID = false;
-    
+
     if(VERBOSE_LOG == true) {
       // print incoming OSC messages if verbose log is on
       recvMsg.print(); 
@@ -137,10 +132,7 @@ class OSCServer {
     
     if(recvMsg.get(0).stringValue().equalsIgnoreCase("deviceId")) {
       deviceID = recvMsg.get(1).stringValue();
-      if(_serverMng.checkID(deviceID)) {
-        goodID = true;
-      }
-      if(goodID==false) {
+      if(!_serverMng.checkID(deviceID)) {
         //if the device ID we got from message does not match any of the registered devices' ID
         //consider it a rogue message and discard
         return;
