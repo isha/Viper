@@ -1,30 +1,26 @@
 import oscP5.*;
 import netP5.*;
 
-int DEFAULT_PORT = 11000;
-int DEFAULT_NUM_PORTS = 1;
-int NUM_PORTS = DEFAULT_NUM_PORTS;
-int PORT = DEFAULT_PORT;
-String[] REGISTERED_DEVICES = new String[20];
+final int MAXDEVICES = 20;
+final int MAXPORTS = 100;
+
+int NUM_PORTS = 1;
+int PORT = 11000;
+
+String[] REGISTERED_DEVICES = new String[MAXPORTS];
 
 class ServerManagement{
   OSCServer[] viperServers;
-
-  int numDevices;
-  int numPorts = 0;
-  int MAXDEVICES = 200;
-  int MAXPORTS = 100;
   
   ServerManagement() {}
   
   public void runServer() {
     loadServer();
-    checkRegisteredDevices();
   }
   
   
   public void closeServer() {
-    for(int i=0;i<numPorts;i++) {
+    for(int i=0;i<NUM_PORTS;i++) {
       viperServers[i].stopServer();
     }
   }
@@ -36,56 +32,39 @@ class ServerManagement{
     
     try {
       // Try loading the server config file and retrieving the configuration
-      numPorts = NUM_PORTS;
       startPort = PORT;
       
-      if(numPorts < 0 || numPorts > MAXPORTS) {
-        Exception fileError = new Exception("Port configuration may be corrupted. Check serverConfig.txt file.");
+      if(NUM_PORTS < 0 || NUM_PORTS > MAXPORTS) {
+        Exception fileError = new Exception("Port configuration may be corrupted.");
         throw fileError;
       }
     } catch (Exception e) {
       print(e.getMessage());
       // If loading the config file fails, set to default values
-      numPorts = DEFAULT_NUM_PORTS;
-      startPort = DEFAULT_PORT;      
+      NUM_PORTS = 1;
+      startPort = PORT;      
     }
     
-    ports = new int[numPorts];
-    for(i=0; i<numPorts; i++) {
+    ports = new int[NUM_PORTS];
+    for(i=0; i<NUM_PORTS; i++) {
       ports[i] = startPort + i;
     }
     
-    viperServers = new OSCServer[numPorts];
+    viperServers = new OSCServer[NUM_PORTS];
    
-    for(i=0;i<numPorts;i++) {
+    for(i=0;i<NUM_PORTS;i++) {
       viperServers[i] = new OSCServer(ports[i], this);
     }
   }
   
-  void checkRegisteredDevices() {
-    numDevices = REGISTERED_DEVICES.length;
-  }
-  
   public boolean checkID(String deviceID) {
-    for(int i=0;i<numDevices;i++) {
+    for(int i=0;i<REGISTERED_DEVICES.length;i++) {
       if(REGISTERED_DEVICES[i].equals(deviceID)) {
          return true;
       }
     }
     return false;
   } 
-  
-  int getNumDevices() {
-    return numDevices;
-  }
-  
-  int getNumPorts() {
-    return numPorts;
-  }
-  
-  String[] getRegisteredDeviceIDs() {
-    return REGISTERED_DEVICES;
-  }
 };
 
 class OSCServer {
