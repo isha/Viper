@@ -5,23 +5,21 @@ int DEFAULT_PORT = 11000;
 int DEFAULT_NUM_PORTS = 1;
 int NUM_PORTS = DEFAULT_NUM_PORTS;
 int PORT = DEFAULT_PORT;
+String[] REGISTERED_DEVICES = new String[20];
 
 class ServerManagement{
   OSCServer[] viperServers;
-  
-  String[] registeredDevices;
+
   int numDevices;
   int numPorts = 0;
   int MAXDEVICES = 200;
   int MAXPORTS = 100;
   
-  ServerManagement() {
-    registeredDevices = new String[MAXDEVICES];
-  }
+  ServerManagement() {}
   
   public void runServer() {
     loadServer();
-    loadRegisteredDevices();
+    checkRegisteredDevices();
   }
   
   
@@ -64,33 +62,13 @@ class ServerManagement{
     }
   }
   
-  void loadRegisteredDevices() {
-    BufferedReader reader;
-    String line;
-    int lineCount = 0;
-    
-    try {
-      reader = createReader("registeredDevices.txt");
-      do {
-        line = reader.readLine();
-        
-        if(line==null) {
-          break;
-        }
-        
-        registeredDevices[lineCount] = line;
-        lineCount++; 
-      } while(line!=null);
-    } catch (Exception e) {
-      // File unreadable or corrupted
-      e.printStackTrace();
-    }
-    numDevices = lineCount;
+  void checkRegisteredDevices() {
+    numDevices = REGISTERED_DEVICES.length;
   }
   
   public boolean checkID(String deviceID) {
     for(int i=0;i<numDevices;i++) {
-      if(registeredDevices[i].equals(deviceID)) {
+      if(REGISTERED_DEVICES[i].equals(deviceID)) {
          return true;
       }
     }
@@ -106,7 +84,7 @@ class ServerManagement{
   }
   
   String[] getRegisteredDeviceIDs() {
-    return registeredDevices;
+    return REGISTERED_DEVICES;
   }
 };
 
