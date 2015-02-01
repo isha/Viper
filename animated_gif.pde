@@ -5,6 +5,7 @@ class AnimatedGif extends MediaObject {
   AnimatedGif(String filename, float posX, float posY, boolean h) {
     Gif myAnimation = new Gif(main_app, filename);
     myAnimation.play();
+    myAnimation.loop();
     picture = myAnimation;
 
     targetX = constrain(posX, 0, 1); 
