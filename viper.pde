@@ -30,7 +30,7 @@ ConcurrentLinkedQueue<JSONObject> mainQueue;
 ServerManagement oscServer = new ServerManagement();
 
 void setup() {
-  size(480, 420, OPENGL);
+  size(480, 420);
   if (frame != null) {
     frame.setResizable(true);
   }
