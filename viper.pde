@@ -114,7 +114,7 @@ void createStageWindow() {
 
   p_window = new GWindow(this, "Performance Window", 0, 0, sketchWidth, sketchHeight, false, OPENGL);
   p_window.setActionOnClose(G4P.CLOSE_WINDOW);
-  p_window.addOnCloseHandler(this, "p_window_close1");
+  // p_window.addOnCloseHandler(this, "p_window_close1");
   p_window.addDrawHandler(this, "p_window_draw1");
 }
 
