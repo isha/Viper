@@ -95,6 +95,7 @@ class OSCServer {
   }
  
   void sendConnectAck(String deviceAddr, Integer devicePort) {
+    println("[server] connection acknowledge");
     OscMessage connectAck = new OscMessage("/viper");
     connectAck.add("ack");
     
