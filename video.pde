@@ -18,6 +18,15 @@ class Video extends MediaObject {
     speed = Math.abs(s);
   }
 
+  void pausePlayback() {
+    video.pause();
+  }
+
+  void resumePlayback() {
+    video.play();
+  }
+
+
   void setReversePlaybackSpeed() {
     speed = -1 * speed;
   }

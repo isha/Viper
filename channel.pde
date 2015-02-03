@@ -410,6 +410,13 @@ class Channel implements Runnable {
       vid.setHidden(instr.getBoolean("hidden"));
     }
 
+    if (instr.hasKey("pause")) {
+      vid.pausePlayback();
+    }
+    if (instr.hasKey("resume")) {
+      vid.resumePlayback();
+    }
+
     if (instr.hasKey("scale")) {
       vid.setScale(instr.getInt("scale"));
     }
