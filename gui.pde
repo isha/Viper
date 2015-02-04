@@ -15,20 +15,15 @@
  */
 
 public void run_click1(GButton source, GEvent event) { //_CODE_:run:570473:
-  PORT = Integer.parseInt(port.getText().trim());
-  NUM_PORTS = Integer.parseInt(num_ports.getText().trim());
-
   runViper();
 } //_CODE_:run:570473:
 
 public void test_mode_clicked1(GCheckbox source, GEvent event) { //_CODE_:test_mode:461620:
 
-  TESTMODE = !TESTMODE;
 } //_CODE_:test_mode:461620:
 
 public void record_clicked1(GCheckbox source, GEvent event) { //_CODE_:record:415747:
 
-  RECORD = !RECORD;
 } //_CODE_:record:415747:
 
 public void num_ports_change1(GTextField source, GEvent event) { //_CODE_:num_ports:992607:
@@ -52,26 +47,22 @@ public void test_file_3_change1(GTextField source, GEvent event) { //_CODE_:test
 } //_CODE_:test_file_3:536373:
 
 public void verbose_log_clicked1(GCheckbox source, GEvent event) { //_CODE_:verbose_log:692881:
-  //println("verbose_record - GCheckbox >> GEvent." + event + " @ " + millis());
-  VERBOSE_LOG = !VERBOSE_LOG;
+
 } //_CODE_:verbose_log:692881:
 
-public void aspectRatioList1_click1(GDropList source, GEvent event) { //_CODE_:aspectRatioList1:411951:
-  switch(aspectRatioList1.getSelectedIndex()) {
-    case 0: ASPECT_RATIO_W = 1; ASPECT_RATIO_H = 1; break;
-    case 1: ASPECT_RATIO_W = 4; ASPECT_RATIO_H = 3; break;
-    case 2: ASPECT_RATIO_W = 16; ASPECT_RATIO_H = 9; break;
-    case 3: ASPECT_RATIO_W = 16; ASPECT_RATIO_H = 10; break;
-  }
-} //_CODE_:aspectRatioList1:411951:
-
 public void widthfield1_change1(GTextField source, GEvent event) { //_CODE_:widthfield1:228917:
-  WIDTH = Integer.parseInt(widthfield1.getText().trim());
+
 } //_CODE_:widthfield1:228917:
 
 public void rdevices_change1(GTextArea source, GEvent event) { //_CODE_:rdevices:779202:
-  REGISTERED_DEVICES = rdevices.getText().trim().split("\\s*,\\s*");
+  
 } //_CODE_:rdevices:779202:
+
+public void aspectW_change1(GTextField source, GEvent event) { //_CODE_:aspectW:681718:
+} //_CODE_:aspectW:681718:
+
+public void aspectH_change1(GTextField source, GEvent event) { //_CODE_:aspectH:728375:
+} //_CODE_:aspectH:728375:
 
 
 
@@ -146,9 +137,7 @@ public void createGUI(){
   verbose_log.setText(" Verbose Log");
   verbose_log.setOpaque(false);
   verbose_log.addEventHandler(this, "verbose_log_clicked1");
-  aspectRatioList1 = new GDropList(this, 300, 200, 90, 100, 4);
-  aspectRatioList1.setItems(loadStrings("list_411951"), 0);
-  aspectRatioList1.addEventHandler(this, "aspectRatioList1_click1");
+  verbose_log.setSelected(true);
   aspect_ratio_label = new GLabel(this, 210, 200, 80, 20);
   aspect_ratio_label.setTextAlign(GAlign.RIGHT, GAlign.MIDDLE);
   aspect_ratio_label.setText("Aspect Ratio");
