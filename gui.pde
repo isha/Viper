@@ -160,6 +160,17 @@ public void createGUI(){
   version_label = new GLabel(this, 120, 20, 130, 20);
   version_label.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   version_label.setOpaque(false);
+  aspectW = new GTextField(this, 300, 200, 50, 20, G4P.SCROLLBARS_NONE);
+  aspectW.setText("1");
+  aspectW.setOpaque(true);
+  aspectW.addEventHandler(this, "aspectW_change1");
+  aspectH = new GTextField(this, 390, 200, 50, 20, G4P.SCROLLBARS_NONE);
+  aspectH.setText("1");
+  aspectH.setOpaque(true);
+  aspectH.addEventHandler(this, "aspectH_change1");
+  label2 = new GLabel(this, 350, 200, 40, 20);
+  label2.setText("by");
+  label2.setOpaque(false);
 }
 
 // Variable declarations 
@@ -179,11 +190,13 @@ GTextField test_file_2;
 GLabel test_file_label; 
 GTextField test_file_3; 
 GCheckbox verbose_log; 
-GDropList aspectRatioList1; 
 GLabel aspect_ratio_label; 
 GLabel width_label; 
 GTextField widthfield1; 
 GTextArea rdevices; 
 GLabel rdevice_label; 
 GLabel version_label; 
+GTextField aspectW; 
+GTextField aspectH; 
+GLabel label2; 
 
