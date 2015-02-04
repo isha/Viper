@@ -34,12 +34,7 @@ void setup() {
   main_app = this;
 
   createGUI();
-  version_label.setText("Version: "+VERSION);
-
-  if (!TESTMODE) {
-    String myWAN = NetInfo.wan();
-    ip.setText(myWAN);
-  }
+  customGUI();
 
   channels = new LinkedHashMap<String, Channel>();
   queues = new LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>>();
@@ -49,6 +44,8 @@ void draw() {}
 
 // Called by Run button in GUI
 void runViper() {
+  populateGlobals();
+  populateJSONFromFields();
   createStageWindow();
 
   if (RECORD) {

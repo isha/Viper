@@ -1,0 +1,14 @@
+{
+  "record": false,
+  "verboseLog": true,
+  "testMode": true,
+  "port": 11000,
+  "numberPorts": 1,
+  "width": 1000,
+  "aspectWidth": 4,
+  "aspectHeight": 3,
+  "testFile1": "demo/instructions1.json",
+  "testFile2": "demo/instructions2.json",
+  "testFile3": "demo/instructions3.json",
+  "deviceIds": "adam"
+}
