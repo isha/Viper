@@ -10,14 +10,14 @@ import processing.opengl.*;
 
 static String VERSION = "1.0.1";
 
-static boolean TESTMODE = false;
-static boolean RECORD = false;
-static boolean VERBOSE_LOG = false;
+static boolean TESTMODE;
+static boolean RECORD;
+static boolean VERBOSE_LOG;
 
-static int ASPECT_RATIO_W = 1;
-static int ASPECT_RATIO_H = 1;
-static int WIDTH = 1000;
-static int HEIGHT = 1000;
+static int ASPECT_RATIO_W;
+static int ASPECT_RATIO_H;
+static int WIDTH;
+static int HEIGHT;
 
 PApplet main_app;
 GWindow p_window;
@@ -31,18 +31,10 @@ ServerManagement oscServer = new ServerManagement();
 
 void setup() {
   size(480, 420);
-  if (frame != null) {
-    frame.setResizable(true);
-  }
   main_app = this;
 
   createGUI();
-  version_label.setText("Version: "+VERSION);
-
-  if (!TESTMODE) {
-    String myWAN = NetInfo.wan();
-    ip.setText(myWAN);
-  }
+  customGUI();
 
   channels = new LinkedHashMap<String, Channel>();
   queues = new LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>>();
@@ -52,6 +44,8 @@ void draw() {}
 
 // Called by Run button in GUI
 void runViper() {
+  populateGlobals();
+  populateJSONFromFields();
   createStageWindow();
 
   if (RECORD) {
