@@ -1,6 +1,6 @@
 [
   {
-    "deviceId": "1",
+    "deviceId": "scheduled1",
     "method": "create",
     "background": 0,
     "image": "demo/Blue.png",
@@ -10,7 +10,7 @@
   },
 
   {
-    "deviceId": "1",
+    "deviceId": "scheduled1",
     "method": "create",
     "background": 0,
     "image": "demo/Fading Blue.jpeg",
@@ -20,14 +20,14 @@
   },
 
   {
-    "deviceId": "1",
+    "deviceId": "scheduled1",
     "method": "update",
     "id": 1,
     "gray": 1,
   },
 
   {
-    "deviceId": "1",
+    "deviceId": "scheduled1",
     "method": "create",
     "background": 0,
     "image": "demo/Dark Blue.jpg",
@@ -36,7 +36,7 @@
     "height": 1
   },
   {
-    "deviceId": "1",
+    "deviceId": "scheduled1",
     "method": "create",
     "background": 0,
     "image": "demo/Black.jpeg",
@@ -45,7 +45,7 @@
     "height": 1
   },
   {
-    "deviceId": "1",
+    "deviceId": "scheduled1",
     "method": "create",
     "background": 0,
     "image": "demo/Black.jpeg",
@@ -53,14 +53,5 @@
     "width": 1,
     "height": 1,  
     "sleep": 6000,
-    },
-  {
-    "deviceId": "1",
-    "method": "create",
-    "background": 0,
-    "image": "ocean.jpg",
-    "id": 2,
-    "width": 1,
-    "height": 1        
   }
 ]
