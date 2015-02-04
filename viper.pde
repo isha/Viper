@@ -10,14 +10,14 @@ import processing.opengl.*;
 
 static String VERSION = "1.0.1";
 
-static boolean TESTMODE = false;
-static boolean RECORD = false;
-static boolean VERBOSE_LOG = false;
+static boolean TESTMODE;
+static boolean RECORD;
+static boolean VERBOSE_LOG;
 
-static int ASPECT_RATIO_W = 1;
-static int ASPECT_RATIO_H = 1;
-static int WIDTH = 1000;
-static int HEIGHT = 1000;
+static int ASPECT_RATIO_W;
+static int ASPECT_RATIO_H;
+static int WIDTH;
+static int HEIGHT;
 
 PApplet main_app;
 GWindow p_window;

@@ -4,8 +4,8 @@ import netP5.*;
 final int MAXDEVICES = 20;
 final int MAXPORTS = 100;
 
-int NUM_PORTS = 1;
-int PORT = 11000;
+int NUM_PORTS;
+int PORT;
 
 String[] REGISTERED_DEVICES = new String[MAXPORTS];
 
