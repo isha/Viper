@@ -140,14 +140,16 @@ class Channel implements Runnable {
     File f = new File(dataPath(filename));
     if (f.exists()) {
       if (filename.endsWith(".gif")) {
-        AnimatedGif gif = new AnimatedGif(filename, posX, posY, h);
+        AnimatedGif gif = new AnimatedGif(filename, posX, posY, true);
         gifs.put(instr.getInt("id"), gif);
         mapping.put(instr.getInt("id"), MediaType.ANIMATEDGIF);
+        instr.setBoolean("hidden", h);
         updateGif(instr, instr.getInt("id"));
       } else {
-        Image img = new Image(filename, posX, posY, h);
+        Image img = new Image(filename, posX, posY, true);
         images.put(instr.getInt("id"), img);
         mapping.put(instr.getInt("id"), MediaType.IMAGE);
+        instr.setBoolean("hidden", h);
         updateImage(instr, instr.getInt("id"));
       }
     } else {
@@ -166,9 +168,10 @@ class Channel implements Runnable {
 
     File f = new File(dataPath(filename));
     if (f.exists()) {
-      Video vid = new Video(filename, posX, posY, h);
+      Video vid = new Video(filename, posX, posY, true);
       videos.put(instr.getInt("id"), vid);
       mapping.put(instr.getInt("id"), MediaType.VIDEO);
+      instr.setBoolean("hidden", h);
       updateVideo(instr, instr.getInt("id"));
     } else {
       println("[error] File "+filename+" does not exist");
@@ -192,10 +195,6 @@ class Channel implements Runnable {
 
   void updateImage(JSONObject instr, Integer id) {
     Image img = images.get(id);
-
-    if (instr.hasKey("hidden")) {
-      img.setHidden(instr.getBoolean("hidden"));
-    }
 
     if (instr.hasKey("reset")) {
       img.reset();
@@ -299,14 +298,14 @@ class Channel implements Runnable {
     if (instr.hasKey("rotate")) {
       img.setRotation(instr.getInt("rotate"));
     }
+
+    if (instr.hasKey("hidden")) {
+      img.setHidden(instr.getBoolean("hidden"));
+    }
   }
 
   void updateGif(JSONObject instr, Integer id) {
     AnimatedGif gif = gifs.get(id);
-
-    if (instr.hasKey("hidden")) {
-      gif.setHidden(instr.getBoolean("hidden"));
-    }
 
     if (instr.hasKey("scale")) {
       gif.setScale(instr.getInt("scale"));
@@ -402,14 +401,14 @@ class Channel implements Runnable {
     if (instr.hasKey("threshold")) {
       gif.threshold(instr.getFloat("threshold"));
     }
+
+    if (instr.hasKey("hidden")) {
+      gif.setHidden(instr.getBoolean("hidden"));
+    }
   }
 
   void updateVideo(JSONObject instr, Integer id) {
     Video vid = (Video) videos.get(id);
-
-    if (instr.hasKey("hidden")) {
-      vid.setHidden(instr.getBoolean("hidden"));
-    }
 
     if (instr.hasKey("pause")) {
       vid.pausePlayback();
@@ -446,6 +445,10 @@ class Channel implements Runnable {
       vid.setPlaybackSpeed(instr.getFloat("speed"));
       vid.updatePlaybackSpeed();
     } 
+
+    if (instr.hasKey("hidden")) {
+      vid.setHidden(instr.getBoolean("hidden"));
+    }
 
   }
 };
