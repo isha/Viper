@@ -1,9 +1,9 @@
 class Channel implements Runnable {
-  LinkedHashMap<Integer, Image> images;
-  LinkedHashMap<Integer, Video> videos;
-  LinkedHashMap<Integer, AnimatedGif> gifs;
+  ConcurrentHashMap<Integer, Image> images;
+  ConcurrentHashMap<Integer, Video> videos;
+  ConcurrentHashMap<Integer, AnimatedGif> gifs;
 
-  LinkedHashMap<Integer, MediaType> mapping;
+  ConcurrentSkipListMap<Integer, MediaType> mapping;
 
   String textStr;
   int textPosX;
@@ -16,10 +16,10 @@ class Channel implements Runnable {
   ConcurrentLinkedQueue<JSONObject> queue;
   
   Channel(ConcurrentLinkedQueue<JSONObject> queue) {
-    images = new LinkedHashMap<Integer, Image>();
-    videos = new LinkedHashMap<Integer, Video>();
-    gifs = new LinkedHashMap<Integer, AnimatedGif>();
-    mapping = new LinkedHashMap<Integer, MediaType>();
+    images = new ConcurrentHashMap<Integer, Image>();
+    videos = new ConcurrentHashMap<Integer, Video>();
+    gifs = new ConcurrentHashMap<Integer, AnimatedGif>();
+    mapping = new ConcurrentSkipListMap<Integer, MediaType>();
 
     this.queue = queue;
   }
@@ -71,8 +71,9 @@ class Channel implements Runnable {
 
   void drawAll(PApplet app) {
     // Draw all objects
-    for (Integer id : mapping.keySet()) {
-      MediaType type = mapping.get(id);
+    for (Entry<Integer, MediaType> entry : mapping.entrySet()) {
+      Integer id = entry.getKey();
+      MediaType type = entry.getValue();
 
       switch (type) {
         case IMAGE: Image img = images.get(id); img.draw(app); break;

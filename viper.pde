@@ -7,6 +7,7 @@ import processing.video.*;
 import gifAnimation.*;
 import g4p_controls.*;
 import processing.opengl.*;
+import java.util.Map.Entry;
 
 static String VERSION = "1.0.1";
 
