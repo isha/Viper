@@ -43,9 +43,20 @@ void setup() {
 
   channels = new LinkedHashMap<String, Channel>();
   queues = new LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>>();
+
+  frame.setResizable(true);
 }
 
-void draw() {}
+void draw() {
+  if (performance_started) {
+    main_app.background(230);
+
+    // Draw all channels
+    for (Channel channel : channels.values()) {
+      channel.drawAll(main_app);
+    }
+  }
+}
 
 // Called by Run button in GUI
 void runViper() {
@@ -106,12 +117,9 @@ void movieEvent(Movie m) {
 }
 
 void prepareStageWindow() {
-  int sketchWidth, sketchHeight;
-  sketchWidth = WIDTH; 
-  sketchHeight = ((int) (WIDTH*((float) ASPECT_RATIO_H/ASPECT_RATIO_W))); 
-  HEIGHT = sketchHeight;
-
   removeGUI();
+  HEIGHT = ((int) (WIDTH*((float) ASPECT_RATIO_H/ASPECT_RATIO_W)));
+  frame.setSize(WIDTH, HEIGHT);
   performance_started = true;
 }
 
