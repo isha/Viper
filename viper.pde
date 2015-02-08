@@ -19,6 +19,10 @@ static int ASPECT_RATIO_H;
 static int WIDTH;
 static int HEIGHT;
 
+static int GUI_WIDTH = 480;
+static int GUI_HEIGHT = 420;
+
+
 PApplet main_app;
 GWindow p_window;
 
@@ -30,7 +34,7 @@ ConcurrentLinkedQueue<JSONObject> mainQueue;
 ServerManagement oscServer = new ServerManagement();
 
 void setup() {
-  size(480, 420);
+  size(GUI_WIDTH, GUI_HEIGHT);
   main_app = this;
 
   createGUI();
