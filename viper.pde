@@ -24,7 +24,6 @@ static int GUI_HEIGHT = 420;
 
 
 PApplet main_app;
-GWindow p_window;
 
 LinkedHashMap<String, Channel> channels;
 LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>> queues;
@@ -32,6 +31,7 @@ LinkedHashMap<String, PrintWriter> recorders;
 ConcurrentLinkedQueue<JSONObject> mainQueue;
 
 ServerManagement oscServer = new ServerManagement();
+boolean performance_started = false;
 
 void setup() {
   size(GUI_WIDTH, GUI_HEIGHT);
@@ -50,7 +50,7 @@ void draw() {}
 void runViper() {
   populateGlobals();
   populateJSONFromFields();
-  createStageWindow();
+  prepareStageWindow();
 
   if (RECORD) {
     recorders = new LinkedHashMap<String, PrintWriter>();
@@ -104,30 +104,14 @@ void movieEvent(Movie m) {
   m.read();
 }
 
-void createStageWindow() {
+void prepareStageWindow() {
   int sketchWidth, sketchHeight;
   sketchWidth = WIDTH; 
   sketchHeight = ((int) (WIDTH*((float) ASPECT_RATIO_H/ASPECT_RATIO_W))); 
   HEIGHT = sketchHeight;
 
-  p_window = new GWindow(this, "Performance Window", 0, 0, sketchWidth, sketchHeight, false, OPENGL);
-  p_window.setActionOnClose(G4P.CLOSE_WINDOW);
-  // p_window.addOnCloseHandler(this, "p_window_close1");
-  p_window.addDrawHandler(this, "p_window_draw1");
-}
-
-public void p_window_close1(GWindow source) {
-  oscServer.closeServer();
-}
-
-synchronized public void p_window_draw1(GWinApplet appc, GWinData data) {
-  appc.background(230);
-
-  // Draw all channels
-  for (Channel channel : channels.values()) {
-    channel.drawAll(appc);
-  }
-
+  removeGUI();
+  performance_started = true;
 }
 
 void addTestChannels() {
