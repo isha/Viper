@@ -79,3 +79,30 @@ void populateJSONFromFields() {
   saveJSONObject(VIPER_CONFIG, dataPath(configFilename));
 }
 
+void removeGUI() {
+  run.dispose(); 
+  test_mode.dispose(); 
+  record.dispose(); 
+  label1.dispose(); 
+  ip_label.dispose(); 
+  port_label.dispose(); 
+  num_port_label.dispose(); 
+  num_ports.dispose(); 
+  port.dispose(); 
+  ip.dispose(); 
+  test_file_1.dispose(); 
+  test_file_2.dispose(); 
+  test_file_label.dispose(); 
+  test_file_3.dispose(); 
+  verbose_log.dispose(); 
+  aspect_ratio_label.dispose(); 
+  width_label.dispose(); 
+  widthfield1.dispose(); 
+  rdevices.dispose(); 
+  rdevice_label.dispose(); 
+  version_label.dispose(); 
+  aspectW.dispose(); 
+  aspectH.dispose(); 
+  label2.dispose(); 
+}
+

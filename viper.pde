@@ -7,6 +7,7 @@ import processing.video.*;
 import gifAnimation.*;
 import g4p_controls.*;
 import processing.opengl.*;
+import java.util.Map.Entry;
 
 static String VERSION = "1.0.1";
 
@@ -19,8 +20,11 @@ static int ASPECT_RATIO_H;
 static int WIDTH;
 static int HEIGHT;
 
+static int GUI_WIDTH = 480;
+static int GUI_HEIGHT = 420;
+
+
 PApplet main_app;
-GWindow p_window;
 
 LinkedHashMap<String, Channel> channels;
 LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>> queues;
@@ -28,9 +32,10 @@ LinkedHashMap<String, PrintWriter> recorders;
 ConcurrentLinkedQueue<JSONObject> mainQueue;
 
 ServerManagement oscServer = new ServerManagement();
+boolean performance_started = false;
 
 void setup() {
-  size(480, 420);
+  size(GUI_WIDTH, GUI_HEIGHT);
   main_app = this;
 
   createGUI();
@@ -38,15 +43,26 @@ void setup() {
 
   channels = new LinkedHashMap<String, Channel>();
   queues = new LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>>();
+
+  frame.setResizable(true);
 }
 
-void draw() {}
+void draw() {
+  if (performance_started) {
+    main_app.background(230);
+
+    // Draw all channels
+    for (Channel channel : channels.values()) {
+      channel.drawAll(main_app);
+    }
+  }
+}
 
 // Called by Run button in GUI
 void runViper() {
   populateGlobals();
   populateJSONFromFields();
-  createStageWindow();
+  prepareStageWindow();
 
   if (RECORD) {
     recorders = new LinkedHashMap<String, PrintWriter>();
@@ -100,30 +116,11 @@ void movieEvent(Movie m) {
   m.read();
 }
 
-void createStageWindow() {
-  int sketchWidth, sketchHeight;
-  sketchWidth = WIDTH; 
-  sketchHeight = ((int) (WIDTH*((float) ASPECT_RATIO_H/ASPECT_RATIO_W))); 
-  HEIGHT = sketchHeight;
-
-  p_window = new GWindow(this, "Performance Window", 0, 0, sketchWidth, sketchHeight, false, OPENGL);
-  p_window.setActionOnClose(G4P.CLOSE_WINDOW);
-  // p_window.addOnCloseHandler(this, "p_window_close1");
-  p_window.addDrawHandler(this, "p_window_draw1");
-}
-
-public void p_window_close1(GWindow source) {
-  oscServer.closeServer();
-}
-
-synchronized public void p_window_draw1(GWinApplet appc, GWinData data) {
-  appc.background(230);
-
-  // Draw all channels
-  for (Channel channel : channels.values()) {
-    channel.drawAll(appc);
-  }
-
+void prepareStageWindow() {
+  removeGUI();
+  HEIGHT = ((int) (WIDTH*((float) ASPECT_RATIO_H/ASPECT_RATIO_W)));
+  frame.setSize(WIDTH, HEIGHT);
+  performance_started = true;
 }
 
 void addTestChannels() {
