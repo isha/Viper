@@ -36,7 +36,7 @@ ServerManagement oscServer = new ServerManagement();
 boolean performance_started = false;
 
 void setup() {
-  background_image = requestImage("background.png");
+  background_image = requestImage("demo/background.png");
   size(GUI_WIDTH, GUI_HEIGHT);
   main_app = this;
 
