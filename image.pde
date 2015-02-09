@@ -73,6 +73,7 @@ class Image extends MediaObject {
   }
 
   void adjustBrightness(int magnitude) {
+    picture.loadPixels();
 
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
@@ -120,6 +121,8 @@ class Image extends MediaObject {
   }
 
   void adjustTransparency(int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -186,6 +189,8 @@ class Image extends MediaObject {
   }  
 
   void adjustRedHue (int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -221,6 +226,8 @@ class Image extends MediaObject {
   }
 
   void adjustGreenHue (int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -256,6 +263,8 @@ class Image extends MediaObject {
   }
 
   void adjustBlueHue (int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -291,6 +300,8 @@ class Image extends MediaObject {
   }
 
   void setTransparency(int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -321,6 +332,8 @@ class Image extends MediaObject {
   }
 
   void setRed(int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -351,6 +364,8 @@ class Image extends MediaObject {
   }
 
   void setGreen(int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -381,6 +396,8 @@ class Image extends MediaObject {
   }
 
   void setBlue(int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -411,6 +428,8 @@ class Image extends MediaObject {
   }
 
   void setBrightness(int magnitude) {
+    picture.loadPixels();
+    
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -514,15 +533,15 @@ class Image extends MediaObject {
     }
   }
 
-  void applyRotate(PApplet app) {
+  void applyRotate() {
     // shift origin of coordinate system to the center of the image being rotated
-    app.translate(x + (width*currentScale)/2, y + (height*currentScale)/2);
+    translate(x + (width*currentScale)/2, y + (height*currentScale)/2);
 
     // rotate the image
-    app.rotate(radians(degsToRotate));
+    rotate(radians(degsToRotate));
 
     // revert coordinate system back
-    app.translate(-x - (width*currentScale)/2, - y - (height*currentScale)/2);
+    translate(-x - (width*currentScale)/2, - y - (height*currentScale)/2);
   }
 
   PImage getPImage() {
@@ -534,7 +553,7 @@ class Image extends MediaObject {
   }
 
   @Override
-  void draw(PApplet app) {
+  void draw() {
     float dx = targetX*WIDTH - x;
     if(abs(dx) > 1) {
       x += dx * easing;
@@ -547,14 +566,14 @@ class Image extends MediaObject {
 
     applyEffects();
 
-    app.pushMatrix();
-    applyRotate(app);  
+    pushMatrix();
+    applyRotate();  
     
     if (!hidden) {
-      app.image(picture, x, y, width*WIDTH*currentScale, height*HEIGHT*currentScale);
+      image(picture, x, y, width*WIDTH*currentScale, height*HEIGHT*currentScale);
     }
     
-    app.popMatrix();    
+    popMatrix();    
   }
 
 };

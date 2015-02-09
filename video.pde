@@ -40,7 +40,7 @@ class Video extends MediaObject {
   }
   
   @Override
-  void draw(PApplet app) {
+  void draw() {
     float dx = targetX*WIDTH - x;
     if(abs(dx) > 1) {
       x += dx * easing;
@@ -52,7 +52,7 @@ class Video extends MediaObject {
     }
 
     if (!hidden) {
-      app.image(video, x, y, width*WIDTH*currentScale, height*HEIGHT*currentScale);
+      image(video, x, y, width*WIDTH*currentScale, height*HEIGHT*currentScale);
     }
   }
 };

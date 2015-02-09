@@ -25,6 +25,7 @@ static int GUI_HEIGHT = 420;
 
 
 PApplet main_app;
+PImage background_image;
 
 LinkedHashMap<String, Channel> channels;
 LinkedHashMap<String, ConcurrentLinkedQueue<JSONObject>> queues;
@@ -35,6 +36,7 @@ ServerManagement oscServer = new ServerManagement();
 boolean performance_started = false;
 
 void setup() {
+  background_image = requestImage("background.png");
   size(GUI_WIDTH, GUI_HEIGHT);
   main_app = this;
 
@@ -49,11 +51,11 @@ void setup() {
 
 void draw() {
   if (performance_started) {
-    main_app.background(230);
+    image(background_image, 0, 0);
 
     // Draw all channels
     for (Channel channel : channels.values()) {
-      channel.drawAll(main_app);
+      channel.drawAll();
     }
   }
 }
@@ -121,6 +123,7 @@ void prepareStageWindow() {
   HEIGHT = ((int) (WIDTH*((float) ASPECT_RATIO_H/ASPECT_RATIO_W)));
   frame.setSize(WIDTH, HEIGHT);
   performance_started = true;
+  background_image.resize(WIDTH, HEIGHT);
 }
 
 void addTestChannels() {

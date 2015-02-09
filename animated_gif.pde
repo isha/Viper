@@ -120,7 +120,7 @@ class AnimatedGif extends MediaObject {
     return picture;
   }
 
-  void draw(PApplet app) {
+  void draw() {
     float dx = targetX*WIDTH - x;
     if(abs(dx) > 1) {
       x += dx * easing;
@@ -136,7 +136,7 @@ class AnimatedGif extends MediaObject {
     }
 
     if (!hidden) {
-      app.image(picture, x, y, width*WIDTH*currentScale, height*HEIGHT*currentScale);
+      image(picture, x, y, width*WIDTH*currentScale, height*HEIGHT*currentScale);
     }
   }
 };
