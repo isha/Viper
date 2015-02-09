@@ -73,6 +73,7 @@ class Image extends MediaObject {
   }
 
   void adjustBrightness(int magnitude) {
+    picture.loadPixels();
 
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
@@ -120,6 +121,8 @@ class Image extends MediaObject {
   }
 
   void adjustTransparency(int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -186,6 +189,8 @@ class Image extends MediaObject {
   }  
 
   void adjustRedHue (int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -221,6 +226,8 @@ class Image extends MediaObject {
   }
 
   void adjustGreenHue (int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -256,6 +263,8 @@ class Image extends MediaObject {
   }
 
   void adjustBlueHue (int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -291,6 +300,8 @@ class Image extends MediaObject {
   }
 
   void setTransparency(int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -321,6 +332,8 @@ class Image extends MediaObject {
   }
 
   void setRed(int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -351,6 +364,8 @@ class Image extends MediaObject {
   }
 
   void setGreen(int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -381,6 +396,8 @@ class Image extends MediaObject {
   }
 
   void setBlue(int magnitude) {
+    picture.loadPixels();
+
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
@@ -411,6 +428,8 @@ class Image extends MediaObject {
   }
 
   void setBrightness(int magnitude) {
+    picture.loadPixels();
+    
     for (int px = 0; px < picture.width; px++) {
       for (int py = 0; py < picture.height; py++ ) {
 
