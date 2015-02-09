@@ -69,22 +69,22 @@ class Channel implements Runnable {
     }
   }
 
-  void drawAll(PApplet app) {
+  void drawAll() {
     // Draw all objects
     for (Entry<Integer, MediaType> entry : mapping.entrySet()) {
       Integer id = entry.getKey();
       MediaType type = entry.getValue();
 
       switch (type) {
-        case IMAGE: Image img = images.get(id); img.draw(app); break;
-        case ANIMATEDGIF: AnimatedGif gif = gifs.get(id); gif.draw(app); break;
-        case VIDEO: Video vid = videos.get(id); vid.draw(app); break;
+        case IMAGE: Image img = images.get(id); img.draw(); break;
+        case ANIMATEDGIF: AnimatedGif gif = gifs.get(id); gif.draw(); break;
+        case VIDEO: Video vid = videos.get(id); vid.draw(); break;
       }
     }
 
     // Draw all text
     if (textStr != null) {
-      app.text(textStr, textPosX, textPosY);
+      text(textStr, textPosX, textPosY);
     }
   }
 

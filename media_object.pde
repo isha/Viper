@@ -29,6 +29,6 @@ class MediaObject {
     hidden = h;
   }
   
-  void draw(PApplet app) {
+  void draw() {
   }
 };

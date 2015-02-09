@@ -49,11 +49,11 @@ void setup() {
 
 void draw() {
   if (performance_started) {
-    main_app.background(230);
+    background(230);
 
     // Draw all channels
     for (Channel channel : channels.values()) {
-      channel.drawAll(main_app);
+      channel.drawAll();
     }
   }
 }
