@@ -76,9 +76,18 @@ class Channel implements Runnable {
       MediaType type = entry.getValue();
 
       switch (type) {
-        case IMAGE: Image img = images.get(id); img.draw(); break;
-        case ANIMATEDGIF: AnimatedGif gif = gifs.get(id); gif.draw(); break;
-        case VIDEO: Video vid = videos.get(id); vid.draw(); break;
+        case IMAGE: if (images.containsKey(id)) {
+            Image img = images.get(id); img.draw(); 
+          }
+          break;
+        case ANIMATEDGIF: if (gifs.containsKey(id)) {
+            AnimatedGif gif = gifs.get(id); gif.draw(); 
+          }
+          break;
+        case VIDEO: if (videos.containsKey(id)) {
+            Video vid = videos.get(id); vid.draw(); 
+          }
+          break;
       }
     }
 

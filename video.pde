@@ -15,7 +15,7 @@ class Video extends MediaObject {
   }
 
   void setPlaybackSpeed(float s) {
-    speed = Math.abs(s);
+    speed = s;
   }
 
   void pausePlayback() {
